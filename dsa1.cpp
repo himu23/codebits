@@ -5,7 +5,6 @@ please perform the following operations
 Find the smallest element of the array and move it to the leftmost position
 Output the updated array
 */
-// Update the '_' in the code below to solve the problem
 
 #include <bits/stdc++.h>
 using namespace std;
