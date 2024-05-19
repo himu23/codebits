@@ -1,0 +1,1 @@
+{"name":"Local: gcd","url":"/home/himu23/Desktop/codebits/codechef/stl/algorithms/gcd.cpp","tests":[{"id":1716138740552,"input":"","output":""},{"id":1716147847329,"input":"5\n2 5 3 1 4","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/himu23/Desktop/codebits/codechef/stl/algorithms/gcd.cpp","group":"local","local":true}
