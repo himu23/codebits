@@ -1,0 +1,1 @@
+{"name":"Local: vectorfindandreplace","url":"/home/himu23/Desktop/codebits/codechef/vectorfindandreplace.cpp","tests":[{"id":1716123214735,"input":"6 2\n1 2 5 8 2 2","output":"1 3 5 8 3 3"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/himu23/Desktop/codebits/codechef/vectorfindandreplace.cpp","group":"local","local":true}
