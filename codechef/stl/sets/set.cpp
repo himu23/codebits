@@ -1,4 +1,5 @@
 //Duplicate elements are not allowed. 
+// s.insert() will automatically insert them in ascending order.
 //If you want a container that allows multiple occurrences of the same element, you can use the multiset container.
 // set<int> s;
 // int sz=s.size(); //s.insert(x): inserts an elemint x into the set. if x is already present in the set, the insert operation has no efect.
