@@ -8,6 +8,10 @@ The new operator is used to allocate a block of memory of a specified size.
 It returns a pointer to the first byte of the allocated memory block.
 The allocated memory will not be initialized, and its initial value will be undefined. You should avoid using uninitialized memory because it can lead to unpredictable behavior in your program.
 
+//delete
+The delete operator in C++ is used to deallocate memory that was previously allocated using the new operator
+When you call delete ptr, where ptr is a pointer to the memory block that was allocated, the memory is returned to the system's memory pool and can be reused for other purposes.
+
 */
 #include <iostream>
 using namespace std;
@@ -32,6 +36,7 @@ int main() {
         ptr[i] = i * 10;
         cout << "ptr[" << i << "] = " << ptr[i] << "\n";
     }
-
+    delete ptr;
+    
     return 0;
 }
