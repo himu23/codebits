@@ -47,3 +47,4 @@ int main() {
 //the sizeof object is the sum of all individual data members.
 //Dot operator is used to access methods and attributes of a object
 //The size of object of empty class is 1.
+//p = {3, 7}; can also be used to initialize a structure variable in C++.
