@@ -1,6 +1,6 @@
 //When you iterate over an ordered map, the elements are returned in the same order in which they were inserted.
 //Iterating over an unordered map may return its elements in any arbitrary order,
-//but unordered map sgive faster average time complexity.
+//but unordered maps give faster average time complexity.
 //stores key-value pairs.
 //Like map, each key in unordered_map is unique, but unlike map,
 // unordered_map does not maintain the order of keys and values.
@@ -16,22 +16,30 @@
 //iterating same as ordered map.
 //insertion deletion and finding o(1). in worst case due to hash collisions it can be o(n);
 // whereas for orederd maps it is o(logn);
-#include "bits/stdc++.h"
 
+/*
 //group string anagrams
+*/
 
-#define int long long
-#define uint unsigned long long
-#define vi vector<int>
-#define pb push_back
-#define sc static_cast
-#define vsort(v)  sort(v.begin(),v.end())
-#define mxe(v)  *max_element(v.begin(),v.end())
-#define mne(v)  *min_element(v.begin(),v.end())
+#include<bits/stdc++.h>
 using namespace std;
-int32_t main() {
-    int n;
-    cin>>n;
-    
-    return 0;
-}
+
+class Solution {
+  public:
+    vector<vector<string>> groupAnagrams(const vector<string>& strs){
+        vector<vector<string>> ans;
+        int n=strs.size();
+        unordered_map<string,vector<string>> mp;
+        for(int i=0;i<n;i++){
+            string key=strs[i];
+            sort(key.begin(),key.end());
+            mp[key].push_back(strs[i]);
+        }
+        for(auto &it:mp){
+            ans.push_back(it.second);
+        }
+        return ans;
+    }
+};
+
+//now i can happily start leetcode
