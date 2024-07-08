@@ -9,6 +9,7 @@
 //set <int> s1{1, 2, 3}
 //elements can be accessed through iterators
 //they cant be accessed by index.
+//cant use s[0],s[n]
 #include "bits/stdc++.h"
 //finding number of distinct integers
 #define int long long

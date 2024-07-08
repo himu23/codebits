@@ -1,3 +1,5 @@
+//ceil(a/b)=(a+b−1)/b
+
 // gcd(a,b) is in the <numeric> header. o(log(min(a,b)));
 #include "bits/stdc++.h"
 #define int long long
