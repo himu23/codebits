@@ -19,6 +19,26 @@ typedef vector<ll> vl;
 #define all(x) x.begin(), x.end()
 #define ins insert
 const char nl = '\n';
+
+int binarySearch(const std::vector<int>& arr, int target) {
+    int low = 0;
+    int high = arr.size() - 1;
+
+    while (low <= high) {
+        int mid = low + (high - low) / 2; // Avoid potential overflow
+
+        if (arr[mid] == target) {
+            return mid; // Target found
+        } else if (arr[mid] < target) {
+            low = mid + 1; // Search in the right half
+        } else {
+            high = mid - 1; // Search in the left half
+        }
+    }
+
+    return -1; // Target not found
+}
+
 bool banana(vi& v, ld val, ll m){
     ll sum=0;
     trav(a, v){

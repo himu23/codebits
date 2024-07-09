@@ -1,3 +1,5 @@
+#include "bits/stdc++.h"
+using namespace std;
 #define mod 1000000007
 //ceil(a/b)=(a+b−1)/b
 
@@ -33,4 +35,40 @@ void SieveOfEratosthenes(int n)
                 prime[i] = false;
         }
     }
+}
+//spf[n]  gives smallest prime factor of n
+const int MAXN = 100001;
+int spf[MAXN];
+void Sieve() {
+    spf[1] = 1;
+    for (int i = 2; i < MAXN; i++)
+        spf[i] = i;
+  
+    for (int i = 2; i * i < MAXN; i++) {
+        if (spf[i] == i) {
+            for (int j = i * i; j < MAXN; j += i) {
+                if (spf[j] == j)
+                    spf[j] = i;
+            }
+        }
+    }
+}
+
+int binarySearch(const std::vector<int>& arr, int target) {
+    int low = 0;
+    int high = arr.size() - 1;
+
+    while (low <= high) {
+        int mid = low + (high - low) / 2; // Avoid potential overflow
+
+        if (arr[mid] == target) {
+            return mid; // Target found
+        } else if (arr[mid] < target) {
+            low = mid + 1; // Search in the right half
+        } else {
+            high = mid - 1; // Search in the left half
+        }
+    }
+
+    return -1; // Target not found
 }
