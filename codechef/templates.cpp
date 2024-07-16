@@ -1,6 +1,39 @@
+//
 #include "bits/stdc++.h"
 using namespace std;
-#define mod 1000000007
+typedef long long ll;
+typedef long double ld;
+typedef pair<int, int> pi;
+typedef vector<int> vi;
+typedef vector<ll> vl;
+#define vsort(v)  sort(v.begin(),v.end())
+#define foor(i,b) for (int i = 0; i < (b); i++)
+#define fort(i, a, b) for (int i = a; i < (b); i++)
+#define trav(a, x) for (auto &a : x)
+#define sz(x) (int)(x).size()
+#define pb push_back
+#define f first
+#define s second
+#define lb lower_bound
+#define ub upper_bound
+#define all(x) x.begin(), x.end()
+#define ins insert
+const int MOD = 1e9 + 7;
+const char nl = '\n';
+void test_case(){
+    int n;
+    cin>>n;
+    
+    
+}
+int main(){
+    ios::sync_with_stdio(0); 
+    cin.tie(0); 
+    int t = 1;
+    cin>>t;
+    while(t--) test_case();
+    return 0;
+}
 //ceil(a/b)=(a+b−1)/b
 
 int gcd(int a,int b) { // a >= b
@@ -12,13 +45,12 @@ int gcd(int a,int b) { // a >= b
   }
   return a;
 }
-long long binpow(long long a, long long b, long long m) {
-    a %= m;
-    long long res = 1;
+int fastpow(int a, int b) {
+    int res = 1;
     while (b > 0) {
         if (b & 1)
-            res = res * a % m;
-        a = a * a % m;
+            res = res * a;
+        a = a * a;
         b >>= 1;
     }
     return res;
@@ -71,4 +103,22 @@ int binarySearch(const std::vector<int>& arr, int target) {
     }
 
     return -1; // Target not found
+}
+string binstr(int n){
+    if(n==0){
+        return "0";
+    }
+    string binary;
+    while(n>0){
+        binary=(n%2==0 ? "0":"1")+binary;
+        n/=2;
+    }
+    return binary;
+}
+
+int msbp(int n){
+    if(n==0) return 0;
+    int block=1;
+    while(n>>block)block++;
+    return block;
 }

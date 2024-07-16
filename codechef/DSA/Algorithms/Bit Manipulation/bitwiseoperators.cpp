@@ -48,3 +48,6 @@ The Bitwise XOR is: 14
 10111 & 101101  //add preciding zeros to fill spaces
 10111 ∣ 101101  //101, 111111
 */
+
+
+// A^(A^B)=A^A^B=0^B=B

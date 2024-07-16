@@ -5,8 +5,8 @@ Fast exponentiation (also known as exponentiation by squaring) is a trick which 
 (X⋅Y)⋅Z=X⋅(Y⋅Z)*/
 /*
   3^13=3^1101.2=3^8⋅3^4⋅3^1=6561⋅81⋅3=1594323  Since the number n has exactly  ⌊log⁡2n⌋+1 digits in base 2, we only need to perform   O(log⁡n) multiplications, if we know the powers   a^1,a^2,a^4,a^8,…,a^2^⌊log⁡n⌋.*/
-long long fastpow(long long a, long long b) {
-    long long res = 1;
+int fastpow(int a, int b) {
+    int res = 1;
     while (b > 0) {
         if (b & 1)
             res = res * a;
