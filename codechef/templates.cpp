@@ -122,3 +122,5 @@ int msbp(int n){
     while(n>>block)block++;
     return block;
 }
+// Copy elements from arr[i] to arr[j] into new_arr
+    std::copy(arr + i, arr + j + 1, new_arr);
