@@ -18,7 +18,7 @@ typedef vector<ll> vl;
 #define ub upper_bound
 #define all(x) x.begin(), x.end()
 #define ins insert
-const int MOD = 1e9 + 7;
+const int mod = 1e9 + 7;
 const char nl = '\n';
 void test_case(){
     int n;
@@ -33,6 +33,9 @@ int main(){
     cin>>t;
     while(t--) test_case();
     return 0;
+    // Copy elements from arr[i] to arr[j] into new_arr
+    std::copy(arr + i, arr + j + 1, new_arr);
+
 }
 //ceil(a/b)=(a+b−1)/b
 
@@ -122,5 +125,3 @@ int msbp(int n){
     while(n>>block)block++;
     return block;
 }
-// Copy elements from arr[i] to arr[j] into new_arr
-    std::copy(arr + i, arr + j + 1, new_arr);
