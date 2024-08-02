@@ -20,3 +20,6 @@ int main() {
     Node* head = new Node(1);
     cout << "The value at head is " << head -> value << endl;
 }
+
+//in cpp the 'new' keyworad is used to dynaamically allocate memory for a variable or object at runtime.
+// it allocates memory form the heap(free store) and returns  pointer to the allocated memory.
