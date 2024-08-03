@@ -17,6 +17,7 @@ int main() {
     std::cout << "Queue elements: ";
     while (!myQueue.empty()) {
         std::cout << myQueue.front() << " ";
+        std::cout << "Back element: " << myQueue.back() << std::endl;
         myQueue.pop();
     }
     std::cout << std::endl;
