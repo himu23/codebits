@@ -2,6 +2,7 @@
 //The nodes in the next level are traversed only after all the nodes at the current level/depth have been traversed.
 //This property is useful in various applications, such as finding the shortest path.
 
+//more memory intensive than dfs
 #include <bits/stdc++.h>
 using namespace std;
 #define ll long long int

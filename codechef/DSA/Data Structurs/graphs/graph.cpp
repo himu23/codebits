@@ -17,3 +17,9 @@
 
 //maximum edges in a connected graph: nc2;
 
+
+//three common representations are the adjacency matrix, adjacency list, and edge list;
+
+//bipartite graph: whose vertices can be divided into two disjoint and independent sets;
+//U and V that is, every edge connects a vertex in U to one in V.
+
