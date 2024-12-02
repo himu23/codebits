@@ -21,13 +21,13 @@ int main() {
             }
             // cout<<n-m<<" ";
             // cout<<temp<<endl;
-            scores.push_back(make_pair(temp,n-m));
+            scores.push_back(make_pair(temp,m));
         }
         sort(scores.begin(),scores.end());
         for(int i=0;i<n;i++){
-            if(scores[i].second==1){
-                ++i;
-                cout<<i<<" ";
+            if(scores[i].second==n-1){
+                // ++i;
+                // cout<<i<<" ";
                 cout<<n-i<<endl;
                 break;
             }
