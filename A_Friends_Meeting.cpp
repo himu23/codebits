@@ -5,7 +5,7 @@ using namespace std;
 int main() {
     cin.tie(0)->sync_with_stdio(false);
     int k; k=1;
-    //cin>>k;
+    cin>>k;
     while(k--){
         int n,m; cin>>n>>m;
         
