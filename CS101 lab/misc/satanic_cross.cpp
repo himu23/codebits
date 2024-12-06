@@ -1,0 +1,13 @@
+#include<simplecpp>
+main_program{
+	turtleSim();
+	right(90);
+	forward(100);
+	left(180-(180/M_PI)*asin(2.0/sqrt(13)));
+	penUp();
+	forward(sqrt(13)*10);
+	left(90+(180/M_PI)*asin(2.0/sqrt(13)));
+	penDown();
+	forward(40);
+	wait(5);
+}
