@@ -1,0 +1,1 @@
+{"name":"Local: 10_sumofprime","url":"/home/himu23/Desktop/project euler/1-50/10_sumofprime.cpp","tests":[{"id":1715837545364,"input":"10","output":"17"},{"id":1715837557567,"input":"2000000","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/himu23/Desktop/project euler/1-50/10_sumofprime.cpp","group":"local","local":true}

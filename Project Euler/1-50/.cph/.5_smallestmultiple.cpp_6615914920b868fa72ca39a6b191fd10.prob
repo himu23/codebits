@@ -1,0 +1,1 @@
+{"name":"Local: 5_smallestmultiple","url":"/home/himu23/Desktop/project euler/1-50/5_smallestmultiple.cpp","tests":[{"id":1715792992767,"input":"10","output":"2520"},{"id":1715793263049,"input":"20","output":"232792560"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/himu23/Desktop/project euler/1-50/5_smallestmultiple.cpp","group":"local","local":true}

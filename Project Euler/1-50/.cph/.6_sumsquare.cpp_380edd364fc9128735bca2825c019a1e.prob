@@ -1,0 +1,1 @@
+{"name":"Local: 6_sumsquare","url":"/home/himu23/Desktop/project euler/1-50/6_sumsquare.cpp","tests":[{"id":1715793955733,"input":"10","output":"2640"},{"id":1715793971300,"input":"100","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/himu23/Desktop/project euler/1-50/6_sumsquare.cpp","group":"local","local":true}

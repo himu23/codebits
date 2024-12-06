@@ -1,0 +1,1 @@
+{"name":"Local: 20_factorialdigitsum","url":"/home/himu23/Desktop/project euler/1-50/20_factorialdigitsum.cpp","tests":[{"id":1721636890056,"input":"10","output":"27"},{"id":1721637111978,"input":"100","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/himu23/Desktop/project euler/1-50/20_factorialdigitsum.cpp","group":"local","local":true}
