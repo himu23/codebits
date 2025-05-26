@@ -7,9 +7,11 @@ int main() {
     int k; k=1;
     //cin>>k;
     while(k--){
-        int n,m,p; cin>>n>>m>>p;
-        int ans=0;
-        while((n>0 2))
+        int n; cin>>n;
+        if(n%4==1) cout<<'0'<<" "<<'A';
+        else if(n%4==2) cout<<'1'<<" "<<'B';
+        else if(n%4==3) cout<<'2'<<" "<<'A';
+        else cout<<'1'<<" "<<'A';
     }
     return 0;
 }

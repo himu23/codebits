@@ -8,8 +8,15 @@ int main() {
     //cin>>k;
     while(k--){
         int n,m,p; cin>>n>>m>>p;
-        int ans=0;
-        while((n>0 2))
+        if(p<=n){
+            if(p<=m) cout<<p;
+            else cout<<m;
+        }
+        else{
+            int a=n+m-p;
+            if(a<0) cout<<0;
+            else cout<<a;
+        }
     }
     return 0;
 }

@@ -7,9 +7,9 @@ int main() {
     int k; k=1;
     //cin>>k;
     while(k--){
-        int n,m,p; cin>>n>>m>>p;
-        int ans=0;
-        while((n>0 2))
+        int n; cin>>n;
+        if(n%2==0) cout<<"Mahmoud";
+        else cout<<"Ehab";
     }
     return 0;
 }

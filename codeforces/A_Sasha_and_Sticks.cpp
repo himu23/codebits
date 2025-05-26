@@ -7,9 +7,13 @@ int main() {
     int k; k=1;
     //cin>>k;
     while(k--){
-        int n,m,p; cin>>n>>m>>p;
-        int ans=0;
-        while((n>0 2))
+        ll n,m; cin>>n>>m;
+        if((n/m)%2==1){
+            cout<<"YES";
+        }
+        else{
+            cout<<"NO";
+        }
     }
     return 0;
 }

@@ -7,9 +7,10 @@ int main() {
     int k; k=1;
     //cin>>k;
     while(k--){
-        int n,m,p; cin>>n>>m>>p;
-        int ans=0;
-        while((n>0 2))
+        ll n,m,p; cin>>n>>m>>p;
+        ll a=(n+p-1)/p;
+        ll b=(m+p-1)/p;
+        cout<<a*b;
     }
     return 0;
 }

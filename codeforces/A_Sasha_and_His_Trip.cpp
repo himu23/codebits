@@ -7,9 +7,8 @@ int main() {
     int k; k=1;
     //cin>>k;
     while(k--){
-        int n,m,p; cin>>n>>m>>p;
-        int ans=0;
-        while((n>0 2))
+        int n,v; cin>>n>>v;
+        
     }
     return 0;
 }

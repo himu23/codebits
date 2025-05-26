@@ -7,9 +7,9 @@ int main() {
     int k; k=1;
     //cin>>k;
     while(k--){
-        int n,m,p; cin>>n>>m>>p;
-        int ans=0;
-        while((n>0 2))
+        int a,b,c; cin>>a>>b>>c;
+        a/=1, b/=2, c/=4;
+        cout<<min(min(a,b),c)*7;
     }
     return 0;
 }

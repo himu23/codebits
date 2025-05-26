@@ -7,9 +7,12 @@ int main() {
     int k; k=1;
     //cin>>k;
     while(k--){
-        int n,m,p; cin>>n>>m>>p;
+        int n,m,k; cin>>n>>m>>k;
         int ans=0;
-        while((n>0 2))
+        if(m>=n) ans++;
+        if(k>=n) ans++;
+        if(ans<2) cout<<"No";
+        else cout<<"Yes";
     }
     return 0;
 }

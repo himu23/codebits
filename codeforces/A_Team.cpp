@@ -5,11 +5,12 @@ using namespace std;
 int main() {
     cin.tie(0)->sync_with_stdio(false);
     int k; k=1;
-    //cin>>k;
+    cin>>k;
+    int count=0;
     while(k--){
-        int n,m,p; cin>>n>>m>>p;
-        int ans=0;
-        while((n>0 2))
+        int a,b,c; cin>>a>>b>>c;
+        if(a+b+c>=2) count++;
     }
+    cout<<count<<endl;
     return 0;
 }

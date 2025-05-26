@@ -7,9 +7,13 @@ int main() {
     int k; k=1;
     //cin>>k;
     while(k--){
-        int n,m,p; cin>>n>>m>>p;
+        int n,m; cin>>n>>m;
+        int r=2*n, g=5*n, b=8*n;
         int ans=0;
-        while((n>0 2))
+        ans+= (r+m-1)/m;
+        ans+= (g+m-1)/m;
+        ans+= (b+m-1)/m;
+        cout<<ans<<endl;
     }
     return 0;
 }

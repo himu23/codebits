@@ -7,9 +7,15 @@ int main() {
     int k; k=1;
     //cin>>k;
     while(k--){
-        int n,m,p; cin>>n>>m>>p;
+        int n,m; cin>>n>>m;
         int ans=0;
-        while((n>0 2))
+        int i=n;
+        while(m>0){
+            ans+=m/i;
+            m=m%i;
+            i--;
+        }
+        cout<<ans<<endl;
     }
     return 0;
 }
