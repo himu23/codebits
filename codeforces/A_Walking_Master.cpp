@@ -7,13 +7,13 @@ int main() {
     int testcases; testcases=1;
     cin>>testcases;
     while(testcases--){
-        ll n,k; cin>>n>>k;
-        if(n%2==0){
-            cout<<"YES"<<endl;
-        }
+        int a,b,c,d; cin>>a>>b>>c>>d;
+        if(c-a-d+b>0) cout<<-1<<endl;
         else{
-            if((n-k)%2==0) cout<<"YES"<<endl;
-            else cout<<"NO"<<endl;
+            if(d-b<0) cout<<-1<<endl;
+            else{
+                cout<<abs(c-a-d+b)+d-b<<endl;
+            }
         }
     }
     return 0;

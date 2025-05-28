@@ -7,13 +7,19 @@ int main() {
     int testcases; testcases=1;
     cin>>testcases;
     while(testcases--){
-        ll n,k; cin>>n>>k;
+        int n; cin>>n;
+        vector<int> a(n);
+        int temp=0;
+        for(int i=0;i<n;i++){
+            cin>>a[i];
+            temp^=a[i];
+        }
         if(n%2==0){
-            cout<<"YES"<<endl;
+            if(temp==0) cout<<1<<endl;
+            else cout<<-1<<endl;
         }
         else{
-            if((n-k)%2==0) cout<<"YES"<<endl;
-            else cout<<"NO"<<endl;
+            cout<<temp<<endl;
         }
     }
     return 0;

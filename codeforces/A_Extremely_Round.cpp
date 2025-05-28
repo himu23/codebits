@@ -8,14 +8,18 @@ int main() {
     cin>>testcases;
     while(testcases--){
         int n; cin>>n;
-        vector<int> a(n);
-
-        for(int i=0;i<n;i++){
-            cin>>a[i];
-            cout<<n-a[i]+1<<" ";
+        int a=0;
+        int m=n;
+        while(m>0){
+            m/=10;
+            a++;
         }
-        cout<<endl;
-
+        m=n/pow(10,a-1);
+        //cout<<a<<" "<<m<<endl;
+        int ans=0;
+        ans+=9*(a-1);
+        ans+=m;
+        cout<<ans<<endl;
     }
     return 0;
 }

@@ -7,14 +7,17 @@ int main() {
     int testcases; testcases=1;
     cin>>testcases;
     while(testcases--){
-        ll n,k; cin>>n>>k;
-        if(n%2==0){
-            cout<<"YES"<<endl;
+        int n,a,b; cin>>n>>a>>b;
+        if(n==1){
+            cout<<"Yes"<<endl;
+            continue;
         }
         else{
-            if((n-k)%2==0) cout<<"YES"<<endl;
-            else cout<<"NO"<<endl;
+            if(a==b && a==n) cout<<"Yes";
+            else if(a+b<n-1) cout<<"Yes";
+            else cout<<"No";
         }
+        cout<<endl;
     }
     return 0;
 }
