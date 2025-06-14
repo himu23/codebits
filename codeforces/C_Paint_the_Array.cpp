@@ -26,51 +26,46 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll n; cin>>n;
+    vector<ll> a(n);
+    set<ll>s;
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
+        s.insert(a[i]);
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+    ll ge=a[0], go=a[1];
+    for(ll i=0;i<n;i++){
+        if(i%2==0){
+            ge=gcd(ge,a[i]);
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+        else{
+            go=gcd(go,a[i]);
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
     }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+    //cout<<ge<<" "<<go<<endl;
+    if(s.size()==1){
+        cout<<0<<endl;
+        return;
+    }
+    bool flage=true, flago=true;
+    for(ll i=0;i<n;i++){
+        if(i%2==0){
+            if(a[i]%go==0) flago=false;
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+        else{
+            if(a[i]%ge==0) flage=false;
+        }
     }
-    cout<<ans<<endl;
+    if(flage){
+        cout<<ge<<endl;
+    }
+    else if(flago){
+        cout<<go<<endl;
+    }
+    else if(!flage && !flago){
+        cout<<0<<endl;
+    }
+    return;
 }
 
 int main() {

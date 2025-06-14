@@ -26,49 +26,26 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll n; cin>>n;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    vector<ll> b(n);
+    for(ll i=0;i<n;i++){
+        cin>>b[i];
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
+    sort(a.begin(),a.end());
+    sort(b.begin(),b.end(),greater<ll>());
+    ll ans=1;
+    for(ll i=0;i<n;i++){
+        auto pos=upper_bound(a.begin(),a.end(),b[i]);
+        ll counter= a.end()-pos;
+        if(counter-i<=0){
+            cout<<0<<endl;
             return;
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+        ans=(ans*(counter-i))%MOD;
     }
     cout<<ans<<endl;
 }

@@ -26,51 +26,21 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
+    int n,l,r; cin>>n>>l>>r;
+    vector<int> ans;
+    int m=r-l;
+    for(int i=1;i<=n;i++){
+        if(r%i>m){
+            cout<<"NO"<<endl;
             return;
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+        ans.push_back(r-r%i);
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    cout<<"YES"<<endl;
+    for(int i=0;i<ans.size();i++){
+        cout<<ans[i]<<" ";
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    cout<<ans<<endl;
+    cout<<endl;
 }
 
 int main() {

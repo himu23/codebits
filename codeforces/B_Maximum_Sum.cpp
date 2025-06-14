@@ -26,51 +26,31 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll n,k; cin>>n>>k;
+    vector<ll> a(n);
+    ll sum=0;
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
+        sum+=a[i];
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    sort(a.begin(),a.end());
+    vector<ll> temp(n);
+    temp[0]=a[0];
+    for(ll i=1;i<n;i++){
+        temp[i]=temp[i-1]+a[i];
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll ans=0;
+    for(ll i=0;i<=k;i++){
+        ll left=2*i;
+        ll right=k-i;
+        if(left+right>n) continue;
+        ll leftsum=(left>0) ? temp[left-1]:0;
+        ll rightsum=(right>0) ? temp[n-1]-temp[n-right-1]:0;
+        ll solved=sum-(leftsum+rightsum);
+        ans=max(ans,solved);
     }
     cout<<ans<<endl;
+
 }
 
 int main() {

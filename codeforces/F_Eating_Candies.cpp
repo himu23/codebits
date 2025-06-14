@@ -26,51 +26,35 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll n; cin>>n;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    vector<ll> b(n),c(n);
+    b[0]=a[0];
+    c[n-1]=a[n-1];
+    for(ll i=1;i<n;i++){
+        b[i]=b[i-1]+a[i];
+        c[n-1-i]=c[n-i]+a[n-1-i];
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+    ll l=0,r=0;
+    ll anl=0,anr=0;
+    bool flag=false;
+    while(l+r<n-1){
+        if(b[l]>c[n-1-r]) r++;
+        else if(b[l]<c[n-1-r]) l++;
+        else if(b[l]==c[n-1-r]){
+            flag=true;
+            anl=l, anr=r;
+            l++, r++;
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
     }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    if(!flag){
+        cout<<0<<endl;
+        return;
     }
-    cout<<ans<<endl;
+    cout<<anl+anr+2<<endl;
 }
 
 int main() {

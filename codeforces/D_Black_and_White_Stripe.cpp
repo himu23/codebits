@@ -26,53 +26,26 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    int n,k; cin>>n>>k;
+    string s; cin>>s;
+    int countb=0, countw=0;
+    for(int i=0;i<k;i++){
+        if(s[i]=='B') countb++;
+        else countw++;
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    int l=0,r=k-1;
+    int ans=INT_MAX;
+    while(r<n){
+        ans=min(ans,countw);
+        if(s[l]=='B') countb--;
+        else countw--;
+        if(s[r+1]=='B') countb++;
+        else countw++;
+        l++,r++;
     }
     cout<<ans<<endl;
+    
 }
-
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);

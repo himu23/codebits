@@ -23,54 +23,31 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
-
+int highestsetbit(int n){
+    int pos=-1;
+    while(n){
+        n>>=1;
+        pos++;
+    }
+    return pos;
+}
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    int n; cin>>n;
+    if(n==1){
+        cout<<0<<endl;
+        return;
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    int pos=highestsetbit(n-1);
+    pos= 1<<pos;
+    //cout<<pos<<endl;
+    for(int i=n-1;i>=pos;i--){
+        cout<<i<<" ";
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    for(int i=0;i<pos;i++){
+        cout<<i<<" ";
     }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    cout<<ans<<endl;
+    cout<<endl;
 }
 
 int main() {

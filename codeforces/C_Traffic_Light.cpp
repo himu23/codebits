@@ -26,49 +26,27 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
+    int n; cin>>n;
+    char c; cin>>c;
+    string s; cin>>s;
+    string temp=s;
+    temp.append(s);
+    if(c=='g'){
+        cout<<0<<endl;
+        return;
+    }
     int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+    int temp2=0;
+    bool flag=false;
+    for(int i=0;i<temp.length();i++){
+        if(temp[i]==c) flag=true;
+        if(flag) temp2++;
+        if(temp[i]=='g'){
+            temp2--;
+            ans=max(ans,temp2);
+            temp2=0;
+            flag=false;
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
     }
     cout<<ans<<endl;
 }

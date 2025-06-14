@@ -26,51 +26,23 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    int n; cin>>n;
+    string s; cin>>s;
+    int countone=0, countzero=0;
+    for(int i=0;i<n;i++){
+        if(s[i]=='1') countone++;
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    countzero=n-countone;
+    if(countzero==3){
+        cout<<"ALICE"<<endl;
+        return;
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    if(countzero==4){
+        cout<<"DRAW"<<endl;
+        return;
     }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    cout<<ans<<endl;
+    cout<<"BOB"<<endl;
+    
 }
 
 int main() {

@@ -26,51 +26,25 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll n,c; cin>>n>>c;
+    vector<ll> s(n);
+    ll squaresum=0;
+    ll total=0;
+    for(ll i=0;i<n;i++){
+        cin>>s[i];
+        squaresum+=s[i]*s[i];
+        total+=s[i];
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    cout<<ans<<endl;
+    c-=squaresum;
+    c/=n;
+    c/=4;
+    c*=4;
+    c+=total*total/(n*n);
+    c=sqrt(c);
+    c-=total/n;
+    c/=2;
+    cout<<c<<endl;
+    
 }
 
 int main() {

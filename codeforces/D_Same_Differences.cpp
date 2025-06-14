@@ -26,51 +26,22 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll n; cin>>n;
+    vector<ll> a(n);
+    unordered_map<ll,ll> um;
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
+        um[a[i]-i]++;
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll ans=0;
+    for(auto &p : um){
+        ll temp=p.second;
+        //cout<<temp<<" ";
+        ans+=(temp*(temp-1)/2);
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
+    //cout<<endl;
     cout<<ans<<endl;
+
 }
 
 int main() {

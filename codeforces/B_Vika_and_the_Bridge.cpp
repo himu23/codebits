@@ -26,51 +26,47 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll n,k; cin>>n>>k;
+    vector<ll> c(n);
+    vector<vector<ll>> temp3(n+1);
+    for(ll i=0;i<n;i++){
+        cin>>c[i];
+        temp3[c[i]].push_back(i);
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+    vector<vector<ll>> temp(n+1);
+    for(ll i=0;i<temp3.size();i++){
+        if(!temp3[i].empty()){
+            for(ll j=0;j<=temp3[i].size();j++){
+                if(j==0){
+                    temp[i].push_back(temp3[i][j]);
+                }
+                else if(j==temp3[i].size()){
+                    temp[i].push_back(n-temp3[i][j-1]-1);
+                }
+                else{
+                    temp[i].push_back(temp3[i][j]-temp3[i][j-1]-1);
+                }
+            }
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+    ll ans=n+1;
+    for(ll i=0;i<temp.size();i++){
+        if(!temp[i].empty()){
+            //cout<<temp[i]<<" ";
+            sort(temp[i].begin(),temp[i].end());
+            ll temp2=temp[i].back();
+            temp[i].pop_back();
+            temp2--;
+            temp[i].push_back(temp2/2);
+            temp[i].push_back((temp2+1)/2);
+            sort(temp[i].begin(),temp[i].end());
+            ans=min(ans,temp[i].back());
+            //cout<<temp[i]<<" ";
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
     }
     cout<<ans<<endl;
+    //cout<<endl;
+
 }
 
 int main() {

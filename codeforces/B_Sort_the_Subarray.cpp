@@ -26,51 +26,28 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll n; cin>>n;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    vector<ll>b(n);
+    for(ll i=0;i<n;i++){
+        cin>>b[i];
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll l=0;
+    while(l<n){
+        if(a[l]!=b[l]) break;
+        l++;
     }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll r=n-1;
+    while(r>=0){
+        if(a[r]!=b[r]) break;
+        r--;
     }
-    cout<<ans<<endl;
+    while(l>0 && b[l-1]<=b[l]) l--;
+    while(r<n-1 && b[r]<=b[r+1]) r++;
+    cout<<l+1<<" "<<r+1<<endl;
 }
 
 int main() {

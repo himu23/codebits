@@ -26,58 +26,39 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll n,d; cin>>n>>d;
+    vector<ll> p(n);
+    for(ll i=0;i<n;i++){
+        cin>>p[i];
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    sort(p.begin(),p.end(),greater<ll>());
+    vector<ll> a(n);
+    ll temp=0;
+    for(ll i=0;i<n;i++){
+        temp+=(d+p[i]-1)/p[i];
+        if(d%p[i]==0) temp++;
+        a[i]=temp;
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+    ll l=0, r=n-1;
+    ll ans=-1;
+    while(l<=r){
+        ll md=l+(r-l)/2;
+        if(a[md]<=n){
+            ans=md;
+            l=md+1;
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+        else{
+            r=md-1;
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
     }
-    cout<<ans<<endl;
+    cout<<ans+1<<endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

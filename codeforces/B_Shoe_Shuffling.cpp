@@ -26,51 +26,33 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
+    int n; cin>>n;
+    vector<int> a(n);
+    unordered_map<int,int> um;
+    unordered_map<int,vector<int>> temp;
+    for(int i=0;i<n;i++){
+        cin>>a[i];
+        um[a[i]]++;
+        temp[a[i]].push_back(i+1);
+    }
+    for(const auto& pair : um){
+        if(pair.second<2){
+            cout<<-1<<endl;
             return;
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+    for(auto& pair : temp){
+        int temp3=pair.second[0];
+        for(int i=0;i<pair.second.size()-1;i++){
+            pair.second[i]=pair.second[i+1];
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+        pair.second[pair.second.size()-1]=temp3;
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    for(int i=0;i<n;i++){
+        cout<<temp[a[i]][0]<<" ";
+        temp[a[i]].erase(temp[a[i]].begin());
     }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    cout<<ans<<endl;
+    cout<<endl;
 }
 
 int main() {

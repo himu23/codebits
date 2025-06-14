@@ -27,7 +27,30 @@ const ld EPS = 1e-9;
 
 void solve() {
     string s; cin>>s;
-    
+    int countone=0;
+    int countzero=0;
+    int n=s.length();
+    for(int i=0;i<n;i++){
+        if(s[i]=='1') countone++;
+    }
+    countzero=n-countone;
+    if(countone==countzero){
+        cout<<0<<endl;
+        return;
+    }
+    if(countone==n || n==countzero){
+        cout<<n<<endl;
+        return;
+    }
+    for(int i=0;i<n;i++){
+        if(s[i]=='1') countzero--;
+        else countone--;
+        if(countzero<0 || countone<0){
+            cout<<n-i<<endl;
+            return;
+        }
+    }
+    cout<<0<<endl;
 }
 
 int main() {

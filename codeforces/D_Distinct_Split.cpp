@@ -26,49 +26,26 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
+    int n; cin>>n;
+    string s; cin>>s;
+    vector<int> b(n),c(n);
+    int temp=0;
+    unordered_map<char,int> um;
+    unordered_map<char,int> um2;
+    for(int i=0;i<n;i++){
+        um[s[i]]++;
+        if(um[s[i]]==1) temp++;
+        b[i]=temp;
+    }
+    int temp2=0;
+    for(int i=n-1;i>=0;i--){
+        um2[s[i]]++;
+        if(um2[s[i]]==1) temp2++;
+        c[i]=temp2;
+    }
     int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    for(int i=0;i<n-1;i++){
+        ans=max(ans,b[i]+c[i+1]);
     }
     cout<<ans<<endl;
 }

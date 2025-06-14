@@ -26,51 +26,30 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll n; cin>>n;
+    vector<ll> a(n);
+    vector<pair<ll,ll>> um;
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
+        um.push_back({a[i],i});
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll ans=0;
+    sort(um.begin(),um.end(),greater<>());
+    for(ll i=0;i<n;i++){
+        ans+=um[i].first*((i+2)/2);
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    cout<<2*ans<<endl;
+    cout<<0<<" ";
+    vector<ll> ans2(n);
+    for(ll i=0;i<n;i++){
+        ll temp=(i+2)/2;
+        if(i%2!=0) temp*=-1;
+        ans2[um[i].second]=temp;
     }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    for(ll i=0;i<n;i++){
+        cout<<ans2[i]<<" ";
     }
-    cout<<ans<<endl;
+    cout<<endl;
 }
 
 int main() {

@@ -26,51 +26,35 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    string s; cin>>s;
+    string t=s;
+    ll countone=0;
+    for(ll i=0;i<s.length();i++){
+        if(s[i]=='1') countone++;
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    if(countone==s.length()){
+        cout<<countone*countone<<endl;
+        return;
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    if(countone==0){
+        cout<<0<<endl;
+        return;
     }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+    t.append(s);
+    ll maxone=0;
+    ll currentone=0;
+    for(ll i=0;i<t.length();i++){
+        if(t[i]=='1'){
+            currentone++;
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+        else{
+            maxone=max(maxone,currentone);
+            currentone=0;
+        }
     }
-    cout<<ans<<endl;
+    maxone=max(maxone,currentone);
+    cout<<(maxone-(maxone/2))*(1+(maxone/2))<<endl;
+
 }
 
 int main() {

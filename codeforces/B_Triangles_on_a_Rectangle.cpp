@@ -26,50 +26,33 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll w,h; cin>>w>>h;
+    ll n,m,p,q;
+    cin>>n;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    cin>>m;
+    vector<ll> b(m);
+    for(ll i=0;i<m;i++){
+        cin>>b[i];
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    cin>>p;
+    vector<ll> c(p);
+    for(ll i=0;i<p;i++){
+        cin>>c[i];
     }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    cin>>q;
+    vector<ll> d(q);
+    for(ll i=0;i<q;i++){
+        cin>>d[i];
     }
+    sort(a.begin(),a.end());
+    sort(b.begin(),b.end());
+    sort(c.begin(),c.end());
+    sort(d.begin(),d.end());
+    ll ans=max(max((a[n-1]-a[0])*h,(b[m-1]-b[0])*h),max((c[p-1]-c[0])*w,(d[q-1]-d[0])*w));
     cout<<ans<<endl;
 }
 

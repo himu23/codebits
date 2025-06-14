@@ -26,53 +26,29 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
+    ll n,k; cin>>n>>k;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
+    }
+    if(n==1){
+        if(k==a[0]) cout<<"YES"<<endl;
+        else cout<<"NO"<<endl;
+        return;
+    }
+    sort(a.begin(),a.end());
+    ll l=0,r=1;
+    while(r<n){
+        if(a[r]-a[l]==k){
+            cout<<"YES"<<endl;
             return;
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+        else if(a[r]-a[l]<k) r++;
+        else l++;
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    cout<<ans<<endl;
+    cout<<"NO"<<endl;
+    return;
 }
-
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);

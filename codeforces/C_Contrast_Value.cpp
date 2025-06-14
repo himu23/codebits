@@ -26,49 +26,48 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll n; cin>>n;
+    vector<ll> b(n);
+    for(ll i=0;i<n;i++){
+        cin>>b[i];
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    if(n==1){
+        cout<<1<<endl;
+        return;
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+    vector<int> a;
+    a.push_back(b[0]);
+    for(int i=1;i<n;i++){
+        if(b[i]!=b[i-1]){
+            a.push_back(b[i]);
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
     }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+    if(a.size()==1){
+        cout<<1<<endl;
+        return;
+    }
+    //cout<<a.size()<<" ";
+    ll ans=2;
+    bool increasing=false;
+    if(a[0]<a[1]){
+        increasing=true;
+    }
+    for(ll i=1;i<a.size()-1;i++){
+        if(a[i+1]==a[i]){
+            continue;
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+        if(a[i]<a[i+1] && !increasing){
+            ans++;
+        }
+        else if(a[i]>a[i+1] && increasing){
+            ans++;
+        }
+        if(a[i]<a[i+1]){
+            increasing=true;
+        }
+        else if(a[i]>a[i+1]){
+            increasing=false;
+        }
     }
     cout<<ans<<endl;
 }

@@ -26,51 +26,25 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+    int n; cin>>n;
+    // int m=n/2;
+    // int temp=1;
+    // while(m--){
+    //     cout<<(temp*(n-temp))/__gcd(temp,n-temp)<<" ";
+    //     temp++;
+    // }
+    vector<int> divisors;
+    for(int i=1;i<=sqrt(n);i++){
+        if(n%i==0){
+            divisors.push_back(i);
+            if(i!=n/i){
+                divisors.push_back(n/i);
+            }
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    cout<<ans<<endl;
+    sort(divisors.begin(),divisors.end());
+    divisors.pop_back();
+    cout<<divisors[divisors.size()-1]<<" "<<n-divisors[divisors.size()-1]<<endl;
 }
 
 int main() {

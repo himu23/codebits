@@ -26,51 +26,34 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll n; cin>>n;
+    vector<ll> a(n);
+    ll tempi=a[0], tempa=a[0];
+    vector<ll> temp(n+1);
+    temp[0]=0;
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
+        temp[i+1]=temp[i]+a[i];
+        tempi=min(tempi,a[i]);
+        tempa=max(tempa,a[i]);
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    if(tempi==tempa){
+        cout<<0<<endl;
+        return;
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+    ll ans=0;
+    for(ll i=1;i<=n;i++){
+        if(n%i==0){
+            ll cem1=temp[i]-temp[0],cem2=temp[i]-temp[0];
+            for(ll j=i;j<=n;j+=i){
+                cem1=min(cem1,temp[j]-temp[j-i]);
+                cem2=max(cem2,temp[j]-temp[j-i]);
+            }
+            ans=max(ans,cem2-cem1);
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
     }
     cout<<ans<<endl;
+
 }
 
 int main() {

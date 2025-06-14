@@ -26,49 +26,41 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
+    int n; cin>>n;
+    vector<int> a(n);
+    int maxnum=INT_MIN;
+    for(int i=0;i<n;i++){
+        cin>>a[i];
+        maxnum=max(maxnum,a[i]);
+    }
+    vector<int> b(n);
+    for(int i=0;i<n;i++){
+        cin>>b[i];
+        maxnum=max(maxnum,b[i]);
+    }
+    unordered_map<int,int> um1;
+    unordered_map<int,int> um2;
+    int temp2=1;
+    for(int i=1;i<n;i++){
+        if(a[i]== a[i-1]) temp2++;
+        else{
+            um1[a[i-1]]=max(um1[a[i-1]],temp2);
+            temp2=1;
+        }
+    }
+    um1[a[n-1]]=max(um1[a[n-1]],temp2);
+    temp2=1;
+    for(int i=0;i<n;i++){
+        if(b[i]==b[i-1]) temp2++;
+        else{
+            um2[b[i-1]]=max(um2[b[i-1]],temp2);
+            temp2=1;
+        }
+    }
+    um2[b[n-1]]=max(um2[b[n-1]],temp2);
     int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    for(int i=1;i<=maxnum;i++){
+        ans=max(ans,um1[i]+um2[i]);
     }
     cout<<ans<<endl;
 }

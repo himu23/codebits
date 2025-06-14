@@ -26,51 +26,27 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    string s; cin>>s;
+    int n=s.length();
+    set<char>se;
+    unordered_map<char,vector<int>> um;
+    for(int i=0;i<n;i++){
+        se.insert(s[i]);
+        um[s[i]].push_back(i);
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    if(se.size()==n){
+        cout<<"YES"<<endl;
+        return;
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    int m=se.size();
+    bool flag=true;
+    for(int i=0;i<n-m;i++){
+        if(s[i]!=s[i+m]) flag=false;
     }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    cout<<ans<<endl;
+    if(flag) cout<<"YES"<<endl;
+    else cout<<"NO"<<endl;
+    return;
+
 }
 
 int main() {

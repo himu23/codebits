@@ -26,50 +26,37 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+    ll n; cin>>n;
+    vector<vector<ll>> temp(n);
+    for(ll i=0;i<n;i++){
+        ll m; cin>>m;
+        temp[i].resize(m);
+        for(ll j=0;j<m;j++){
+            cin>>temp[i][j];
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    for(ll i=0;i<n;i++){
+        sort(temp[i].begin(),temp[i].end());
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    vector<vector<int>> temp2(n);
+    for(ll i=0;i<n;i++){
+        temp2[i].push_back(temp[i][0]);
+        temp2[i].push_back(temp[i][1]);
     }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    vector<ll> temp3(n);
+    vector<ll> temp4(n);
+    for(ll i=0;i<n;i++){
+        temp3[i]=temp2[i][1];
+        temp4[i]=temp2[i][0];
     }
+    sort(temp3.begin(),temp3.end());
+    sort(temp4.begin(),temp4.end());
+    ll ans=0;
+    for(ll i=0;i<n;i++){
+        ans+=temp3[i];
+    }
+    ans-=temp3[0];
+    ans+=temp4[0];
     cout<<ans<<endl;
 }
 

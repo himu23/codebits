@@ -26,51 +26,33 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    ll n,q; cin>>n>>q;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
     }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
-        }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+    vector<ll> b(n);
+    vector<ll> pref(n);
+    b[0]=a[0];
+    pref[0]=a[0];
+    for(ll i=1;i<n;i++){
+        pref[i]=pref[i-1]+a[i];
+        b[i]=max(b[i-1],a[i]);
     }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+    vector<ll> k(q);
+    for(ll i=0;i<q;i++){
+        cin>>k[i];
+        auto it=upper_bound(b.begin(),b.end(),k[i]);
+        if(it==b.begin()){
+            cout<<0<<" ";
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
-            return;
+        else{
+            ll index=(it-b.begin())-1;
+            cout<<pref[index]<<" ";
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
     }
-    cout<<ans<<endl;
+    cout<<endl;
+    
 }
 
 int main() {

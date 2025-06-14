@@ -26,51 +26,62 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int a,b; cin>>a>>b;
-    int ans=0;
-    ans+=a;
-    int temp;
-    if(a%4==1){
-        temp=a-1;
-        if(temp==b){
+    int n,k; cin>>n>>k;
+    vector<int> a(n);
+    int ans=INT_MAX;
+    bool flag=false;
+    for(int i=0;i<n;i++){
+        cin>>a[i];
+    }
+    if(k!=4){
+        for(int i=0;i<n;i++){
+            if(a[i]%k==0) flag=true;
+            else{
+                ans=min(k-a[i]%k,ans);
+            }
+        }
+        //cout<<k<<" ";
+        if(flag){
+            cout<<0<<endl;
+        }
+        else{
             cout<<ans<<endl;
+        }
+    }
+    else{
+        int counteven=0, countodd=0;
+        bool flag=false;
+        for(int i=0;i<n;i++){
+            if(a[i]%4==0) flag=true;
+            if(a[i]%2==0) counteven++;
+            else countodd++;
+        }
+        if(flag){
+            cout<<0<<endl;
             return;
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==2){
-        temp=1;
-        if(temp==b){
-            cout<<ans<<endl;
+        if(counteven>=2){
+            cout<<0<<endl;
             return;
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==3){
-        temp=a;
-        if(temp==b){
-            cout<<ans<<endl;
+        if(counteven==1){
+            if(countodd>=1){
+                cout<<1<<endl;
+                return;
+            }
+            cout<<2<<endl;
             return;
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
-    }
-    else if(a%4==0){
-        temp=0;
-        if(temp==b){
-            cout<<ans<<endl;
+        int ans=INT_MAX;
+        for(int i=0;i<n;i++){
+            ans=min(ans,4-a[i]%4);
+        }
+        if(countodd>=2){
+            cout<<min(2,ans)<<endl;
             return;
         }
-        temp^=b;
-        if(temp==a) ans+=2;
-        else ans++;
+        cout<<ans<<endl;
     }
-    cout<<ans<<endl;
 }
 
 int main() {
