@@ -26,51 +26,44 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    ll n,k,x; cin>>n>>k>>x;
-    vector<ll> a(n);
-    for(ll i=0;i<n;i++){
-        cin>>a[i];
-    }
-    sort(a.begin(),a.end());
-    vector<ll> temp;
-    ll temp2=0;
-    for(ll i=1;i<a.size();i++){
-        if(a[i]-a[i-1]>x){
-            ll f=((a[i]-a[i-1]-1)/x);
-            temp.push_back(f);
-            temp2++;
-        }
-    }
-    temp2++;
-    sort(temp.begin(),temp.end());
-    ll m=temp.size();
-    vector<ll> pref(m);
-    if(m==0){
+    ll n,k; cin>>n>>k;
+    if(k==1){
         cout<<1<<endl;
         return;
     }
-    pref[0]=temp[0];
-    for(ll i=1;i<m;i++){
-        pref[i]=pref[i-1]+temp[i];
-    }
-    ll temp3;
-    auto it= upper_bound(pref.begin(),pref.end(),k);
-    if(it==pref.begin()){
-        temp3=0;
+    if(n%2==0){
+        ll q=k%n;
+        if(q==0) cout<<n<<endl;
+        else cout<<q<<endl;
+        return;
     }
     else{
-        it--;
-        temp3=distance(pref.begin(),it)+1;
+        ll p=(n-1)/2;
+        //cout<<p<<" ";
+        ll q=k;
+        q--;
+        q=q/p;
+        k--;
+        k+=q;
+        k++;
+        q=k%n;
+        if(q==0){
+            cout<<n;
+        }
+        else{
+            cout<<q;
+        }
+        cout<<endl;
+        return;
+        
     }
-    temp2-=temp3;
-    cout<<temp2<<endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

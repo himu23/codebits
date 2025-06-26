@@ -28,21 +28,25 @@ const ld EPS = 1e-9;
 void solve() {
     int n; cin>>n;
     string s; cin>>s;
-    int countone=0, countzero=0;
+    int cz=0;
     for(int i=0;i<n;i++){
-        if(s[i]=='1') countone++;
+        if(s[i]=='0') cz++;
     }
-    countzero=n-countone;
-    if(countzero==3){
-        cout<<"ALICE"<<endl;
-        return;
-    }
-    if(countzero==4){
+    if(cz==0){
         cout<<"DRAW"<<endl;
         return;
     }
-    cout<<"BOB"<<endl;
-    
+    if(cz==1){
+        cout<<"BOB"<<endl;
+        return;
+    }
+    if(cz%2==0){
+        cout<<"BOB"<<endl;
+        return;
+    }
+    else{
+        cout<<"ALICE"<<endl;
+    }
 }
 
 int main() {

@@ -26,51 +26,52 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    ll n,k,x; cin>>n>>k>>x;
-    vector<ll> a(n);
+    ll n; cin>>n;
+    string a,b; cin>>a>>b;
+    vector<ll> c(n);
     for(ll i=0;i<n;i++){
-        cin>>a[i];
+        if(a[i]==b[i]) c[i]=0;
+        else c[i]=1;
     }
-    sort(a.begin(),a.end());
-    vector<ll> temp;
-    ll temp2=0;
-    for(ll i=1;i<a.size();i++){
-        if(a[i]-a[i-1]>x){
-            ll f=((a[i]-a[i-1]-1)/x);
-            temp.push_back(f);
-            temp2++;
+    vector<ll> pref(n);
+    pref[0]=c[0];
+    for(ll i=1;i<n;i++){
+        pref[i]=pref[i-1]+c[i];
+    }
+    bool flag=true;
+    ll temp=0;
+    ll cz=0,co=0;
+    for(ll i=0;i<n;i++){
+        if(a[i]=='0') cz++;
+        else co++;
+        if(cz==co){
+            ll sum;
+            if(temp==0) sum=pref[i];
+            else sum=pref[i]-pref[temp-1];
+            if(!(sum==0 || sum==(i-temp+1))){
+                flag=false;
+                break;
+            }
+            temp=i+1;
+            cz=0,co=0;
         }
     }
-    temp2++;
-    sort(temp.begin(),temp.end());
-    ll m=temp.size();
-    vector<ll> pref(m);
-    if(m==0){
-        cout<<1<<endl;
-        return;
+    if(flag && temp<n){
+        ll sum=pref[n-1]-(temp==0 ? 0:pref[temp-1]);
+        if(!(sum==0 || sum==(n-temp+1))){
+            flag=false;
+        }
     }
-    pref[0]=temp[0];
-    for(ll i=1;i<m;i++){
-        pref[i]=pref[i-1]+temp[i];
-    }
-    ll temp3;
-    auto it= upper_bound(pref.begin(),pref.end(),k);
-    if(it==pref.begin()){
-        temp3=0;
-    }
-    else{
-        it--;
-        temp3=distance(pref.begin(),it)+1;
-    }
-    temp2-=temp3;
-    cout<<temp2<<endl;
+    if(flag) cout<<"YES";
+    else cout<<"NO";
+    cout<<endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

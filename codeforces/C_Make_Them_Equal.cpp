@@ -26,51 +26,36 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    ll n,k,x; cin>>n>>k>>x;
-    vector<ll> a(n);
-    for(ll i=0;i<n;i++){
-        cin>>a[i];
-    }
-    sort(a.begin(),a.end());
+    ll n; cin>>n;
+    char c; cin>>c;
+    string s; cin>>s;
     vector<ll> temp;
-    ll temp2=0;
-    for(ll i=1;i<a.size();i++){
-        if(a[i]-a[i-1]>x){
-            ll f=((a[i]-a[i-1]-1)/x);
-            temp.push_back(f);
-            temp2++;
+    for(ll i=0;i<n;i++){
+        if(s[i]!=c){
+            temp.push_back(i+1);
         }
     }
-    temp2++;
-    sort(temp.begin(),temp.end());
-    ll m=temp.size();
-    vector<ll> pref(m);
-    if(m==0){
-        cout<<1<<endl;
+    ll ns=temp.size();
+    if(ns==0){
+        cout<<0<<endl;
         return;
     }
-    pref[0]=temp[0];
-    for(ll i=1;i<m;i++){
-        pref[i]=pref[i-1]+temp[i];
-    }
-    ll temp3;
-    auto it= upper_bound(pref.begin(),pref.end(),k);
-    if(it==pref.begin()){
-        temp3=0;
+    ll ans=0;
+    if(temp[ns-1]!=n){
+        cout<<1<<endl;
+        cout<<n<<endl;
     }
     else{
-        it--;
-        temp3=distance(pref.begin(),it)+1;
+        cout<<2<<endl;
+        cout<<n<<" "<<n-1<<endl;
     }
-    temp2-=temp3;
-    cout<<temp2<<endl;
 }
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
