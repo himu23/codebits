@@ -26,13 +26,29 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int n,m; cin>>n>>m;
-    vector<int> a(m);
-    for(int i=0;i<m;i++){
+    ll n,x; cin>>n>>x;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
         cin>>a[i];
     }
-    vector<int> temp;
-    
+    sort(a.begin(),a.end());
+    vector<ll> pref(n);
+    pref[0]=a[0];
+    for(ll i=1;i<n;i++){
+        pref[i]=pref[i-1]+a[i];
+    }
+    ll ans=0;
+    for(ll i=0;i<n;i++){
+        ll temp=x-pref[i];
+        bool flag=true;
+        if(temp<0){
+            flag=false;
+            temp=0;
+        }
+        temp=temp/(i+1);
+        if(flag) ans+=temp+1;
+    }
+    cout<<ans<<endl;
 }
 
 int main() {

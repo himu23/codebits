@@ -26,20 +26,52 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int n,m; cin>>n>>m;
-    vector<int> a(m);
-    for(int i=0;i<m;i++){
-        cin>>a[i];
+    ll n,q; cin>>n>>q;
+    vector<int> a(n);
+    ll sum=0;
+    for(ll i=0;i<n;i++){
+       int temp;cin>>temp;
+       a[i]=temp;
+       sum+=temp;
     }
-    vector<int> temp;
-    
+    int temp2=-1;
+    unordered_map<int,int>um;
+    while(q--){
+        ll m; cin>>m;
+        if(m==1){
+            ll j,p; cin>>j>>p;
+            j--;
+            if(temp2==-1){
+                sum-=a[j];
+                sum+=p;
+                a[j]=p;
+            }
+            else{
+                ll temp;
+                if(um.count(j)) temp=um[j];
+                else temp=temp2;
+                sum-=temp;
+                sum+=p;
+                um[j]=p;
+            }
+            
+        }
+        else{
+            ll p;cin>>p;
+            temp2=p;
+            sum=0;
+            sum+=(p*n);
+            um.clear();
+        }
+        cout<<sum<<endl;
+    }
 }
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

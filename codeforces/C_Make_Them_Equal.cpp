@@ -40,15 +40,20 @@ void solve() {
         cout<<0<<endl;
         return;
     }
-    ll ans=0;
-    if(temp[ns-1]!=n){
-        cout<<1<<endl;
-        cout<<n<<endl;
+    for(ll i=1;i<=n;i++){
+        bool flag=true;
+        for(ll j=i;j<=n;j+=i){
+            if(s[j-1]!=c){
+                flag=false;
+                break;
+            }
+        }
+        if(flag){
+            cout<<1<<endl<<i<<endl;
+            return;
+        }
     }
-    else{
-        cout<<2<<endl;
-        cout<<n<<" "<<n-1<<endl;
-    }
+    cout<<2<<endl<<n<<" "<<n-1<<endl;
 }
 
 int main() {

@@ -26,13 +26,51 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int n,m; cin>>n>>m;
-    vector<int> a(m);
-    for(int i=0;i<m;i++){
-        cin>>a[i];
+    ll n,s; cin>>n>>s;
+    vector<ll> a(n);
+    ll sum=0;
+    for(ll i=0;i<n;i++){
+       cin>>a[i];
+       sum+=a[i];
     }
-    vector<int> temp;
-    
+    if(s>sum){
+        cout<<-1<<endl;
+        return;
+    }
+    vector<ll>pref(n);
+    vector<ll>suff(n);
+    vector<ll> ps(sum);
+    vector<ll>ss(sum);
+    pref[0]=a[0];
+    suff[n-1]=a[n-1];
+    for(ll i=1;i<n;i++){
+        pref[i]=pref[i-1]+a[i];
+        suff[n-1-i]=suff[n-i]+a[n-1-i];
+    }
+    for(ll i=0;i<n;i++){
+        if(a[i]==1){
+            ps[pref[i]-1]=i+1;
+            ss[suff[i]-1]=n-i;
+        }
+    }
+    // cout<<ps<<endl;
+    // cout<<ss<<endl;
+    s=sum-s;
+    ll ans=ps[ps.size()-1];
+    for(ll i=0;i<=s;i++){
+        ll j=i-1;
+        ll k=s-i-1;
+        //cout<<j<<k<<" ";
+        ll tempp;
+        ll temps;
+        if(j<0) tempp=0;
+        else tempp=ps[j];
+        if(k<0) temps=0;
+        else temps=ss[k];
+        ans=min(ans,tempp+temps);
+    }
+    cout<<ans<<endl;
+    //cout<<endl;
 }
 
 int main() {

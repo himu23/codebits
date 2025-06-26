@@ -23,15 +23,33 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
-
+bool issorted(vector<ll>& a){
+    for(ll i=1;i<a.size();i++){
+        if(a[i]<a[i-1]) return false;
+    }
+    return true;
+}
 
 void solve() {
-    int n,m; cin>>n>>m;
-    vector<int> a(m);
-    for(int i=0;i<m;i++){
+    ll n; cin>>n;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
         cin>>a[i];
     }
-    vector<int> temp;
+    if(issorted(a)){
+        cout<<0<<endl;
+        return;
+    }
+    if(a[n-2]>a[n-1] || a[n-2]-a[n-1]>a[n-2]){
+        cout<<-1<<endl;
+        return;
+    }
+    else{
+        cout<<n-2<<endl;
+        for(ll i=0;i<n-2;i++){
+            cout<<i+1<<" "<<n-1<<" "<<n<<endl;
+        }
+    }
     
 }
 
