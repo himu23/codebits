@@ -26,12 +26,20 @@ const ld EPS = 1e-9;
 
 
 void solve() {
-    int n; cin>>n;
+    ll n; cin>>n;
     string s; cin>>s;
-    vector<int> temp;
-    for(int i=0;i<n;i++){
-        if(s[i]=='0') temp.push_back(i+1);
+    vector<ll> temp(n,0);
+    ll ans=0;
+    for(ll i=1;i<=n;i++){
+        for(ll j=i;j<=n;j+=i){
+            if(s[j-1]=='1') break;
+            if(temp[j-1]==0){
+                ans+=i;
+                temp[j-1]=1;
+            }
+        }
     }
+    cout<<ans<<endl;
     
 }
 
