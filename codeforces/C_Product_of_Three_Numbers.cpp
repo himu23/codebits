@@ -42,127 +42,47 @@
 //         return h1 ^ (h2 << 1);
 //     }
 // };
-
 // template<typename K, typename V>
 // using safe_umap = unordered_map<K, V, custom_hash>;
-
 // template<typename T>
 // using safe_uset = unordered_set<T, custom_hash>;
 
+// vector<ll> getdivisors(ll n){
+//     vector<ll> divisors;
+//     for(ll i=1;i<=sqrt(n);i++){
+//         if(n%i==0){
+//             divisors.push_back(i);
+//             if(i!=n/i) divisors.push_back(n/i);
+//         }
+//     }
+//     sort(divisors.begin(),divisors.end());
+//     return divisors;
 
+// }
 
 // void solve() {
 //     ll n; cin>>n;
-//     vector<ll> a(n);
-//     vector<ll> ev;
-//     vector<ll> od;
-//     for(ll i=0;i<n;i++){
-//        cin>>a[i];
-//        if(i%2==0) ev.push_back(a[i]);
-//        else od.push_back(a[i]);
+//     vector<ll> temp=getdivisors(n);
+//     //cout<<temp<<endl;
+//     if(temp.size()<=2){
+//         cout<<"NO"<<endl;
+//         return;
 //     }
+//     ll temp2=temp[1];
+//     n/=temp2;
 //     if(n==1){
 //         cout<<"NO"<<endl;
 //         return;
 //     }
-//     // for(int i=1;i<n;i++){
-//     //     if(a[i]==a[i-1]){
-//     //         cout<<"YES"<<endl;
-//     //         return;
-//     //     }
-//     // }
-//     vector<ll> pe(ev.size()+1);
-//     pe[0]=0;
-//     vector<ll> po(od.size()+1);
-//     po[0]=0;
-//     for(ll i=1;i<=ev.size();i++){
-//         pe[i]=pe[i-1]+ev[i-1];
-//     }
-//     for(ll i=1;i<=od.size();i++){
-//         po[i]=po[i-1]+od[i-1];
-//     }
-//     pair<ll,ll> end_parity;
-//     if(n%2==0){
-//         end_parity={0,1};
+//     ll temp3=temp[2];
+//     if(n/temp3<=temp3 || n%temp3!=0){
+//         cout<<"NO"<<endl;
+//         return;
 //     }
 //     else{
-//         end_parity={0,0};
+//         cout<<"YES"<<endl;
+//         cout<<temp2<<" "<<temp3<<" "<<n/temp3<<" "<<endl;
 //     }
-//     ll le=1,lo=1;
-//     ll re=ev.size(),ro=od.size();
-//     while(le<=ev.size() && lo<=od.size() && re>=1 && ro>=1 && le<=re && lo<=ro){
-//         if(pe[re]-pe[le-1]==po[ro]-po[lo-1]){
-//             cout<<"YES"<<endl;
-//             return;
-//         }
-//         else if(pe[re]-pe[le-1]>po[ro]-po[lo-1]){
-//             if(end_parity.first==0 && end_parity.second==1){
-//                 le++;
-//                 end_parity.first=1, end_parity.second=1;
-//             }
-//             else if(end_parity.first==0 && end_parity.second==0){
-//                 if(a[2*(le-1)]>a[2*(re-1)]){
-//                     re--;
-//                     end_parity.first=0, end_parity.second=1;
-//                 }
-//                 else{
-//                     le++;
-//                     end_parity.first=1, end_parity.second=0;
-//                 }
-//             }
-//             else if(end_parity.first==1 && end_parity.second==0){
-//                 re--;
-//                 end_parity.first=1, end_parity.second=1;
-//             }
-//             else if(end_parity.first==1 && end_parity.second==1){
-//                 // if(a[2*(lo-1)+1]>a[2*(ro-1)+1]){
-//                 //     ro--;
-//                 //     end_parity.first=1, end_parity.second=0;
-//                 // }
-//                 // else{
-//                 //     lo++;
-//                 //     end_parity.first=0, end_parity.second=1;
-//                 // }
-//                 ro--;
-//                 lo++;
-//                 end_parity={0,0};
-//             }
-//         }
-//         else if(pe[re]-pe[le-1]<po[ro]-po[lo-1]){
-//             if(end_parity.first==0 && end_parity.second==1){
-//                 ro--;
-//                 end_parity.first=0, end_parity.second=0;
-//             }
-//             else if(end_parity.first==0 && end_parity.second==0){
-//                 // if(a[2*(le-1)]>a[2*(re-1)]){
-//                 //     re--;
-//                 //     end_parity.first=0, end_parity.second=1;
-//                 // }
-//                 // else{
-//                 //     le++;
-//                 //     end_parity.first=1, end_parity.second=0;
-//                 // }
-//                 re--;
-//                 le++;
-//                 end_parity={1,1};
-//             }
-//             else if(end_parity.first==1 && end_parity.second==0){
-//                 lo++;
-//                 end_parity.first=0, end_parity.second=0;
-//             }
-//             else if(end_parity.first==1 && end_parity.second==1){
-//                 if(a[2*(lo-1)+1]>a[2*(ro-1)+1]){
-//                     ro--;
-//                     end_parity.first=1, end_parity.second=0;
-//                 }
-//                 else{
-//                     lo++;
-//                     end_parity.first=0, end_parity.second=1;
-//                 }
-//             }
-//         }
-//     }
-//     cout<<"NO"<<endl;
 // }
 
 // int main() {
@@ -176,8 +96,8 @@
 //     }
 // }
 
-
-//can't figure out logical error, but my logic seems to work good
+//above code 100-no
+//ans for 100-yes 2 5 10
 
 #include <bits/stdc++.h>
 
@@ -228,31 +148,34 @@ using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
 
+vector<ll> getdivisors(ll n){
+    vector<ll> divisors;
+    for(ll i=1;i<=sqrt(n);i++){
+        if(n%i==0){
+            divisors.push_back(i);
+            if(i!=n/i) divisors.push_back(n/i);
+        }
+    }
+    sort(divisors.begin(),divisors.end());
+    return divisors;
 
+}
 
 void solve() {
     ll n; cin>>n;
-    vector<ll> a(n);
-    for(ll i=0;i<n;i++){
-       cin>>a[i];
-    }
-    safe_umap<ll,ll> um;
-    ll temp2=0;
-    for (ll i = 0; i < n; i++) {
-        ll temp;
-        temp=a[i];
-        if (i&1) temp = -temp;
-        temp2 += temp;
-        if (temp2==0 || um.count(temp2)) {
-            cout << "YES" << endl;
+    vector<ll> divs=getdivisors(n);
+    for(int i=1;i<divs.size();i++){
+        for(int j=i+1;j<divs.size();j++){
+            ll a=divs[i],b=divs[j];
+            if(n%(a*b)!=0) continue;
+            ll c=n/(a*b);
+            if(c==a || c==b || c<2) continue;
+            cout<<"YES"<<endl<<a<<" "<<b<<" "<<c<<endl;
             return;
         }
-        um[temp2]++;
     }
     cout<<"NO"<<endl;
-    return;
-    
-    
+
 }
 
 int main() {
@@ -261,7 +184,7 @@ int main() {
     int tc = 1;
     cin >> tc;
     for (int t = 1; t <= tc; t++) {
-        //cout << "Case #" << t << ": ";
+        // cout << "Case #" << t << ": ";
         solve();
     }
 }

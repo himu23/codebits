@@ -42,142 +42,47 @@
 //         return h1 ^ (h2 << 1);
 //     }
 // };
-
 // template<typename K, typename V>
 // using safe_umap = unordered_map<K, V, custom_hash>;
-
 // template<typename T>
 // using safe_uset = unordered_set<T, custom_hash>;
 
 
 
 // void solve() {
-//     ll n; cin>>n;
-//     vector<ll> a(n);
-//     vector<ll> ev;
-//     vector<ll> od;
-//     for(ll i=0;i<n;i++){
+//     int n; cin>>n;
+//     safe_umap<int,vector<int>> temp;
+//     vector<int> a(n);
+//     for(int i=0;i<n;i++){
 //        cin>>a[i];
-//        if(i%2==0) ev.push_back(a[i]);
-//        else od.push_back(a[i]);
+//        temp[a[i]].push_back(i+1);
 //     }
-//     if(n==1){
-//         cout<<"NO"<<endl;
-//         return;
+//     vector<int> b(n);
+//     for(int i=0;i<n;i++){
+//        cin>>b[i];
+//        temp[b[i]].push_back(i+1);
 //     }
-//     // for(int i=1;i<n;i++){
-//     //     if(a[i]==a[i-1]){
-//     //         cout<<"YES"<<endl;
-//     //         return;
-//     //     }
-//     // }
-//     vector<ll> pe(ev.size()+1);
-//     pe[0]=0;
-//     vector<ll> po(od.size()+1);
-//     po[0]=0;
-//     for(ll i=1;i<=ev.size();i++){
-//         pe[i]=pe[i-1]+ev[i-1];
+//     int ans=0;
+//     for(auto &pair:temp){
+//         ans=max(ans,pair.second[1]-pair.second[0]);
 //     }
-//     for(ll i=1;i<=od.size();i++){
-//         po[i]=po[i-1]+od[i-1];
-//     }
-//     pair<ll,ll> end_parity;
-//     if(n%2==0){
-//         end_parity={0,1};
-//     }
-//     else{
-//         end_parity={0,0};
-//     }
-//     ll le=1,lo=1;
-//     ll re=ev.size(),ro=od.size();
-//     while(le<=ev.size() && lo<=od.size() && re>=1 && ro>=1 && le<=re && lo<=ro){
-//         if(pe[re]-pe[le-1]==po[ro]-po[lo-1]){
-//             cout<<"YES"<<endl;
-//             return;
-//         }
-//         else if(pe[re]-pe[le-1]>po[ro]-po[lo-1]){
-//             if(end_parity.first==0 && end_parity.second==1){
-//                 le++;
-//                 end_parity.first=1, end_parity.second=1;
-//             }
-//             else if(end_parity.first==0 && end_parity.second==0){
-//                 if(a[2*(le-1)]>a[2*(re-1)]){
-//                     re--;
-//                     end_parity.first=0, end_parity.second=1;
-//                 }
-//                 else{
-//                     le++;
-//                     end_parity.first=1, end_parity.second=0;
-//                 }
-//             }
-//             else if(end_parity.first==1 && end_parity.second==0){
-//                 re--;
-//                 end_parity.first=1, end_parity.second=1;
-//             }
-//             else if(end_parity.first==1 && end_parity.second==1){
-//                 // if(a[2*(lo-1)+1]>a[2*(ro-1)+1]){
-//                 //     ro--;
-//                 //     end_parity.first=1, end_parity.second=0;
-//                 // }
-//                 // else{
-//                 //     lo++;
-//                 //     end_parity.first=0, end_parity.second=1;
-//                 // }
-//                 ro--;
-//                 lo++;
-//                 end_parity={0,0};
-//             }
-//         }
-//         else if(pe[re]-pe[le-1]<po[ro]-po[lo-1]){
-//             if(end_parity.first==0 && end_parity.second==1){
-//                 ro--;
-//                 end_parity.first=0, end_parity.second=0;
-//             }
-//             else if(end_parity.first==0 && end_parity.second==0){
-//                 // if(a[2*(le-1)]>a[2*(re-1)]){
-//                 //     re--;
-//                 //     end_parity.first=0, end_parity.second=1;
-//                 // }
-//                 // else{
-//                 //     le++;
-//                 //     end_parity.first=1, end_parity.second=0;
-//                 // }
-//                 re--;
-//                 le++;
-//                 end_parity={1,1};
-//             }
-//             else if(end_parity.first==1 && end_parity.second==0){
-//                 lo++;
-//                 end_parity.first=0, end_parity.second=0;
-//             }
-//             else if(end_parity.first==1 && end_parity.second==1){
-//                 if(a[2*(lo-1)+1]>a[2*(ro-1)+1]){
-//                     ro--;
-//                     end_parity.first=1, end_parity.second=0;
-//                 }
-//                 else{
-//                     lo++;
-//                     end_parity.first=0, end_parity.second=1;
-//                 }
-//             }
-//         }
-//     }
-//     cout<<"NO"<<endl;
+//     cout<<ans<<endl;
+    
+    
 // }
 
 // int main() {
 //     ios_base::sync_with_stdio(0);
 //     cin.tie(0); cout.tie(0);
 //     int tc = 1;
-//     cin >> tc;
+//     //cin >> tc;
 //     for (int t = 1; t <= tc; t++) {
 //         // cout << "Case #" << t << ": ";
 //         solve();
 //     }
 // }
 
-
-//can't figure out logical error, but my logic seems to work good
+//above logic is flawed
 
 #include <bits/stdc++.h>
 
@@ -233,25 +138,33 @@ using safe_uset = unordered_set<T, custom_hash>;
 void solve() {
     ll n; cin>>n;
     vector<ll> a(n);
+    safe_umap<ll,ll> temp2;
     for(ll i=0;i<n;i++){
        cin>>a[i];
     }
-    safe_umap<ll,ll> um;
-    ll temp2=0;
-    for (ll i = 0; i < n; i++) {
-        ll temp;
-        temp=a[i];
-        if (i&1) temp = -temp;
-        temp2 += temp;
-        if (temp2==0 || um.count(temp2)) {
-            cout << "YES" << endl;
-            return;
-        }
-        um[temp2]++;
+    vector<ll> b(n);
+    for(ll i=0;i<n;i++){
+       cin>>b[i];
+       temp2[b[i]]=i+1;
     }
-    cout<<"NO"<<endl;
-    return;
-    
+    vector<ll>temp;
+    for(ll i=0;i<n;i++){
+        temp.push_back(temp2[a[i]]);
+    }
+    // cout<<temp<<endl;
+    vector<ll> temp4(n);
+    temp4[0]=temp[0];
+    for(ll i=1;i<n;i++){
+        temp4[i]=max(temp4[i-1],temp[i]);
+    }
+    ll ans=0;
+    for(ll i=0;i<n;i++){
+        if(temp4[i]>temp[i]){
+            ans++;
+        }
+    }
+    cout<<ans<<endl;
+
     
 }
 
@@ -259,9 +172,9 @@ int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
-        //cout << "Case #" << t << ": ";
+        // cout << "Case #" << t << ": ";
         solve();
     }
 }
