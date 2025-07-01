@@ -50,53 +50,44 @@
 
 
 // void solve() {
-//     ll n,h; cin>>n>>h;
-//     vector<ll> a(n);
-//     for(ll i=0;i<n;i++){
-//        cin>>a[i];
+//     int n,w; cin>>n>>w;
+//     multiset<int,greater<int>> ms;
+//     for(int i=0;i<n;i++){
+//        int temp;
+//        cin>>temp;
+//        ms.insert(temp);
 //     }
-//     ll ans=0;
-//     vector<ll> temp;
-//     for(ll i=0;i<n;i++){
-//         auto it=lower_bound(temp.begin(),temp.end(),a[i]);
-//         if(it!=temp.end()){
-//             ans++;
-//             //cout<<*it<<" ";
-//             temp.erase(it);
-//         }
-//         else{
-//             if(a[i]<=h){
-//                 h-=a[i];
-//                 //cout<<h<<" ";
-//                 temp.push_back(a[i]);
-//                 sort(temp.begin(),temp.end());
-//                 ans++;
-//                 //cout<<ans<<" ";
+//     int temp=w;
+//     int ans=0;
+//     while(n>0){
+//         for(auto it=ms.begin();it!=ms.end();){
+//             if(*it<=w){
+//                 w-=*it;
+//                 it=ms.erase(it);
+//                 n--;
 //             }
 //             else{
-//                 cout<<ans<<endl;
-//                 return;
+//                 ++it;
 //             }
 //         }
+//         w=temp;
+//         ans++;
 //     }
-//     //ans++;
-//     cout<<"YES"<<" ";
 //     cout<<ans<<endl;
+    
 // }
-
 // int main() {
 //     ios_base::sync_with_stdio(0);
 //     cin.tie(0); cout.tie(0);
 //     int tc = 1;
-//     //cin >> tc;
+//     cin >> tc;
 //     for (int t = 1; t <= tc; t++) {
 //         // cout << "Case #" << t << ": ";
 //         solve();
 //     }
 // }
 
-//the above logic is flawed
-
+//multiset but its tle
 
 #include <bits/stdc++.h>
 
@@ -150,28 +141,26 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 
 void solve() {
-    ll n,h; cin>>n>>h;
-    vector<ll> a(n);
+    ll n,w; cin>>n>>w;
+    vector<ll> cnt(21,0);
     for(ll i=0;i<n;i++){
-       cin>>a[i];
+       ll x; cin>>x;
+       cnt[__builtin_ctz(x)]++;
     }
-    ll ans=0;
-    for(ll i=1;i<=n;i++){
-        vector<ll> temp(a.begin(),a.begin()+i);
-        sort(temp.begin(),temp.end(),greater<ll>());
-        ll temp2=0;
-        for(ll j=0;j<temp.size();j+=2){
-            temp2+=temp[j];
+    ll height=0;
+    while(n>0){
+        ll space=w;
+        for(ll i=20;i>=0;i--){
+            while(cnt[i]>0 && (1LL<<i)<=space){
+                ll fit=min((ll)(space/(1LL<<i)),cnt[i]);
+                cnt[i]-=fit;
+                space-=1LL*fit*(1LL<<i);
+                n-=fit;
+            }
         }
-        if(temp2<=h){
-            ans=max(ans,(ll)temp.size());
-        }
-        else{
-            cout<<ans<<endl;
-            return;
-        }
+        height++;
     }
-    cout<<ans<<endl;
+    cout<<height<<endl;
     
 }
 
@@ -179,7 +168,7 @@ int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
