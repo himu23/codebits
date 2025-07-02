@@ -259,37 +259,28 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 
 void solve() {
-    int n; cin>>n;
-    map<int,int> mp;
-    for(int i=0;i<n;i++){
-        int k; cin>>k;
-        for(int j=0;j<k;j++){
-            int temp; cin>>temp;
-            mp[temp]+=(1<<i);
+    ll n; cin>>n;
+    map<ll,ll> mp;
+    vector<vector<ll>> temp2(n); 
+    for(ll i=0;i<n;i++){
+        ll k; cin>>k;
+        for(ll j=0;j<k;j++){
+            ll temp; cin>>temp;
+            temp2[i].push_back(temp);
+            mp[temp]++;
         }
     }
-    auto it= mp.begin();
-    int pref= it->second;
-    it= --mp.end();
-    int suff=it->second;
-    for(auto i = mp.begin(); i!=mp.end();i++){
-        if(i!=mp.begin()){
-            if(((i->second & pref)==i->second)||((i->second & pref)==pref)){
-                cout<<"YES"<<endl;
-                return;
-            }
+    for(ll i=0;i<n;i++){
+        ll temp4=0;
+        for(ll j=0;j<temp2[i].size();j++){
+            if(mp[temp2[i][j]]>=2) temp4++;
         }
-        pref=pref|i->second;
-    }
-    for(auto i = next(mp.rbegin()); i!=mp.rend();i++){
-        if(((i->second & suff)==i->second)||((i->second & suff)==suff)){
-            cout<<"YES"<<endl;
+        if(temp4==temp2[i].size()){
+            cout<<"Yes"<<endl;
             return;
         }
-        suff=suff|i->second;
     }
-    cout<<"NO"<<endl;
-
+    cout<<"No"<<endl;
 }
 
 int main() {
