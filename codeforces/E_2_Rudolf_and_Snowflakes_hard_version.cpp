@@ -162,23 +162,42 @@ vector<ll> getdivisors(ll n){
 }
 
 void solve() {
-    ll n; cin>>n;
+    ll n; cin >> n;
+    if (n == 1) {
+        cout << "NO\n";
+        return;
+    }
     n--;
-    vector<ll> temp=getdivisors(n);
-    for(ll i=1;i<temp.size();i++){
-        ld x=temp[i];
-        ld val=(n+1)*x-n;
-        if(val<=1) continue;
-        ld t= log(val)/log(x);
-        ll t_round=round(t);
-        if(t_round>=3 && abs(t-t_round)<1e-9){
-            cout<<"YES"<<endl;
-            return;
+    for (int k = 3; k <= 60; ++k) {
+        ll low = 2, high = 1e6;
+        while (low <= high) {
+            ll mid = (low + high) / 2;
+            __int128 cur = 1;
+            bool overflow = false;
+            for (int i = 0; i < k; ++i) {
+                cur *= mid;
+                if (cur > (__int128)1e18) {
+                    overflow = true;
+                    break;
+                }
+            }
+            if (overflow) {
+                high = mid - 1;
+                continue;
+            }
+            __int128 lhs = cur + n;
+            __int128 rhs = mid * (n + 1);
+            if (lhs == rhs) {
+                cout << "YES\n";
+                return;
+            }
+            if (lhs < rhs)
+                low = mid + 1;
+            else
+                high = mid - 1;
         }
     }
-    cout<<"NO"<<endl;
-    // cout<<endl;
-
+    cout << "NO\n";
 }
 
 int main() {
