@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
-
+ 
 using namespace std;
-
+ 
 template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
 template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}'; }
 void dbg_out() { cerr << endl; }
@@ -11,18 +11,18 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #else
 #define dbg(...)
 #endif
-
+ 
 #define ar array
 #define ll long long
 #define ld long double
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()
-
+ 
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
-
+ 
 // Custom hash for unordered_map/set
 struct custom_hash {
     static uint64_t splitmix64(uint64_t x) {
@@ -46,32 +46,56 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-
-
-
+ 
+ 
+ 
 void solve() {
-    ll n,x,y; cin>>n>>x>>y;
+    ll n,k; cin>>n>>k;
     vector<ll> a(n);
-    //ll p=x+3;
     for(ll i=0;i<n;i++){
        cin>>a[i];
-       x ^= a[i];
     }
-    // cout<<x<<" "<<x1<<" "<<p<<" "<<p1<<endl;
-    // vector<ll> a(n);
-    // for(ll i=0;i<n;i++){
-    //    cin>>a[i];
-    // }
-    if((x ^ y) % 2 == 0){
-        cout<<"Alice"<<endl;
+    set<ll> b;
+    ll temp=a[0];
+    for(ll i=0;i<n;i++){
+        if(b.find(a[i])!=b.end()){
+            cout<<0<<endl;
+            return;
+        }
+        b.insert(a[i]);
+        temp=min(temp,a[i]);
     }
-    else{
-        cout<<"Bob"<<endl;
+    if(k>=3){
+        cout<<0<<endl;
+        return;
     }
-    
-    
+    if(k==1){
+        auto it=b.begin();
+        auto prev=it;
+        ++it;
+        while(it!=b.end()){
+            temp=min(temp,*it-*prev);
+            prev=it;
+            ++it;
+        }
+        cout<<temp<<endl;
+        return;
+    }
+    vector<ll> v(b.begin(), b.end());
+    for (int i = 0; i < v.size(); ++i) {
+        for (int j = i + 1; j < v.size(); ++j) {
+            ll diff = v[j] - v[i];
+            temp=min(temp,diff);
+            auto it = lower_bound(v.begin(), v.end(), diff);
+            if (it != v.end()) temp = min(temp, abs(diff - *it));
+            if (it != v.begin()) temp = min(temp, abs(diff - *prev(it)));
+            //cout<<temp<<" ";
+        }
+    }
+    cout<<temp<<endl;
+ 
 }
-
+ 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);

@@ -50,33 +50,46 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 
 void solve() {
-    ll n,x,y; cin>>n>>x>>y;
-    vector<ll> a(n);
-    //ll p=x+3;
+    ll n,m; cin>>n>>m;
+    safe_umap<ll,vector<pair<ll,ll>>> mp;
     for(ll i=0;i<n;i++){
-       cin>>a[i];
-       x ^= a[i];
+        for(ll j=0;j<m;j++){
+            ll temp; cin>>temp;
+            mp[temp].push_back({i+1,j+1});
+        }
     }
-    // cout<<x<<" "<<x1<<" "<<p<<" "<<p1<<endl;
-    // vector<ll> a(n);
-    // for(ll i=0;i<n;i++){
-    //    cin>>a[i];
-    // }
-    if((x ^ y) % 2 == 0){
-        cout<<"Alice"<<endl;
+    ll ans=0;
+    for(auto &p : mp){
+        ll temp=0;
+        vector<pair<ll,ll>> temp2 = p.second;
+        vector<ll> fr;
+        vector<ll> se;
+        for(ll i=0;i<temp2.size();i++){
+            fr.push_back(temp2[i].first);
+            se.push_back(temp2[i].second);
+        }
+        sort(fr.begin(),fr.end());
+        sort(se.begin(),se.end());
+        for(ll i=0;i<fr.size();i++){
+            temp+=(fr[i]*(i));
+            temp-=(fr[i]*(fr.size()-1-i));
+        }
+        for(ll i=0;i<se.size();i++){
+            temp+=(se[i]*(i));
+            temp-=(se[i]*(se.size()-1-i));
+        }
+        ans+=temp;
     }
-    else{
-        cout<<"Bob"<<endl;
-    }
-    
-    
+    cout<<ans<<endl;
+
+
 }
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

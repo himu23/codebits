@@ -47,29 +47,61 @@ using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
 
-
+vector<int> getbitwise(int n){
+    vector<int> ans(31);
+    for(int i=30;i>=0;i--){
+        if((n&(1<<i))!=0) ans[i]=1;
+        else ans[i]=0;
+    }
+    return ans;
+}
 
 void solve() {
-    ll n,x,y; cin>>n>>x>>y;
-    vector<ll> a(n);
-    //ll p=x+3;
-    for(ll i=0;i<n;i++){
+    int n; cin>>n;
+    vector<int> a(n);
+    for(int i=0;i<n;i++){
        cin>>a[i];
-       x ^= a[i];
     }
-    // cout<<x<<" "<<x1<<" "<<p<<" "<<p1<<endl;
-    // vector<ll> a(n);
-    // for(ll i=0;i<n;i++){
-    //    cin>>a[i];
-    // }
-    if((x ^ y) % 2 == 0){
-        cout<<"Alice"<<endl;
+    vector<vector<int>> pref(n,vector<int>(31));
+    pref[0]=getbitwise(a[0]);
+    for(int i=1;i<n;i++){
+        vector<int> temp=getbitwise(a[i]);
+        for(int j=0;j<=30;j++){
+            pref[i][j]=pref[i-1][j]+temp[j];
+        }
     }
-    else{
-        cout<<"Bob"<<endl;
+    int q; cin>>q;
+    while(q--){
+        int l,k; cin>>l>>k;
+        l--;
+        int r=n-1;
+        bool found=false;
+        while(r>=l){
+            int temp=0;
+            vector<int> temp2(31);
+            if(l==0){
+                temp2=pref[r];
+            }
+            else{
+                for(int i=0;i<31;i++){
+                    temp2[i]=pref[r][i]-pref[l-1][i];
+                }
+            }
+            for(int i=0;i<31;i++){
+                if(temp2[i]==r-l+1){
+                    temp+=(1<<i);
+                }
+            }
+            if(temp>k){
+                cout<<r+1<<" ";
+                found=true;
+                break;
+            }
+            r--;
+        }
+        if(!found) cout<<-1<<" ";
     }
-    
-    
+    cout<<endl;
 }
 
 int main() {

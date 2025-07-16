@@ -50,26 +50,35 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 
 void solve() {
-    ll n,x,y; cin>>n>>x>>y;
-    vector<ll> a(n);
-    //ll p=x+3;
-    for(ll i=0;i<n;i++){
+    ll n,m; cin>>n>>m;
+    vector<ll> b(n,0);
+    vector<ll> a(m);
+    for(ll i=0;i<m;i++){
        cin>>a[i];
-       x ^= a[i];
+       b[a[i]-1]++;
     }
-    // cout<<x<<" "<<x1<<" "<<p<<" "<<p1<<endl;
-    // vector<ll> a(n);
-    // for(ll i=0;i<n;i++){
-    //    cin>>a[i];
+    sort(b.begin(),b.end());
+    // ll ans=0;
+    // for(ll i=0;i<n/2;i++){
+    //     ll temp=(b[n-i-1]-b[i])/3;
+    //     b[i]+=2*temp;
+    //     b[n-i-1]-=temp;
+    //     ans=max(ans,max(b[i],b[n-i-1]));
     // }
-    if((x ^ y) % 2 == 0){
-        cout<<"Alice"<<endl;
+    // if(n%2!=0){
+    //     ans=max(ans,b[n/2]);
+    // }
+    // cout<<ans<<endl;
+    int l=0,r=n-1;
+    while(l<=r){
+        if(b[l]<b[r]){
+            b[l]+=2;
+            b[r]--;
+        }
+        else{
+            
+        }
     }
-    else{
-        cout<<"Bob"<<endl;
-    }
-    
-    
 }
 
 int main() {
