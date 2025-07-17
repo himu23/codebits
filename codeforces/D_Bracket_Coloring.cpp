@@ -50,15 +50,66 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 
 void solve() {
-    int n; cin>>n;
-    
+    ll n; cin>>n;
+    string s; cin>>s;
+    ll co=0,cc=0;
+    for(ll i=0;i<n;i++){
+        if(s[i]=='(') co++;
+    }
+    cc=n-co;
+    if(co!=cc){
+        cout<<-1<<endl;
+        return;
+    }
+    vector<ll> temp(n);
+    vector<ll> temp0;
+    vector<ll> temp1;
+    for(ll i=0;i<n;i++){
+        if(s[i]=='(') temp0.push_back(i);
+        else temp1.push_back(i);
+    }
+    //cout<<temp0<<endl<<temp1<<endl;
+    bool flag1=false;
+    bool flag2=false;
+    for(int i=0;i<temp0.size();i++){
+        if(temp0[i]<temp1[i]){
+            flag1=true;
+        }
+        else{
+            flag2=true;
+        }
+    }
+    if(!(flag1 && flag2)){
+        cout<<1<<endl;
+        for(int i=0;i<n;i++){
+            cout<<1<<" ";
+        }
+        cout<<endl;
+        return;
+    }
+    for(ll i=0;i<temp0.size();i++){
+        if(temp0[i]<temp1[i]){
+            temp[temp0[i]]=1;
+            temp[temp1[i]]=1;
+        }
+        else{
+            temp[temp0[i]]=2;
+            temp[temp1[i]]=2;
+        }
+    }
+    cout<<2<<endl;
+    for(ll i=0;i<n;i++){
+        cout<<temp[i]<<" ";
+    }
+    cout<<endl;
+
 }
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
