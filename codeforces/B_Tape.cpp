@@ -50,7 +50,25 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 
 void solve() {
-    int n; cin>>n;
+    ll n,m,k; cin>>n>>m>>k;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
+       cin>>a[i];
+    }
+    vector<ll> b;
+    for(ll i=1;i<n;i++){
+        b.push_back(a[i]-a[i-1]);
+    }
+    sort(b.begin(),b.end());
+    ll ans=k;
+    k--;
+    ll p=n-1-k;
+    ll i=0;
+    while(p--){
+        ans+= b[i];
+        i++;
+    }
+    cout<<ans<<endl;
     
 }
 

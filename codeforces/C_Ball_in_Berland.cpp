@@ -51,26 +51,7 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 void solve() {
     int a,b,k; cin>>a>>b>>k;
-    vector<pair<int,int>> temp(k);
-    map<int,vector<int>> mp;
-    safe_umap<int,int> f;
-    safe_umap<int,int> g;
-    for(int i=0;i<k;i++){
-        int temp2; cin>>temp2;
-        temp[i].first=temp2;
-        f[temp2]++;
-    }
-    for(int i=0;i<k;i++){
-        int temp2; cin>>temp2;
-        temp[i].second=temp2;
-        g[temp2]++;
-    }
-    for(int i=0;i<k;i++){
-        mp[temp[i].first].push_back(temp[i].second);
-    }
-    for(auto &p : mp){
-        
-    }
+    
     
 }
 
