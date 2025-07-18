@@ -50,11 +50,51 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-       cin>>a[i];
+    ll n; cin>>n;
+    vector<ll> a(n);
+    bool flag=false;
+    for(ll i=0;i<n;i++){
+        ll temp; cin>>temp;
+        if(temp%5==0) flag=true;
+        a[i]=temp;
     }
+    if(flag){
+        for(ll i=0;i<n;i++){
+            if(a[i]%5!=0){
+                cout<<"No"<<endl;
+                return;
+            }
+            if(a[i]%10==5) a[i]+=5;
+        }
+        for(ll i=0;i<n;i++){
+            if(a[i]!=a[0]){
+                cout<<"No"<<endl;
+                return;
+            }
+        }
+        cout<<"Yes"<<endl;
+        return;
+
+    }
+    for(ll i=0;i<n;i++){
+        a[i]%=20;
+    }
+    ll ans=0;
+    for(ll i=0;i<n;i++){
+        if((a[i]==1) || (a[i]==2) || (a[i]==4) || (a[i]==8) || (a[i]==13) || (a[i]==16) || (a[i]==17) || (a[i]==19)){
+            ans+=0;
+        }
+        else if((a[i]==3) || (a[i]==6) || (a[i]==7) || (a[i]==9) || (a[i]==11) || (a[i]==12) || (a[i]==14) || (a[i]==18)){
+            ans+=1;
+        }
+    }
+    if(ans==0 || ans==n){
+        cout<<"Yes"<<endl;
+    }
+    else{
+        cout<<"No"<<endl;
+    }
+
     
 }
 

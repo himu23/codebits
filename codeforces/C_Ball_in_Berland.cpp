@@ -51,6 +51,15 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 void solve() {
     int a,b,k; cin>>a>>b>>k;
+    vector<pair<int,int>> temp(k);
+    for(int i=0;i<k;i++){
+        int temp2; cin>>temp2;
+        temp[i].first=temp2;
+    }
+    for(int i=0;i<k;i++){
+        int temp2; cin>>temp2;
+        temp[i].second=temp2;
+    }
     
     
 }

@@ -51,34 +51,29 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 void solve() {
     ll n,m; cin>>n>>m;
-    vector<ll> b(n,0);
-    vector<ll> a(m);
+    vector<ll> a(n,0);
     for(ll i=0;i<m;i++){
-       cin>>a[i];
-       b[a[i]-1]++;
+       ll temp; cin>>temp;
+       a[temp-1]++;
     }
-    sort(b.begin(),b.end());
-    // ll ans=0;
-    // for(ll i=0;i<n/2;i++){
-    //     ll temp=(b[n-i-1]-b[i])/3;
-    //     b[i]+=2*temp;
-    //     b[n-i-1]-=temp;
-    //     ans=max(ans,max(b[i],b[n-i-1]));
-    // }
-    // if(n%2!=0){
-    //     ans=max(ans,b[n/2]);
-    // }
-    // cout<<ans<<endl;
-    int l=0,r=n-1;
-    while(l<=r){
-        if(b[l]<b[r]){
-            b[l]+=2;
-            b[r]--;
-        }
-        else{
-            
-        }
+    //cout<<a<<endl;
+    multiset<ll> ms;
+    for(ll i=0;i<n;i++){
+        ms.insert(a[i]);
     }
+    while(*ms.begin()+2<*ms.rbegin()){
+        ll temp2=*ms.begin();
+        ll temp3=*ms.rbegin();
+        ms.erase(ms.begin());
+        ms.insert(temp2+2);
+        auto it=prev(ms.end());
+        ms.erase(it);
+        ms.insert(temp3-1);
+    }
+    ll ans=*ms.rbegin();
+    cout<<ans<<endl;
+
+    
 }
 
 int main() {
