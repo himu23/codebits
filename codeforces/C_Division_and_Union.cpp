@@ -47,36 +47,58 @@ using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
 
-
+bool cmp(const tuple<ll,ll,ll>& a, const tuple<ll,ll,ll>& b){
+    if(get<0>(a)!=get<0>(b)){
+        return get<0>(a) < get<0>(b);
+    }
+    return get<1>(a) > get<1>(b);
+}
 
 void solve() {
-    int n,m; cin>>n>>m;
-    vector<int> a(n);
-    a[0]=1;
-    for(int i=1;i<n;i++){
-       cin>>a[i];
+    ll n; cin>>n;
+    vector<tuple<ll,ll,ll>> temp;
+    for(ll i=0;i<n;i++){
+        ll a,b;cin>>a>>b;
+        temp.emplace_back(a,b,i+1);
     }
-    vector<int> b(n);
-    for(int i=0;i<n;i++){
-       cin>>b[i];
+    sort(temp.begin(),temp.end(),cmp);
+    vector<vector<ll>> temp9;
+    vector<ll>temp8;
+    temp8.push_back(get<2>(temp[0]));
+    ll temp7=get<1>(temp[0]);
+    for(ll i=1;i<n;i++){
+        if(get<0>(temp[i])<=temp7){
+            temp8.push_back(get<2>(temp[i]));
+            temp7=max(temp7,get<1>(temp[i]));
+        }
+        else{
+            temp9.push_back(temp8);
+            temp8.clear();
+            temp8.push_back(get<2>(temp[i]));
+            temp7=get<1>(temp[i]);
+        }
     }
-    // int u=0,d=0;
-    // int ru=0,rd=0;
-    // while(u<n && d<n){
-    //     if((a[u]>=b[d]) && (a[u]<b[d+1])){
-    //         d++;
-    //         rd++;
-    //     } 
-    //     else if(a[u]<b[d]){
-    //         d++, u++;
-    //     }
-    //     else{
-    //         u++;
-    //         ru++;
-    //     }
-    // }
-    // cout<<ru<<" "<<rd<<endl;
-    
+    temp9.push_back(temp8);
+    //cout<<temp9.size()<<" ";
+    if(temp9.size()==1){
+        cout<<-1<<endl;
+        return;
+    }
+    vector<ll> ans(n);
+    for(ll i=0;i<temp9.size();i++){
+        vector<ll> temp6=temp9[i];
+        for(ll j=0;j<temp6.size();j++){
+            ll temp5=i+1;
+            if(temp5%2==0) temp5=2;
+            else temp5=1;
+            ans[temp6[j]-1]=temp5;
+        }
+    }
+    for(ll i=0;i<n;i++){
+        cout<<ans[i]<<" ";
+    }
+    cout<<endl;
+    return;
 }
 
 int main() {

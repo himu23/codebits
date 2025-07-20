@@ -50,40 +50,36 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 
 void solve() {
-    int n,m; cin>>n>>m;
-    vector<int> a(n);
-    a[0]=1;
-    for(int i=1;i<n;i++){
+    ld n; cin>>n;
+    vector<ld> a(n);
+    for(ld i=0;i<n;i++){
        cin>>a[i];
     }
-    vector<int> b(n);
-    for(int i=0;i<n;i++){
+    vector<ld> b(n);
+    for(ld i=0;i<n;i++){
        cin>>b[i];
     }
-    // int u=0,d=0;
-    // int ru=0,rd=0;
-    // while(u<n && d<n){
-    //     if((a[u]>=b[d]) && (a[u]<b[d+1])){
-    //         d++;
-    //         rd++;
-    //     } 
-    //     else if(a[u]<b[d]){
-    //         d++, u++;
-    //     }
-    //     else{
-    //         u++;
-    //         ru++;
-    //     }
-    // }
-    // cout<<ru<<" "<<rd<<endl;
-    
+    ld extra=0;
+    unordered_map<ld,int> um;
+    for(ld i=0;i<n;i++){
+        if(a[i]==0 && b[i]==0) extra++;
+        if(a[i]==0) continue;
+        ld temp=(-1)*(b[i])/(a[i]);
+        um[temp]++;
+    }
+    int ans=0;
+    for(auto& pair:um){
+        ans=max(ans,pair.second);
+    }
+    cout<<ans+extra<<endl;
+    return;
 }
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

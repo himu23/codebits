@@ -50,32 +50,11 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 
 void solve() {
-    int n,m; cin>>n>>m;
+    int n; cin>>n;
     vector<int> a(n);
-    a[0]=1;
-    for(int i=1;i<n;i++){
+    for(int i=0;i<n;i++){
        cin>>a[i];
     }
-    vector<int> b(n);
-    for(int i=0;i<n;i++){
-       cin>>b[i];
-    }
-    // int u=0,d=0;
-    // int ru=0,rd=0;
-    // while(u<n && d<n){
-    //     if((a[u]>=b[d]) && (a[u]<b[d+1])){
-    //         d++;
-    //         rd++;
-    //     } 
-    //     else if(a[u]<b[d]){
-    //         d++, u++;
-    //     }
-    //     else{
-    //         u++;
-    //         ru++;
-    //     }
-    // }
-    // cout<<ru<<" "<<rd<<endl;
     
 }
 
@@ -83,7 +62,7 @@ int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

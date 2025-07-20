@@ -47,80 +47,44 @@
 // template<typename T>
 // using safe_uset = unordered_set<T, custom_hash>;
 
-// pair<ll,ll> get25(ll n){
-//     ll a=0,b=0;
-//     while(n>=0 && n%2==0){
-//         n/=2;
-//         a++;
-//     }
-//     while(n>=0 && n%5==0){
-//         n/=5;
-//         b++;
-//     }
-//     return {a,b};
-// }
 
-// ll get5(ll n){
-//     ll a=0;
-//     while(n>=5){
-//         n/=5;
-//         a++;
-//     }
-//     return a;
-// }
-// ll get2(ll n){
-//     ll a=0;
-//     while(n>=2){
-//         n/=2;
-//         a++;
-//     }
-//     return a;
-// }
+
 // void solve() {
-//     ll n,m; cin>>n>>m;
-//     pair<ll,ll> temp=get25(n);
-//     ll temp5=get5(m);
-//     ll temp2=get2(m);
-//     cout<<m<<" "<<temp<<" "<<temp2<<" "<<temp5<<" ";
-//     ll ans=n;
-//     if(temp.first>temp.second){
-//         ll temp9=temp.first-temp.second;
-//         cout<<temp9<<" ";
-//         ans*=pow(5,max(temp5,temp9));
-//         cout<<ans<<" ";
-//         ll temp8=(m/ans)/10;
-//         ans*=pow(10,temp8);
+//     ll n; cin>>n;
+//     vector<pair<ll,ll>> temp(n);
+//     for(ll i=0;i<n;i++){
+//         ll a,b;cin>>a>>b;
+//         temp[i].first=a;
+//         temp[i].second=b;
 //     }
-//     else if(temp.first<temp.second){
-//         ll temp9=temp.second-temp.first;
-//         cout<<temp9<<" ";
-//         ans*=pow(2,max(temp2,temp9));
-//         cout<<ans<<" ";
-//         ll temp8=(m/ans)/10;
-//         ans*=pow(10,temp8);
+//     for(ll i=0;i<n;i++){
+//         for(ll j=i+1;j<n;j++){
+//             if((temp[i].first>=temp[j].first) &&(temp[i].second<=temp[j].second)){
+//                 cout<<i+1<<" "<<j+1;
+//                 return;
+//             }
+//             else if((temp[i].first<=temp[j].first) &&(temp[i].second>=temp[j].second)){
+//                 cout<<j+1<<" "<<i+1;
+//                 return;
+//             }
+//         }
 //     }
-//     else if(temp.first==temp.second){
-//         ll temp8=(m/ans)/10;
-//         cout<<ans<<" ";
-//         ans*=pow(10,temp8);
-//     }
-//     cout<<ans<<endl;
+//     cout<<-1<<" "<<-1<<endl;
+//     return;
 // }
 
 // int main() {
 //     ios_base::sync_with_stdio(0);
 //     cin.tie(0); cout.tie(0);
 //     int tc = 1;
-//     cin >> tc;
+//     //cin >> tc;
 //     for (int t = 1; t <= tc; t++) {
 //         // cout << "Case #" << t << ": ";
 //         solve();
 //     }
 // }
 
-
-//totally flawed logic;
-
+//obvious bruteforce didnt work
 
 #include <bits/stdc++.h>
 
@@ -171,65 +135,41 @@ using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
 
-int get2(int n){
-    int a=0;
-    while(n>=0 && n%2==0){
-        n/=2;
-        a++;
+bool cmp(const tuple<ll,ll,ll>& a, const tuple<ll,ll,ll>& b){
+    if(get<0>(a)!=get<0>(b)){
+        return get<0>(a) < get<0>(b);
     }
-    return a;
+    return get<1>(a) > get<1>(b);
 }
-int get5(int n){
-    int a=0;
-    while(n>=0 && n%5==0){
-        n/=5;
-        a++;
-    }
-    return a;
-}
-int pet2(int n){
-    int a=0;
-    while(n>=2){
-        n/=2;
-        a++;
-    }
-    return a;
-}
-int pet5(int n){
-    int a=0;
-    while(n>=5){
-        n/=5;
-        a++;
-    }
-    return a;
-}
+
 void solve() {
-    int n,m; cin>>n>>m;
-    int temp2=get2(n);
-    int temp5=get5(n);
-    int top2=pet2(m);
-    int top5=pet5(m);
-    int ans=n;
-    if(temp2<temp5){
-        int temp9=temp5-temp2;
-        ans*=pow(2,max(temp2,top2));
+    ll n; cin>>n;
+    vector<tuple<ll,ll,ll>> temp;
+    for(ll i=0;i<n;i++){
+        ll a,b;cin>>a>>b;
+        temp.emplace_back(a,b,i+1);
     }
-    else if(temp2>temp5){
-        int temp9=temp2-temp5;
-        ans*=pow(5,max(temp5,top5));
-        ans*=m/ans;
+    sort(temp.begin(),temp.end(),cmp);
+    ll temp1=get<2>(temp[0]),temp2=get<1>(temp[0]);
+    for(ll i=1;i<n;i++){
+        if(get<1>(temp[i])<=temp2){
+            cout<<get<2>(temp[i])<<" "<<temp1<<endl;
+            return;
+        }
+        else{
+            temp2=get<1>(temp[i]);
+            temp1=get<2>(temp[i]);
+        }
     }
-    else if(temp2==temp5){
-        ans*=m/ans;
-    }
-    cout<<ans<<endl;
+    cout<<-1<<" "<<-1<<endl;
+    return;
 }
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

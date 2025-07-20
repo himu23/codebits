@@ -50,32 +50,49 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 
 void solve() {
-    int n,m; cin>>n>>m;
-    vector<int> a(n);
-    a[0]=1;
-    for(int i=1;i<n;i++){
+    ll n,k1,k2; cin>>n>>k1>>k2;
+    ll k=k1+k2;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
        cin>>a[i];
     }
-    vector<int> b(n);
-    for(int i=0;i<n;i++){
+    vector<ll> b(n);
+    for(ll i=0;i<n;i++){
        cin>>b[i];
     }
-    // int u=0,d=0;
-    // int ru=0,rd=0;
-    // while(u<n && d<n){
-    //     if((a[u]>=b[d]) && (a[u]<b[d+1])){
-    //         d++;
-    //         rd++;
-    //     } 
-    //     else if(a[u]<b[d]){
-    //         d++, u++;
-    //     }
-    //     else{
-    //         u++;
-    //         ru++;
-    //     }
-    // }
-    // cout<<ru<<" "<<rd<<endl;
+    ll temp=0;
+    multiset<ll> c;
+    for(ll i=0;i<n;i++){
+        c.insert(abs(a[i]-b[i]));
+        temp+=abs(a[i]-b[i]);
+    }
+    if(k>=temp){
+        k-=temp;
+        if(k%2==0){
+            cout<<0<<endl;
+            return;
+        }
+        else{
+            cout<<1<<endl;
+            return;
+        }
+    }
+    else{
+        while(k--){
+            auto it=prev(c.end());
+            ll lar=*it;
+            c.erase(it);
+            if(lar>0){
+                c.insert(lar-1);
+            }
+        }
+        ll ans=0;
+        for(ll x : c){
+            ans+=x*x;
+        }
+        cout<<ans<<endl;
+        return;
+    }
     
 }
 
@@ -83,7 +100,7 @@ int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
