@@ -47,99 +47,27 @@ using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
 
-vector<pair<int,int>> getfactors(int n){
-    vector<pair<int,int>> factors;
-    for(int i=1;i*i<=n;i++){
-        if(n%i==0){
-            factors.push_back({i,n/i});
-            if(i!=n/i) factors.push_back({n/i,i});
-        }
-    }
-    return factors;
 
-}
 
 void solve() {
-    int n,m,k; cin>>n>>m>>k;
+    int n,k; cin>>n>>k;
+    string s; cin>>s;
     vector<int> a(n);
     for(int i=0;i<n;i++){
-       cin>>a[i];
+        if(s[i]=='1') a[i]=1;
+        else if(s[i]=='0') a[i]==0;
+        else if(s[i]=='?') a[i]==2;
     }
-    vector<int> temp1;
-    int temp9=0;
-    if(a[0]==1) temp9++;
-    for(int i=1;i<n;i++){
-        if(a[i]==0){
-            temp1.push_back(temp9);
-            temp9=0;
-        }
-        else temp9++;
-    }
-    if(temp9!=0) temp1.push_back(temp9);
-    vector<int> b(m);
-    for(int i=0;i<m;i++){
-       cin>>b[i];
-    }
-    vector<int> temp2;
-    int temp8=0;
-    if(b[0]==1) temp8++;
-    for(int i=1;i<m;i++){
-        if(b[i]==0){
-            temp2.push_back(temp8);
-            temp8=0;
-        }
-        else temp8++;
-    }
-    if(temp8!=0) temp2.push_back(temp8);
-    //now this shit looks 1500 all the previous 1500 i did were easy
-    // vector<pair<int,int>> temp;
-    // for(int i=0;i<temp1.size();i++){
-    //     for(int j=0;j<temp2.size();j++){
-    //         temp.push_back({temp1[i],temp2[j]});
-    //     }
-    // }
-    //cout<<temp<<endl;
-    vector<pair<int,int>> temp6= getfactors(k);
-    ll ans=0;
-
-    // for(int i=0;i<temp1.size();i++){
-    //     for(int j=0;j<temp2.size();j++){
-    //         int g=temp1[i];
-    //         int h=temp2[j];
-    //         for(int i=0;i<temp6.size();i++){
-    //             int y=temp6[i].first;
-    //             int z=temp6[i].second;
-    //             if(y>h || z>g) continue;
-    //             ans+=(h-y+1)*(g-z+1);
-    //         }
-    //     }
-    // }
-    //above gave tle
-
-    map<int,ll> freq1,freq2;
-    for(int x:temp1) freq1[x]++;
-    for(int x: temp2) freq2[x]++;
-    for(auto [y,z]:temp6){
-        ll cnt1=0;
-        for(auto [g,f1]: freq1){
-            if(g>=z) cnt1+=1LL*(g-z+1)*f1;
-        }
-        ll cnt2=0;
-        for(auto [h,f2]:freq2){
-            if(h>=y) cnt2+=1LL*(h-y+1)*f2;
-        }
-        ans+=cnt1*cnt2;
-    }
-    cout<<ans<<endl;
-    return;
-
+    int l=0,r=0;
+    int c1=0,c0=0;
+    
 }
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
