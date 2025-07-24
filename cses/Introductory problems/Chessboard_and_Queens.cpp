@@ -47,29 +47,40 @@ using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
 
-void temp(int n,int i,int j,int k,int &ans,vector<pair<int,int>> &ans2){
-    if(n==1){
-        // cout<<i<<" "<<k<<endl;
-        ans2.push_back({i,k});
+void temp(int row, int &ans,vector<vector<char>> &board,vector<bool> &cols ,vector<bool> &ds ,vector<bool> &dd){
+    if(row==8){
         ans++;
         return;
     }
-    temp(n-1,i,k,j,ans,ans2);
-    //cout<<i<<" "<<k<<endl;
-    ans2.push_back({i,k});
-    ans++;
-    temp(n-1,j,i,k,ans,ans2);
+    for(int j=0;j<8;j++){
+        if(board[row][j]=='*') continue;
+        if(cols[j]) continue;
+        if(ds[row+j]) continue;
+        if(dd[row-j+7]) continue;
+        cols[j]=true;
+        ds[row+j]=true;
+        dd[row-j+7]=true;
+        temp(row+1,ans,board,cols,ds,dd);
+        cols[j]=false;
+        ds[row+j]=false;
+        dd[row-j+7]=false;
+    }
 }
 
 void solve() {
-    int n; cin>>n;
-    int ans=0;
-    vector<pair<int,int>> ans2;
-    temp(n,1,2,3,ans,ans2);
-    cout<<ans<<endl;
-    for(int i=0;i<ans2.size();i++){
-        cout<<ans2[i].first<<" "<<ans2[i].second<<endl;
+    vector<vector<char>> board(8,vector<char>(8));
+    for(int i=0;i<8;i++){
+        string s; cin>>s;
+        for(int j=0;j<8;j++){
+            board[i][j]=s[j];
+        }
     }
+    vector<bool> cols(8,false);
+    vector<bool> ds(15,false);
+    vector<bool> dd(15,false);
+    int ans=0;
+    temp(0,ans,board,cols,ds,dd);
+    cout<<ans<<endl;
 }
 
 int32_t main() {

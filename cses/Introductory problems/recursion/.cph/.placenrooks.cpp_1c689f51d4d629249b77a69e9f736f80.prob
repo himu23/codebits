@@ -1,0 +1,1 @@
+{"name":"Local: placenrooks","url":"/home/himu23/Desktop/codebits/cses/Introductory problems/recursion/placenrooks.cpp","tests":[{"id":1753362011634,"input":"4\n....\n..*.\n....\n....","output":"8"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/himu23/Desktop/codebits/cses/Introductory problems/recursion/placenrooks.cpp","group":"local","local":true}

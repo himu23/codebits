@@ -47,29 +47,35 @@ using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
 
-void temp(int n,int i,int j,int k,int &ans,vector<pair<int,int>> &ans2){
-    if(n==1){
-        // cout<<i<<" "<<k<<endl;
-        ans2.push_back({i,k});
-        ans++;
+void temp(ll sum,ll i,ll cur, vector<ll> &a, ll &ans){
+    if(i==a.size()){
+        ll other=sum-cur;
+        ans=min(ans,abs(cur-other));
         return;
     }
-    temp(n-1,i,k,j,ans,ans2);
-    //cout<<i<<" "<<k<<endl;
-    ans2.push_back({i,k});
-    ans++;
-    temp(n-1,j,i,k,ans,ans2);
+    temp(sum,i+1,cur+a[i],a,ans);
+    temp(sum,i+1,cur,a,ans);
 }
 
 void solve() {
-    int n; cin>>n;
-    int ans=0;
-    vector<pair<int,int>> ans2;
-    temp(n,1,2,3,ans,ans2);
-    cout<<ans<<endl;
-    for(int i=0;i<ans2.size();i++){
-        cout<<ans2[i].first<<" "<<ans2[i].second<<endl;
+    ll n; cin>>n;
+    vector<ll> a(n);
+    ll sum=0;
+    for(ll i=0;i<n;i++){
+       cin>>a[i];
+       sum+=a[i];
     }
+    //sort(a.begin(),a.end(),greater<ll>());
+    // ll temp1=0,temp2=0;
+    // for(ll i=0;i<n;i++){
+    //     if(temp1<=temp2) temp1+=a[i];
+    //     else temp2+=a[i];
+    // }
+    // cout<<abs(temp1-temp2)<<endl;
+    ll ans=sum;
+    temp(sum,0,0,a,ans);
+    cout<<ans<<endl;
+    
 }
 
 int32_t main() {

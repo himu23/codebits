@@ -47,28 +47,39 @@ using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
 
-void temp(int n,int i,int j,int k,int &ans,vector<pair<int,int>> &ans2){
-    if(n==1){
-        // cout<<i<<" "<<k<<endl;
-        ans2.push_back({i,k});
-        ans++;
+void temp(int i,string cur,int n,vector<string> &ans,vector<char> &chr, vector<int> &temp2){
+    //if (cur.size() == n) cout << "Short: " << cur << endl;
+    if(cur.size()==n){
+        ans.push_back(cur);
         return;
     }
-    temp(n-1,i,k,j,ans,ans2);
-    //cout<<i<<" "<<k<<endl;
-    ans2.push_back({i,k});
-    ans++;
-    temp(n-1,j,i,k,ans,ans2);
+    for(int i=0;i<n;i++){
+        if(temp2[i]) continue;
+        // if(i!=0){
+        //     if(chr[i]==chr[i-1]) continue;
+        // }
+        if(i>0 && chr[i]==chr[i-1] && temp2[i-1]==0) continue;
+        temp2[i]=1;
+        temp(i+1,cur+chr[i],n,ans,chr,temp2);
+        temp2[i]=0;
+        //temp(i,cur,n,ans,chr,temp2);
+    }
 }
 
 void solve() {
-    int n; cin>>n;
-    int ans=0;
-    vector<pair<int,int>> ans2;
-    temp(n,1,2,3,ans,ans2);
-    cout<<ans<<endl;
-    for(int i=0;i<ans2.size();i++){
-        cout<<ans2[i].first<<" "<<ans2[i].second<<endl;
+    string s; cin>>s;
+    int n=s.length();
+    vector<string> ans;
+    vector<char> chr;
+    vector<int> temp2(n,0);
+    for(int i=0;i<n;i++){
+        chr.push_back(s[i]);
+    }
+    sort(chr.begin(),chr.end());
+    temp(0,"",n,ans,chr,temp2);
+    cout<<ans.size()<<endl;
+    for(int i=0;i<ans.size();i++){
+        cout<<ans[i]<<endl;
     }
 }
 
