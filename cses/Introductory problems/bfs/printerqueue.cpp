@@ -1,0 +1,200 @@
+// #include <bits/stdc++.h>
+
+// using namespace std;
+
+// template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
+// template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}'; }
+// void dbg_out() { cerr << endl; }
+// template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
+// #ifdef LOCAL
+// #define dbg(...) cerr << "(" << #__VA_ARGS__ << "):", dbg_out(__VA_ARGS__)
+// #else
+// #define dbg(...)
+// #endif
+
+// #define ar array
+// #define ll long long
+// #define ld long double
+// #define sza(x) ((int)x.size())
+// #define all(a) (a).begin(), (a).end()
+
+// const int MAX_N = 1e5 + 5;
+// const ll MOD = 1e9 + 7;
+// const ll INF = 1e9;
+// const ld EPS = 1e-9;
+
+// // Custom hash for unordered_map/set
+// struct custom_hash {
+//     static uint64_t splitmix64(uint64_t x) {
+//         x += 0x9e3779b97f4a7c15;
+//         x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
+//         x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
+//         return x ^ (x >> 31);
+//     }
+//     size_t operator()(uint64_t x) const {
+//         static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
+//         return splitmix64(x + FIXED_RANDOM);
+//     }
+//     template<typename T, typename U>
+//     size_t operator()(const pair<T, U>& p) const {
+//         uint64_t h1 = operator()(static_cast<uint64_t>(p.first));
+//         uint64_t h2 = operator()(static_cast<uint64_t>(p.second));
+//         return h1 ^ (h2 << 1);
+//     }
+// };
+// template<typename K, typename V>
+// using safe_umap = unordered_map<K, V, custom_hash>;
+// template<typename T>
+// using safe_uset = unordered_set<T, custom_hash>;
+
+
+
+// void solve() {
+//     int n,m; cin>>n>>m;
+//     vector<int> a(n);
+//     map<int,vector<int>> mp;
+//     for(int i=0;i<n;i++){
+//        cin>>a[i];
+//        mp[a[i]].push_back(i);
+//     }
+//     vector<pair<int,int>> priority(n);
+//     int temp2=1;
+//     for(auto &p : mp){
+//         vector<int> temp9=p.second;
+//         for(int i=0;i< static_cast<int>(temp9.size());i++){
+//             priority[temp9[i]]={temp9[i],temp2};
+//         }
+//         temp2++;
+//     }
+//     queue<pair<int,int>> q;
+//     for(int i=0;i<priority.size();i++){
+//         q.push(priority[i]);
+//     }
+//     int ans=0;
+//     while(!q.empty()){
+//         if(q.front().second!=temp2){
+//             pair<int,int> temp8=q.front();
+//             q.pop();
+//             q.push(temp8);
+//         }
+//         else if(q.front().second==temp2 && q.front().first!=m){
+//             ans++;
+//             q.pop();
+//             temp2--;
+//             if(q.front().first==temp2+1) temp2++;
+//         }
+//         else if(q.front().second==temp2 && q.front().first==m){
+//             ans++;
+//             cout<<ans<<endl;
+//             return;
+//         }
+
+//     }
+    
+// }
+
+// int32_t main() {
+//     ios_base::sync_with_stdio(0);
+//     cin.tie(0); cout.tie(0);
+//     int tc = 1;
+//     //cin >> tc;
+//     for (int t = 1; t <= tc; t++) {
+//         // cout << "Case #" << t << ": ";
+//         solve();
+//     }
+// }
+
+//tried didnt work didnt knew about priority queue
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
+template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}'; }
+void dbg_out() { cerr << endl; }
+template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
+#ifdef LOCAL
+#define dbg(...) cerr << "(" << #__VA_ARGS__ << "):", dbg_out(__VA_ARGS__)
+#else
+#define dbg(...)
+#endif
+
+#define ar array
+#define ll long long
+#define ld long double
+#define sza(x) ((int)x.size())
+#define all(a) (a).begin(), (a).end()
+
+const int MAX_N = 1e5 + 5;
+const ll MOD = 1e9 + 7;
+const ll INF = 1e9;
+const ld EPS = 1e-9;
+
+// Custom hash for unordered_map/set
+struct custom_hash {
+    static uint64_t splitmix64(uint64_t x) {
+        x += 0x9e3779b97f4a7c15;
+        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
+        x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
+        return x ^ (x >> 31);
+    }
+    size_t operator()(uint64_t x) const {
+        static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
+        return splitmix64(x + FIXED_RANDOM);
+    }
+    template<typename T, typename U>
+    size_t operator()(const pair<T, U>& p) const {
+        uint64_t h1 = operator()(static_cast<uint64_t>(p.first));
+        uint64_t h2 = operator()(static_cast<uint64_t>(p.second));
+        return h1 ^ (h2 << 1);
+    }
+};
+template<typename K, typename V>
+using safe_umap = unordered_map<K, V, custom_hash>;
+template<typename T>
+using safe_uset = unordered_set<T, custom_hash>;
+
+
+
+void solve() {
+    int n,m; cin>>n>>m;
+    vector<int> a(n);
+    multiset<int> ms;
+    queue<pair<int,int>>q;
+    for(int i=0;i<n;i++){
+       cin>>a[i];
+       ms.insert(a[i]);
+       q.push({a[i],i});
+    }
+    int ans=0;
+    while(!q.empty()){
+        if(q.front().second==m && *--ms.end()==q.front().first){
+            ans++;
+            cout<<ans<<endl;
+            return;
+        }
+        else if(*--ms.end()==q.front().first){
+            ans++;
+            ms.erase(--ms.end());
+            q.pop();
+        }
+        else{
+            pair<int,int> temp2=q.front();
+            q.pop();
+            q.push(temp2);
+        }
+    }
+    
+}
+
+int32_t main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    int tc = 1;
+    ///cin >> tc;
+    for (int t = 1; t <= tc; t++) {
+        // cout << "Case #" << t << ": ";
+        solve();
+    }
+}
