@@ -17,6 +17,7 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define ld long double
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()
+#define pb push_back
 
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
@@ -51,33 +52,34 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 void solve() {
     int n,m; cin>>n>>m;
-    vector<bool> visi(n,false);
-    unordered_map<int,vector<int>> con;
+    unordered_map<int,vector<int>> um;
     while(m--){
         int a,b; cin>>a>>b;
-        con[a].push_back(b);
-        con[b].push_back(a);  //added for unidirected graph
+        um[a].pb(b);
+        um[b].pb(a);
     }
+    int s; cin>>s;
+    vector<bool> visi(n+1,false);
+    vector<int> ans(n+1,-1);
     queue<int> q;
-    q.push(0);
+    q.push(s);
+    ans[s]=0;
     while(!q.empty()){
-        // if(!visi[q.front()]){
-        //     cout<<q.front()<<" ";
-        //     visi[q.front()]=true;
-        // }
-        // vector<int> temp=con[q.front()];
-        // for(int i=0;i<temp.size();i++){
-        //     q.push(temp[i]);
-        // }
-        // q.pop();
-        int node=q.front();q.pop();
-        if(visi[node]) continue;
-        cout<<node<<" ";
-        visi[node]=true;
-        for(int nei : con[node]){
-            if(!visi[nei]) q.push(nei);
+        int curr=q.front();q.pop();
+        visi[curr]=true;
+        for(int x: um[curr]){
+            if(!visi[x]){
+                visi[x]=true;
+                q.push(x);
+                ans[x]=ans[curr]+1;
+            }
         }
     }
+    for(int i=1;i<=n;i++){
+        cout<<ans[i]<<" ";
+    }
+    cout<<endl;
+    return;
 }
 
 int32_t main() {

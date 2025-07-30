@@ -51,33 +51,45 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 void solve() {
     int n,m; cin>>n>>m;
-    vector<bool> visi(n,false);
-    unordered_map<int,vector<int>> con;
+    vector<vector<int>> graph(n+1);
     while(m--){
         int a,b; cin>>a>>b;
-        con[a].push_back(b);
-        con[b].push_back(a);  //added for unidirected graph
+        graph[a].push_back(b);
+        graph[b].push_back(a);
     }
+    vector<bool> visi(n+1,false);
+    vector<int> parent(n+1,-1);
+    parent[1]=-1;
     queue<int> q;
-    q.push(0);
+    q.push(1);
     while(!q.empty()){
-        // if(!visi[q.front()]){
-        //     cout<<q.front()<<" ";
-        //     visi[q.front()]=true;
-        // }
-        // vector<int> temp=con[q.front()];
-        // for(int i=0;i<temp.size();i++){
-        //     q.push(temp[i]);
-        // }
-        // q.pop();
         int node=q.front();q.pop();
-        if(visi[node]) continue;
-        cout<<node<<" ";
         visi[node]=true;
-        for(int nei : con[node]){
-            if(!visi[nei]) q.push(nei);
+        for(int x : graph[node]){
+            if(visi[x] && x!=parent[node]){
+                cout<<"YES"<<endl;
+                return;
+            }
+            if(!visi[x]){
+                visi[x]=true;
+                q.push(x);
+                parent[x]=node;
+            }
         }
     }
+    //cout<<parent<<endl;
+    // for(int i=1;i<=n;i++){
+    //     vector<int> temp;
+    //     for(int j=i;j!=-1;j=parent[j]){
+    //         if(find(temp.begin(),temp.end(),j)!=temp.end()){
+    //             cout<<"YES"<<endl;
+    //             return;
+    //         }
+    //         temp.push_back(j);
+    //     }
+    // }
+    cout<<"NO"<<endl;
+    return;
 }
 
 int32_t main() {

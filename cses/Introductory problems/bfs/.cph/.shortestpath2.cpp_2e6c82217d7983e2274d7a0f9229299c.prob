@@ -1,0 +1,1 @@
+{"name":"Local: shortestpath2","url":"/home/himu23/Desktop/codebits/cses/Introductory problems/bfs/shortestpath2.cpp","tests":[{"id":1753620833828,"input":"5 6\n1 2\n1 3\n2 3\n3 4\n2 5\n4 5","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/himu23/Desktop/codebits/cses/Introductory problems/bfs/shortestpath2.cpp","group":"local","local":true}

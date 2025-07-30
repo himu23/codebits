@@ -17,6 +17,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define ld long double
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()
+#define pb push_back
+#define umap unordered_map
 
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
@@ -42,42 +44,61 @@ struct custom_hash {
         return h1 ^ (h2 << 1);
     }
 };
+struct hash_pair{
+    size_t operator()(const std::pair<int, int>& p) const {
+        return std::hash<int>()(p.first) ^ (std::hash<int>()(p.second) << 1);
+    }
+};
 template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
 
+const int dx[4]={0,1,0,-1};
+const int dy[4]={1,0,-1,0};
+
 
 
 void solve() {
-    int n,m; cin>>n>>m;
-    vector<bool> visi(n,false);
-    unordered_map<int,vector<int>> con;
-    while(m--){
-        int a,b; cin>>a>>b;
-        con[a].push_back(b);
-        con[b].push_back(a);  //added for unidirected graph
-    }
-    queue<int> q;
-    q.push(0);
-    while(!q.empty()){
-        // if(!visi[q.front()]){
-        //     cout<<q.front()<<" ";
-        //     visi[q.front()]=true;
-        // }
-        // vector<int> temp=con[q.front()];
-        // for(int i=0;i<temp.size();i++){
-        //     q.push(temp[i]);
-        // }
-        // q.pop();
-        int node=q.front();q.pop();
-        if(visi[node]) continue;
-        cout<<node<<" ";
-        visi[node]=true;
-        for(int nei : con[node]){
-            if(!visi[nei]) q.push(nei);
+    string s;
+    cin >> s;
+    int n = s.size();
+
+    // Step 1: Count frequencies
+    map<char, int> freq;
+    for (char c : s) freq[c]++;
+
+    // Step 2: Check impossible case
+    for (auto [ch, f] : freq) {
+        if (f > (n + 1) / 2) {
+            cout << -1;
+            return;
         }
     }
+
+    // Step 3: Use priority queue with custom comparator
+    auto cmp = [](pair<int,char> a, pair<int,char> b) {
+        if (a.first == b.first) return a.second > b.second; // smaller char first
+        return a.first < b.first; // max freq first
+    };
+
+    priority_queue<pair<int,char>, vector<pair<int,char>>, decltype(cmp)> pq(cmp);
+    for (auto [ch, f] : freq) pq.push({f, ch});
+
+    string ans = "";
+    pair<int,char> prev = {0, '#'}; // previously placed character
+
+    while (!pq.empty()) {
+        auto [f, ch] = pq.top(); pq.pop();
+        ans += ch;
+
+        // Push previous back if it has remaining freq
+        if (prev.first > 0) pq.push(prev);
+
+        prev = {f - 1, ch}; // this char is now "previous"
+    }
+
+    cout << ans;
 }
 
 int32_t main() {

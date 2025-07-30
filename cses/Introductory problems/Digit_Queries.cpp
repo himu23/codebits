@@ -17,6 +17,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define ld long double
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()
+#define pb push_back
+#define umap unordered_map
 
 const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
@@ -42,49 +44,53 @@ struct custom_hash {
         return h1 ^ (h2 << 1);
     }
 };
+struct hash_pair{
+    size_t operator()(const std::pair<int, int>& p) const {
+        return std::hash<int>()(p.first) ^ (std::hash<int>()(p.second) << 1);
+    }
+};
 template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
 
+const int dx[4]={0,1,0,-1};
+const int dy[4]={1,0,-1,0};
+
+ll power10(ll k) {
+    ll res = 1;
+    while(k--) res *= 10;
+    return res;
+}
 
 
 void solve() {
-    int n,m; cin>>n>>m;
-    vector<bool> visi(n,false);
-    unordered_map<int,vector<int>> con;
-    while(m--){
-        int a,b; cin>>a>>b;
-        con[a].push_back(b);
-        con[b].push_back(a);  //added for unidirected graph
+    ll n; cin>>n;
+    ll temp2=1;
+    while(n>=0){
+        n-=power10(temp2-1)*temp2*9;
+        temp2++;
     }
-    queue<int> q;
-    q.push(0);
-    while(!q.empty()){
-        // if(!visi[q.front()]){
-        //     cout<<q.front()<<" ";
-        //     visi[q.front()]=true;
-        // }
-        // vector<int> temp=con[q.front()];
-        // for(int i=0;i<temp.size();i++){
-        //     q.push(temp[i]);
-        // }
-        // q.pop();
-        int node=q.front();q.pop();
-        if(visi[node]) continue;
-        cout<<node<<" ";
-        visi[node]=true;
-        for(int nei : con[node]){
-            if(!visi[nei]) q.push(nei);
-        }
-    }
+    temp2--;
+    n+=power10(temp2-1)*temp2*9;
+    ll m=(n+temp2-1)/temp2;
+    ll r=n%temp2;
+    ll p=power10(temp2-1)-1+m;
+    if(r==0) r=temp2;
+    r*=-1;
+    r+=temp2;
+    p/=power10(r);
+    p%=10;
+    //cout<<temp2<<" "<<n<<" "<<m<<" "<<p<<" "<<r<<endl;
+    cout<<p<<endl;
+
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

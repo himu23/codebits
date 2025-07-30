@@ -1,0 +1,1 @@
+{"name":"Local: gridbipartite","url":"/home/himu23/Desktop/codebits/cses/Introductory problems/bfs/gridbipartite.cpp","tests":[{"id":1753773467680,"input":"3 3\n.#.\n#.# \n.#.","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/himu23/Desktop/codebits/cses/Introductory problems/bfs/gridbipartite.cpp","group":"local","local":true}

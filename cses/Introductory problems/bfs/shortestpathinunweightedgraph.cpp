@@ -51,33 +51,31 @@ using safe_uset = unordered_set<T, custom_hash>;
 
 void solve() {
     int n,m; cin>>n>>m;
-    vector<bool> visi(n,false);
-    unordered_map<int,vector<int>> con;
+    unordered_map<int,vector<int>> um;
     while(m--){
         int a,b; cin>>a>>b;
-        con[a].push_back(b);
-        con[b].push_back(a);  //added for unidirected graph
+        um[a].push_back(b);
+        um[b].push_back(a);
     }
+    vector<int> ans(n,-1);
+    ans[0]=0;
     queue<int> q;
     q.push(0);
     while(!q.empty()){
-        // if(!visi[q.front()]){
-        //     cout<<q.front()<<" ";
-        //     visi[q.front()]=true;
-        // }
-        // vector<int> temp=con[q.front()];
-        // for(int i=0;i<temp.size();i++){
-        //     q.push(temp[i]);
-        // }
-        // q.pop();
-        int node=q.front();q.pop();
-        if(visi[node]) continue;
-        cout<<node<<" ";
-        visi[node]=true;
-        for(int nei : con[node]){
-            if(!visi[nei]) q.push(nei);
+        int curr=q.front();
+        q.pop();
+        for(int x:um[curr]){
+            if(ans[x]==-1){
+                ans[x]=ans[curr]+1;
+                q.push(x);
+            }
         }
     }
+    for(int i=0;i<n;i++){
+        cout<<ans[i]<<" ";
+    }
+    cout<<endl;
+
 }
 
 int32_t main() {
