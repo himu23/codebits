@@ -61,32 +61,14 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    vector<pair<int,int>> mov;
-    for(int i=0;i<n;i++){
-        int a,b; cin>>a>>b;
-        mov.push_back({b,a});
-    }
-    sort(mov.begin(),mov.end());
-    int ans=0;
-    int temp2=0;
-    for(int i=0;i<n;i++){
-        if(mov[i].second>=temp2){
-            ans++;
-            temp2=mov[i].first;
-        }
-        else{
-            temp2=min(temp2,mov[i].first);
-        }
-    }
-    cout<<ans<<endl;
-
+    
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

@@ -61,23 +61,38 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    vector<pair<int,int>> mov;
+    // vector<int> a(n);
+    // vector<pair<int,int>> temp;
+    // for(int i=0;i<n;i++){
+    //    cin>>a[i];
+    //    temp.push_back({a[i],i});
+    // }
+    // sort(temp.begin(),temp.end());
+    // vector<int> temp2;
+    // for(int i=0;i<n;i++){
+    //     temp2.push_back(n-temp[i].second);
+    // }
+    // int ans=1;
+    // for(int i=0;i<n-1;i++){
+    //     if(temp2[i]>temp2[i+1]) ans++;
+    // }
+    // cout<<ans;
+    //flawed logic
+    vector<int> a(n);
     for(int i=0;i<n;i++){
-        int a,b; cin>>a>>b;
-        mov.push_back({b,a});
+       cin>>a[i];
     }
-    sort(mov.begin(),mov.end());
-    int ans=0;
-    int temp2=0;
+    multiset<int> ms;
     for(int i=0;i<n;i++){
-        if(mov[i].second>=temp2){
-            ans++;
-            temp2=mov[i].first;
+        auto it=ms.upper_bound(a[i]);
+        if(it==ms.end()){
+            ms.insert(a[i]);
+            continue;
         }
-        else{
-            temp2=min(temp2,mov[i].first);
-        }
+        ms.erase(it);
+        ms.insert(a[i]);
     }
+    int ans=ms.size();
     cout<<ans<<endl;
 
 }

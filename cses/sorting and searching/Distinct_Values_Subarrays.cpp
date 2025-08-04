@@ -60,26 +60,47 @@ const int dy[4]={1,0,-1,0};
 
 
 void solve() {
-    int n; cin>>n;
-    vector<pair<int,int>> mov;
-    for(int i=0;i<n;i++){
-        int a,b; cin>>a>>b;
-        mov.push_back({b,a});
+    ll n; cin>>n;
+    vector<ll> x(n);
+    // safe_umap<ll,bool> um;
+    // for(ll i=0;i<n;i++){
+    //    cin>>x[i];
+    //    um[x[i]]=false;
+    // }
+    // safe_umap<ll,ll> temp;
+    // vector<ll> lengths;
+    // ll ans=0;
+    // ll l=0;
+    // for(ll r=0;r<n;r++){
+    //     if(um[x[r]]){
+    //         lengths.push_back(r-l);
+    //         l=max(l,temp[x[r]]);
+    //         temp[x[r]]=r;
+    //     }
+    //     else{
+    //         temp[x[r]]=r;
+    //         um[x[r]]=true;
+    //     }
+    // }
+    // lengths.push_back(n-1-l);
+    // cout<<lengths<<endl;
+    //wrong approach can have overlaps
+    for(ll i=0;i<n;i++){
+       cin>>x[i];
     }
-    sort(mov.begin(),mov.end());
-    int ans=0;
-    int temp2=0;
-    for(int i=0;i<n;i++){
-        if(mov[i].second>=temp2){
-            ans++;
-            temp2=mov[i].first;
+    ll l=0;
+    ll ans=0;
+    safe_umap<ll,ll> curr;
+    for(ll r=0;r<n;r++){
+        curr[x[r]]++;
+        while(curr[x[r]]>1){
+            curr[x[l]]--;
+            l++;
         }
-        else{
-            temp2=min(temp2,mov[i].first);
-        }
+        ans+=r-l+1;
     }
     cout<<ans<<endl;
-
+    
 }
 
 int32_t main() {

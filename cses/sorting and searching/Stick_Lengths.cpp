@@ -60,26 +60,18 @@ const int dy[4]={1,0,-1,0};
 
 
 void solve() {
-    int n; cin>>n;
-    vector<pair<int,int>> mov;
-    for(int i=0;i<n;i++){
-        int a,b; cin>>a>>b;
-        mov.push_back({b,a});
+    ll n; cin>>n;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
+       cin>>a[i];
     }
-    sort(mov.begin(),mov.end());
-    int ans=0;
-    int temp2=0;
-    for(int i=0;i<n;i++){
-        if(mov[i].second>=temp2){
-            ans++;
-            temp2=mov[i].first;
-        }
-        else{
-            temp2=min(temp2,mov[i].first);
-        }
+    sort(a.begin(),a.end());
+    ll tem=a[(n-1)/2];
+    ll ans=0;
+    for(ll i=0;i<n;i++){
+        ans+=abs(a[i]-tem);
     }
     cout<<ans<<endl;
-
 }
 
 int32_t main() {

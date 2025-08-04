@@ -61,25 +61,28 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    vector<pair<int,int>> mov;
+    vector<int> a(n);
+    safe_umap<int,int> um1;
+    safe_umap<int,bool> um2;
     for(int i=0;i<n;i++){
-        int a,b; cin>>a>>b;
-        mov.push_back({b,a});
+       cin>>a[i];
+       um2[a[i]]=false;
     }
-    sort(mov.begin(),mov.end());
     int ans=0;
-    int temp2=0;
-    for(int i=0;i<n;i++){
-        if(mov[i].second>=temp2){
-            ans++;
-            temp2=mov[i].first;
+    int l=0,r=0;
+    while(r<n){
+        if(um2[a[r]]){
+            ans=max(ans,r-l);
+            l=max(l,um1[a[r]]+1); //nice observation
+            um1[a[r]]=r;
         }
-        else{
-            temp2=min(temp2,mov[i].first);
-        }
+        um2[a[r]]=true;
+        um1[a[r]]=r;
+        r++;
+        //cout<<r<<" ";
     }
+    ans=max(ans,r-l);
     cout<<ans<<endl;
-
 }
 
 int32_t main() {

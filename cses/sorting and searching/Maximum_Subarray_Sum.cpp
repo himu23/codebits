@@ -60,33 +60,33 @@ const int dy[4]={1,0,-1,0};
 
 
 void solve() {
-    int n; cin>>n;
-    vector<pair<int,int>> mov;
-    for(int i=0;i<n;i++){
-        int a,b; cin>>a>>b;
-        mov.push_back({b,a});
+    ll n; cin>>n;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
+       cin>>a[i];
     }
-    sort(mov.begin(),mov.end());
-    int ans=0;
-    int temp2=0;
-    for(int i=0;i<n;i++){
-        if(mov[i].second>=temp2){
-            ans++;
-            temp2=mov[i].first;
-        }
-        else{
-            temp2=min(temp2,mov[i].first);
-        }
+    vector<ll> prefix(n);
+    prefix[0]=a[0];
+    for(ll i=1;i<n;i++){
+        prefix[i]=prefix[i-1]+a[i];
+    }
+    ll ans=a[0];
+    ll temp2=a[0];
+    for(ll i=1;i<n;i++){
+        //ll temp=0;
+        //if(i!=0 && temp2<0) temp=temp2;
+        ans=max(ans,prefix[i]+(-1)*temp2);
+        temp2=min(temp2,prefix[i]);
+        ans=max(ans,prefix[i]);
     }
     cout<<ans<<endl;
-
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
