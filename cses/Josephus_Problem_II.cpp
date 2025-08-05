@@ -86,13 +86,15 @@
 // }
 
 #include <bits/stdc++.h>
-// #include<ext/pb_ds/assoc_container.hpp>
-// #include<ext/pb_ds/tree_policy.hpp>
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
 
 
 using namespace std;
-// using namespace __gnu_pbds;
-// typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> pbds; // find_by_order, order_of_key
+using namespace __gnu_pbds;
+
+template<typename T>
+using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>; // find_by_order, order_of_key
 
 template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
 template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}'; }
@@ -170,10 +172,14 @@ void solve() {
     //     ans++; 
     // }
     //still got tle
-    int ans=0;
-    int i=0;
-    while(ans<n){
-
+    ordered_set <int> os;
+    for(int i=1;i<=n;i++) os.insert(i);
+    int index=0;
+    while(!os.empty()){
+        index=(index+k)%os.size();
+        auto it=os.find_by_order(index);
+        cout<<*it<<" ";
+        os.erase(it);
     }
 }
 int32_t main() {

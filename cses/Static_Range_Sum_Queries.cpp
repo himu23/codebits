@@ -60,9 +60,23 @@ const int dy[4]={1,0,-1,0};
 
 
 void solve() {
-    //int n; cin>>n;
-    string s; cin>>s;
-    
+    ll n,q; cin>>n>>q;
+    vector<ll> x(n);
+    for(ll i=0;i<n;i++){
+       cin>>x[i];
+    }
+    vector<ll> pref(n);
+    pref[0]=x[0];
+    for(ll i=1;i<n;i++){
+        pref[i]=pref[i-1]+x[i];
+    }
+    while(q--){
+        ll a,b; cin>>a>>b;
+        a--,b--;
+        ll temp=0;
+        if(a!=0) temp=pref[a-1];
+        cout<<pref[b]-temp<<endl;
+    }
 }
 
 int32_t main() {
