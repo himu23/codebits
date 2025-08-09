@@ -1,0 +1,104 @@
+#include <bits/stdc++.h>
+// #include<ext/pb_ds/assoc_container.hpp>
+// #include<ext/pb_ds/tree_policy.hpp>
+
+using namespace std;
+// using namespace __gnu_pbds;
+// template<typename T>
+// using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>; // find_by_order, order_of_key
+
+template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
+template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}'; }
+void dbg_out() { cerr << endl; }
+template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr << ' ' << H; dbg_out(T...); }
+#ifdef LOCAL
+#define dbg(...) cerr << "(" << #__VA_ARGS__ << "):", dbg_out(__VA_ARGS__)
+#else
+#define dbg(...)
+#endif
+
+#define ar array
+#define ll long long
+#define ld long double
+#define sza(x) ((int)x.size())
+#define all(a) (a).begin(), (a).end()
+#define pb push_back
+#define umap unordered_map
+
+const int MAX_N = 1e6 + 5;
+const ll MOD = 1e9 + 7;
+const ll INF = 1e9;
+const ld EPS = 1e-9;
+
+// Custom hash for unordered_map/set
+struct custom_hash {
+    static uint64_t splitmix64(uint64_t x) {
+        x += 0x9e3779b97f4a7c15;
+        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
+        x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
+        return x ^ (x >> 31);
+    }
+    size_t operator()(uint64_t x) const {
+        static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
+        return splitmix64(x + FIXED_RANDOM);
+    }
+    template<typename T, typename U>
+    size_t operator()(const pair<T, U>& p) const {
+        uint64_t h1 = operator()(static_cast<uint64_t>(p.first));
+        uint64_t h2 = operator()(static_cast<uint64_t>(p.second));
+        return h1 ^ (h2 << 1);
+    }
+};
+struct hash_pair{
+    size_t operator()(const std::pair<int, int>& p) const {
+        return std::hash<int>()(p.first) ^ (std::hash<int>()(p.second) << 1);
+    }
+};
+template<typename K, typename V>
+using safe_umap = unordered_map<K, V, custom_hash>;
+template<typename T>
+using safe_uset = unordered_set<T, custom_hash>;
+
+const int dx[4]={0,1,0,-1};
+const int dy[4]={1,0,-1,0};
+
+const int N=1000+5;
+vector<vector<int>> dp(N,vector<int>(N,-1));
+int dodp(int i,int j, int &n, vector<vector<char>> &grid){
+    if(i>n-1 || j>n-1 || i<0 ||j<0||grid[i][j]=='*') return 0;
+    if(i==0 && j==0) return 1;
+    if(dp[i][j]!=-1) return dp[i][j];
+    int temp=0;
+    for(int k=2;k<4;k++){
+        int i1=i+dx[k];
+        int j1=j+dy[k];
+        temp=(temp+dodp(i1,j1,n,grid))%MOD;
+    }
+    return dp[i][j]=temp;
+    
+}
+
+void solve() {
+    int n; cin>>n;
+    vector<vector<char>> grid(n,vector<char>(n));
+    for(int i=0;i<n;i++){
+        string s; cin>>s;
+        for(int j=0;j<n;j++){
+            grid[i][j]=s[j];
+        }
+    }
+    cout<<dodp(n-1,n-1,n,grid)<<endl;
+}
+
+int32_t main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    int tc = 1;
+    //cin >> tc;
+    for (int t = 1; t <= tc; t++) {
+        // cout << "Case #" << t << ": ";
+        solve();
+    }
+}
+//accepted
+//also look at the space optimisation of this problem
