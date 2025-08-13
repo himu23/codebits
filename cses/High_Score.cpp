@@ -24,6 +24,9 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define all(a) (a).begin(), (a).end()
 #define pb push_back
 #define umap unordered_map
+#define f first
+#define s second
+#define pai pair<int,int>
 
 const int MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
@@ -58,27 +61,61 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-
+void add_self(int& a,int b){
+    a+=b;
+    if(a>=MOD) a-=MOD;
+}
+bool isinbounds(int x,int y,int rows,int cols){
+    return x>=0 && y>=0 && x<rows && y<cols;
+}
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 
+struct Edge {
+    int u, v;
+    long long w;
+};
 
-void solve() {
-    int n,x; cin>>n>>x;
-    vector<int> prices(n);
-    vector<int> pages(n);
-    for(int i=0;i<n;i++) cin>>prices[i];
-    for(int i=0;i<n;i++) cin>>pages[i];
-    //basically the very famous 01 kanpsack
-    vector<int> dp(x+1);
-    for(int j=0;j<n;j++){
-        for(int i=x;i>=prices[j];i--){
-            if(i-prices[j]<0) continue;
-            dp[i]=max(dp[i],dp[i-prices[j]]+pages[j]);
+
+bool bellmanford(int n, int m, int src, vector<Edge> &edges, vector<long long> &dist) {
+    dist.assign(n + 1, INF);
+    dist[src] = 0;
+
+    // Relax edges n-1 times
+    for (int i = 1; i <= n - 1; i++) {
+        bool updated = false;
+        for (auto &e : edges) {
+            if (dist[e.u] != INF && dist[e.u] + e.w < dist[e.v]) {
+                dist[e.v] = dist[e.u] + e.w;
+                updated = true;
+            }
+        }
+        if (!updated) break; // early stop if no update
+    }
+
+    // Check for negative cycle
+    for (auto &e : edges) {
+        if (dist[e.u] != INF && dist[e.u] + e.w < dist[e.v]) {
+            return true; // negative cycle exists
         }
     }
-    cout<<dp[x]<<endl;
+    return false; // no negative cycle
+}
+
+void solve() {
+    int n,m; cin>>n>>m;
+    vector<Edge> edges(m);
+    for(int i=0;i<m;i++){
+        cin>>edges[i].u>>edges[i].v>>edges[i].w;
+    }
+    vector<ll> dist;
+    bool hasposcycle=bellmanford(n,m,1,edges,dist);
+    if(hasposcycle){
+        cout<<-1<<endl;
+        return;
+    }
+    cout<<dist[n]<<endl;
 }
 
 int32_t main() {

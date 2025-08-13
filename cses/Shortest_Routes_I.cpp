@@ -24,10 +24,12 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define all(a) (a).begin(), (a).end()
 #define pb push_back
 #define umap unordered_map
+#define f first
+#define s second
 
 const int MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
-const ll INF = 1e9;
+const ll INF = 1e18;
 const ld EPS = 1e-9;
 
 // Custom hash for unordered_map/set
@@ -58,27 +60,42 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-
+void add_self(int& a,int b){
+    a+=b;
+    if(a>=MOD) a-=MOD;
+}
+bool isinbounds(int x,int y,int rows,int cols){
+    return x>=0 && y>=0 && x<rows && y<cols;
+}
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
-
-
 void solve() {
-    int n,x; cin>>n>>x;
-    vector<int> prices(n);
-    vector<int> pages(n);
-    for(int i=0;i<n;i++) cin>>prices[i];
-    for(int i=0;i<n;i++) cin>>pages[i];
-    //basically the very famous 01 kanpsack
-    vector<int> dp(x+1);
-    for(int j=0;j<n;j++){
-        for(int i=x;i>=prices[j];i--){
-            if(i-prices[j]<0) continue;
-            dp[i]=max(dp[i],dp[i-prices[j]]+pages[j]);
+    ll n,m; cin>>n>>m;
+    vector<ll> dist(n+1,INF);
+    dist[1]=0;
+    vector<vector<pair<ll,ll>>> adj(n+1);
+    while(m--){
+        ll a,b,d; cin>>a>>b>>d;
+        adj[a].pb({b,d});
+    }
+    //dijkstra
+    priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,greater<pair<ll,ll>>> pq;
+    pq.push({0,1});
+    while(!pq.empty()){
+        auto[d,u]=pq.top(); pq.pop();
+        if(d>dist[u]) continue;
+        for(auto [v,w]:adj[u]){
+            if(dist[v]>d+w){
+                pq.push({d+w,v});
+                dist[v]=d+w;
+            }
         }
     }
-    cout<<dp[x]<<endl;
+    for(ll i=1;i<=n;i++){
+        cout<<dist[i]<<" ";
+    }
+    cout<<endl;
 }
 
 int32_t main() {

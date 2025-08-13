@@ -58,27 +58,33 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-
+void add_self(int& a,int b){
+    a+=b;
+    if(a>=MOD) a-=MOD;
+}
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
-
-
 void solve() {
-    int n,x; cin>>n>>x;
-    vector<int> prices(n);
-    vector<int> pages(n);
-    for(int i=0;i<n;i++) cin>>prices[i];
-    for(int i=0;i<n;i++) cin>>pages[i];
-    //basically the very famous 01 kanpsack
-    vector<int> dp(x+1);
-    for(int j=0;j<n;j++){
-        for(int i=x;i>=prices[j];i--){
-            if(i-prices[j]<0) continue;
-            dp[i]=max(dp[i],dp[i-prices[j]]+pages[j]);
+    string s1,s2;
+    cin>>s1>>s2;
+    int n=s1.size(),m=s2.size();
+    vector<vector<int>> dp(n+1,vector<int>(m+1,0));
+    dp[0][0]=0;
+    for(int i=1;i<=n;i++){
+        dp[i][0]=i;
+    }
+    for(int i=1;i<=m;i++){
+        dp[0][i]=i;
+    }
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=m;j++){
+            int temp=1+min(dp[i-1][j-1],min(dp[i-1][j],dp[i][j-1]));
+            if(s1[i-1]==s2[j-1]) temp=min(temp,dp[i-1][j-1]);
+            dp[i][j]=temp;
         }
     }
-    cout<<dp[x]<<endl;
+    cout<<dp[n][m]<<endl;
 }
 
 int32_t main() {

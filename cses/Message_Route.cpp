@@ -24,6 +24,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define all(a) (a).begin(), (a).end()
 #define pb push_back
 #define umap unordered_map
+#define f first
+#define s second
 
 const int MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
@@ -58,27 +60,62 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-
+void add_self(int& a,int b){
+    a+=b;
+    if(a>=MOD) a-=MOD;
+}
+bool isinbounds(int x,int y,int rows,int cols){
+    return x>=0 && y>=0 && x<rows && y<cols;
+}
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
-
-
 void solve() {
-    int n,x; cin>>n>>x;
-    vector<int> prices(n);
-    vector<int> pages(n);
-    for(int i=0;i<n;i++) cin>>prices[i];
-    for(int i=0;i<n;i++) cin>>pages[i];
-    //basically the very famous 01 kanpsack
-    vector<int> dp(x+1);
-    for(int j=0;j<n;j++){
-        for(int i=x;i>=prices[j];i--){
-            if(i-prices[j]<0) continue;
-            dp[i]=max(dp[i],dp[i-prices[j]]+pages[j]);
+    int n,m; cin>>n>>m;
+    safe_umap<int,vector<int>> um;
+    while(m--){
+        int a,b; cin>>a>>b;
+        um[a].pb(b);
+        um[b].pb(a);
+    }
+    vector<int> visi(n+1,false);
+    vector<int> dis(n+1,INF);
+    vector<int> parent(n+1);
+    dis[1]=0;
+    queue<int> q;
+    q.push(1);
+    visi[1]=true;
+    while(!q.empty()){
+        int cur=q.front(); q.pop();
+        //visi[cur]=true;
+        int temp=dis[cur];
+        for(int x:um[cur]){
+            if(!visi[x]){
+                visi[x]=true;
+                dis[x]=temp+1;
+                parent[x]=cur;
+                q.push(x);
+            }
         }
     }
-    cout<<dp[x]<<endl;
+    if(dis[n]>=INF){
+        cout<<"IMPOSSIBLE";
+        return;
+    }
+    //cout<<dis[n]<<endl;
+    vector<int> path;
+    int curr=n;
+    while(curr!=1){
+        path.pb(curr);
+        curr=parent[curr];
+    }
+    path.pb(1);
+    reverse(path.begin(),path.end());
+    cout<<path.size()<<endl;
+    for(int i=0;i<path.size();i++){
+        cout<<path[i]<<" ";
+    }
+    cout<<endl;
 }
 
 int32_t main() {

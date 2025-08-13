@@ -58,27 +58,50 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-
+void add_self(int& a,int b){
+    a+=b;
+    if(a>=MOD) a-=MOD;
+}
+bool isinbounds(int x,int y,int rows,int cols){
+    return x>=0 && y>=0 && x<rows && y<cols;
+}
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
-
-
 void solve() {
-    int n,x; cin>>n>>x;
-    vector<int> prices(n);
-    vector<int> pages(n);
-    for(int i=0;i<n;i++) cin>>prices[i];
-    for(int i=0;i<n;i++) cin>>pages[i];
-    //basically the very famous 01 kanpsack
-    vector<int> dp(x+1);
-    for(int j=0;j<n;j++){
-        for(int i=x;i>=prices[j];i--){
-            if(i-prices[j]<0) continue;
-            dp[i]=max(dp[i],dp[i-prices[j]]+pages[j]);
+    int n,m; cin>>n>>m;
+    vector<vector<char>> grid(n,vector<char>(m));
+    for(int i=0;i<n;i++){
+        string s; cin>>s;
+        for(int j=0;j<m;j++){
+            grid[i][j]=s[j];
         }
     }
-    cout<<dp[x]<<endl;
+    int ans=0;
+    vector<vector<bool>> visi(n,vector<bool>(m,false));
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            if(visi[i][j] || grid[i][j]=='#') continue;
+            queue<pair<int,int>> q;
+            q.push({i,j});
+            ans++;
+            visi[i][j]=true;
+            while(!q.empty()){
+                pair<int,int>p=q.front();q.pop();
+                for(int k=0;k<4;k++){
+                    int i1=p.first+dx[k];
+                    int j1=p.second+dy[k];
+                    if(i1<n && j1<m && i1>=0 && j1>=0 && !visi[i1][j1] && grid[i1][j1]=='.'){
+                        q.push({i1,j1});
+                        visi[i1][j1]=true;
+                    }
+                }
+
+            }
+        }
+    }
+
+    cout<<ans<<endl;
 }
 
 int32_t main() {

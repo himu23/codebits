@@ -24,10 +24,13 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define all(a) (a).begin(), (a).end()
 #define pb push_back
 #define umap unordered_map
+#define f first
+#define s second
+#define pai pair<int,int>
 
 const int MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
-const ll INF = 1e9;
+const ll INF = 1e18;
 const ld EPS = 1e-9;
 
 // Custom hash for unordered_map/set
@@ -58,27 +61,47 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-
+void add_self(int& a,int b){
+    a+=b;
+    if(a>=MOD) a-=MOD;
+}
+bool isinbounds(int x,int y,int rows,int cols){
+    return x>=0 && y>=0 && x<rows && y<cols;
+}
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
-
-
 void solve() {
-    int n,x; cin>>n>>x;
-    vector<int> prices(n);
-    vector<int> pages(n);
-    for(int i=0;i<n;i++) cin>>prices[i];
-    for(int i=0;i<n;i++) cin>>pages[i];
-    //basically the very famous 01 kanpsack
-    vector<int> dp(x+1);
-    for(int j=0;j<n;j++){
-        for(int i=x;i>=prices[j];i--){
-            if(i-prices[j]<0) continue;
-            dp[i]=max(dp[i],dp[i-prices[j]]+pages[j]);
+    ll n,m,qr; cin>>n>>m>>qr;
+    // vector<vector<pair<ll,ll>>> adj(n+1);
+    // while(m--){
+    //     ll a,b,d; cin>>a>>b>>d;
+    //     adj[a].pb({b,d});
+    // }
+    //o(n3) floyd warshall to precompute shortest distance between all pairs
+    vector<vector<ll>> dist(n+1,vector<ll>(n+1,INF));
+    for(ll i=1;i<=n;i++) dist[i][i]=0;
+    while(m--){
+        ll a,b,c; cin>>a>>b>>c;
+        dist[a][b]=min(dist[a][b],c);
+        dist[b][a]=min(dist[b][a],c);
+    }
+    //floyd-warshall
+    for(ll k=1;k<=n;k++){
+        for(ll i=1;i<=n;i++){
+            for(ll j=1;j<=n;j++){
+                if(dist[i][k]+dist[k][j]<dist[i][j]){
+                    dist[i][j]=dist[i][k]+dist[k][j];
+                }
+            }
         }
     }
-    cout<<dp[x]<<endl;
+    while(qr--){
+        ll a,b; cin>>a>>b;
+        if(dist[a][b]==INF) cout<<-1<<endl;
+        else cout<<dist[a][b]<<endl;
+    }
+
 }
 
 int32_t main() {

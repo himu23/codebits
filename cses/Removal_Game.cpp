@@ -58,27 +58,25 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-
+void add_self(int& a,int b){
+    a+=b;
+    if(a>=MOD) a-=MOD;
+}
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 
-
 void solve() {
-    int n,x; cin>>n>>x;
-    vector<int> prices(n);
-    vector<int> pages(n);
-    for(int i=0;i<n;i++) cin>>prices[i];
-    for(int i=0;i<n;i++) cin>>pages[i];
-    //basically the very famous 01 kanpsack
-    vector<int> dp(x+1);
-    for(int j=0;j<n;j++){
-        for(int i=x;i>=prices[j];i--){
-            if(i-prices[j]<0) continue;
-            dp[i]=max(dp[i],dp[i-prices[j]]+pages[j]);
-        }
+    int n; cin>>n;
+    vector<int> a(n);
+    int total=0;
+    for(int i=0;i<n;i++){
+       cin>>a[i];
+       total+=a[i];
     }
-    cout<<dp[x]<<endl;
+    vector<vector<int>> dp(n,vector<int>(n,INF));
+    for(int i=0;i<n;i++) dp[i][i]=a[i];
+     
 }
 
 int32_t main() {
@@ -91,3 +89,4 @@ int32_t main() {
         solve();
     }
 }
+//above was recursive

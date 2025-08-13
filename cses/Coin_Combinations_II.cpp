@@ -58,6 +58,10 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
+void add_self(ll &a,ll b){
+    a+=b;
+    if(a>=MOD) a-=MOD;
+}
 
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
@@ -72,10 +76,11 @@ void solve() {
     }
     vector<ll> dp(x+1,0);
     dp[0]=1;
-    for(ll i=0;i<n;i++){
-        for(ll j=1;j<=x;j++){
-            if(j-a[i]<0) continue; 
-            dp[j]=(dp[j]+dp[j-a[i]])%MOD;
+    for(int coin:a){
+        for(int j=1;j<=x;j++){
+            if(j-coin<0) continue;
+            // dp[j]=(dp[j]+dp[j-coin])%MOD;
+            add_self(dp[j],dp[j-coin]);
         }
     }
     cout<<dp[x]<<endl;
@@ -93,4 +98,5 @@ int32_t main() {
 }
 //accepted
 //space = o(1e8) which really huge for cf, but ok for this question on cses
-//space optimization
+//space optimized
+//kanpsack with multiple occurences

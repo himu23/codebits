@@ -24,6 +24,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define all(a) (a).begin(), (a).end()
 #define pb push_back
 #define umap unordered_map
+#define f first
+#define s second
 
 const int MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
@@ -58,27 +60,62 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-
+void add_self(int& a,int b){
+    a+=b;
+    if(a>=MOD) a-=MOD;
+}
+bool isinbounds(int x,int y,int rows,int cols){
+    return x>=0 && y>=0 && x<rows && y<cols;
+}
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
-
-
 void solve() {
-    int n,x; cin>>n>>x;
-    vector<int> prices(n);
-    vector<int> pages(n);
-    for(int i=0;i<n;i++) cin>>prices[i];
-    for(int i=0;i<n;i++) cin>>pages[i];
-    //basically the very famous 01 kanpsack
-    vector<int> dp(x+1);
-    for(int j=0;j<n;j++){
-        for(int i=x;i>=prices[j];i--){
-            if(i-prices[j]<0) continue;
-            dp[i]=max(dp[i],dp[i-prices[j]]+pages[j]);
-        }
+    int n,m; cin>>n>>m;
+    safe_umap<int,vector<int>> um;
+    while(m--){
+        int a,b; cin>>a>>b;
+        um[a].pb(b);
+        um[b].pb(a);
     }
-    cout<<dp[x]<<endl;
+    vector<bool> visi(n+1,false);
+    vector<vector<int>> regions;
+    //int ans=-1; 
+    for(int i=1;i<=n;i++){
+        if(visi[i]) continue;
+        //ans++;
+        //regions[ans].pb(i);
+        vector<int>temp;
+        temp.pb(i);
+        queue<int> q;
+        visi[i]=true;
+        q.push(i);
+        while(!q.empty()){
+            int curr=q.front();q.pop();
+            for(int x:um[curr]){
+                if(!visi[x]){
+                    visi[x]=true;
+                    //regions[ans].pb(x);
+                    temp.pb(x);
+                    q.push(x);
+                }
+            }
+        }
+        regions.pb(temp);
+    }
+    // cout<<regions.size()<<endl;
+    // for(int i=0;i<regions.size();i++){
+    //     for(int x:regions[i]){
+    //         cout<<x<<" ";
+    //     }
+    //     cout<<endl;
+    // }
+    int temp=regions.size();
+    cout<<temp-1<<endl;
+    for(int i=1;i<regions.size();i++){
+        cout<<regions[0][0]<<" "<<regions[i][0]<<endl;
+    }
+
 }
 
 int32_t main() {

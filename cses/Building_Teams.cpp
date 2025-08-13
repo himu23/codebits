@@ -24,6 +24,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define all(a) (a).begin(), (a).end()
 #define pb push_back
 #define umap unordered_map
+#define f first
+#define s second
 
 const int MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
@@ -58,27 +60,53 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-
+void add_self(int& a,int b){
+    a+=b;
+    if(a>=MOD) a-=MOD;
+}
+bool isinbounds(int x,int y,int rows,int cols){
+    return x>=0 && y>=0 && x<rows && y<cols;
+}
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
-
-
 void solve() {
-    int n,x; cin>>n>>x;
-    vector<int> prices(n);
-    vector<int> pages(n);
-    for(int i=0;i<n;i++) cin>>prices[i];
-    for(int i=0;i<n;i++) cin>>pages[i];
-    //basically the very famous 01 kanpsack
-    vector<int> dp(x+1);
-    for(int j=0;j<n;j++){
-        for(int i=x;i>=prices[j];i--){
-            if(i-prices[j]<0) continue;
-            dp[i]=max(dp[i],dp[i-prices[j]]+pages[j]);
+    int n,m; cin>>n>>m;
+    safe_umap<int,vector<int>> um;
+    while(m--){
+        int a,b; cin>>a>>b;
+        um[a].pb(b);
+        um[b].pb(a);
+    }   
+    vector<int> color(n+1,-1);
+    //vector<bool> visi(n+1,false);
+    for(int i=1;i<=n;i++){
+        //if(visi[i]) continue;
+        //visi[i]=true;
+        if(color[i]!=-1) continue;
+        queue<int> q;
+        color[i]=0;
+        q.push(i);
+        while(!q.empty()){
+            int curr=q.front();q.pop();
+            for(int x:um[curr]){
+                if(color[x]==-1){
+                    color[x]=color[curr]^1;
+                    q.push(x);
+                }
+                else if(color[x]!=-1 && !(color[x]^color[curr])){
+                    cout<<"IMPOSSIBLE"<<endl;
+                    return;
+                }
+            }
         }
     }
-    cout<<dp[x]<<endl;
+    for(int i=0;i<=n;i++){
+        if(i==0) continue;
+        if(color[i]==0) cout<<1<<" ";
+        else cout<<2<<" ";
+    }
+    cout<<endl;
 }
 
 int32_t main() {

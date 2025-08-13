@@ -25,7 +25,7 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define pb push_back
 #define umap unordered_map
 
-const int MAX_N = 1e6 + 5;
+const int MAX_N = 1e5 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
@@ -58,27 +58,37 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-
+void add_self(int& a,int b){
+    a+=b;
+    if(a>=MOD) a-=MOD;
+}
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
-
-
 void solve() {
-    int n,x; cin>>n>>x;
-    vector<int> prices(n);
-    vector<int> pages(n);
-    for(int i=0;i<n;i++) cin>>prices[i];
-    for(int i=0;i<n;i++) cin>>pages[i];
-    //basically the very famous 01 kanpsack
-    vector<int> dp(x+1);
-    for(int j=0;j<n;j++){
-        for(int i=x;i>=prices[j];i--){
-            if(i-prices[j]<0) continue;
-            dp[i]=max(dp[i],dp[i-prices[j]]+pages[j]);
+    int n; cin>>n;
+    vector<int> x(n);
+    int total=0;
+    for(int i=0;i<n;i++){
+       cin>>x[i];
+       total+=x[i];
+    }
+    vector<bool> dp(total,false);
+    dp[0]=true;
+    for(int i=0;i<n;i++){
+        for(int j=total;j>0;j--){
+            if(j-x[i]<0) continue;
+            if(dp[j-x[i]]) dp[j]=true;
         }
     }
-    cout<<dp[x]<<endl;
+    vector<int> ans;
+    for(int i=1;i<=total;i++){
+        if(dp[i]) ans.push_back(i);
+    }
+    cout<<ans.size()<<endl;
+    for(size_t i=0;i<ans.size();i++){
+        cout<<ans[i]<<" ";
+    }
 }
 
 int32_t main() {
