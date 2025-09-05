@@ -70,25 +70,21 @@ bool isinbounds(int x,int y,int rows,int cols){
 }
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
-
+bool hasdis(int n){
+    string s=to_string(n);
+    set<char> st;
+    for(int i=0;i<s.length();i++){
+        st.insert(s[i]);
+    }
+    if(st.size()==s.length()) return true;
+    else return false;
+}
 void solve() {
-    int n,q; cin>>n>>q;
-    vector<int> a(n);
-    vector<int> temp(51,INF);
-    for(int i=0;i<n;i++){
-       cin>>a[i];
-       temp[a[i]]=min(temp[a[i]],i+1);
-    }
-    while(q--){
-        int b; cin>>b;
-        for(int i=1;i<=50;i++){
-            if(temp[i]<temp[b]) temp[i]++;
-        }
-        cout<<temp[b]<<" ";
-        temp[b]=1;
+    int n; cin>>n;
+    for(int i=n+1;i<=100000;i++){
+        if(hasdis(i)){ cout<<i<<endl;return;}
     }
 
-    
 }
 
 int32_t main() {
@@ -99,6 +95,5 @@ int32_t main() {
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
-        //cout<<fixed<<setprecision(12)<<
     }
 }

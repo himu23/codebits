@@ -68,37 +68,44 @@ void add_self(int& a,int b){
 bool isinbounds(int x,int y,int rows,int cols){
     return x>=0 && y>=0 && x<rows && y<cols;
 }
-const int dx[4]={0,1,0,-1};
-const int dy[4]={1,0,-1,0};
+const int dx[8]={0,1,0,-1,1,1,-1,-1};
+const int dy[8]={1,0,-1,0,1,-1,1,-1};
 
 void solve() {
-    int n,q; cin>>n>>q;
-    vector<int> a(n);
-    vector<int> temp(51,INF);
-    for(int i=0;i<n;i++){
-       cin>>a[i];
-       temp[a[i]]=min(temp[a[i]],i+1);
-    }
-    while(q--){
-        int b; cin>>b;
-        for(int i=1;i<=50;i++){
-            if(temp[i]<temp[b]) temp[i]++;
+    int n; cin>>n;
+    vector<vector<char>> grid(2,vector<char>(n));
+    for(int i=0;i<2;i++){
+        string s; cin>>s;
+        for(int j=0;j<n;j++){
+            grid[i][j]=s[j];
         }
-        cout<<temp[b]<<" ";
-        temp[b]=1;
     }
-
-    
+    vector<vector<bool>> visi(2,vector<bool>(n));
+    visi[0][0]=true;
+    queue<pair<int,int>> q;
+    q.push({0,0});
+    while(!q.empty()){
+        pair<int,int>curr=q.front();q.pop();
+        for(int k=0;k<8;k++){
+            int i1=curr.f+dx[k];
+            int j1=curr.s+dy[k];
+            if(isinbounds(i1,j1,2,n) && grid[i1][j1]=='0' && !visi[i1][j1]){
+                visi[i1][j1]=true;
+                q.push({i1,j1});
+            }
+        }
+    }
+    if(visi[1][n-1]) cout<<"YES"<<endl;
+    else cout<<"NO"<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
-        //cout<<fixed<<setprecision(12)<<
     }
 }

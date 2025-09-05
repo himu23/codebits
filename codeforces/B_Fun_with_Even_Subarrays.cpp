@@ -72,30 +72,74 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n,q; cin>>n>>q;
+    int n; cin>>n;
     vector<int> a(n);
-    vector<int> temp(51,INF);
     for(int i=0;i<n;i++){
        cin>>a[i];
-       temp[a[i]]=min(temp[a[i]],i+1);
     }
-    while(q--){
-        int b; cin>>b;
-        for(int i=1;i<=50;i++){
-            if(temp[i]<temp[b]) temp[i]++;
+    //int god=a[n-1];
+    // vector<int> notgod;
+    // for(int i=0;i<n;i++){
+    //     if(a[i]!=god){
+    //         notgod.pb(n-i);
+    //     }
+    // }
+    // if(notgod.size()==0){cout<<0<<endl; return;}
+    // if(notgod.size()==1){cout<<1<<endl; return;}
+    // cout<<notgod<<endl;
+    // reverse(notgod.begin(),notgod.end());
+    // vector<int>temp;
+    // for(int i=0;i<notgod.size();i++){
+    //     temp.pb(ceil(log2((double)notgod[i])));
+    // }
+    // //cout<<temp<<endl;
+    // //int ans=0;
+    // set<int> temp2;
+    // for(int i=0;i<temp.size();i++){
+    //     temp2.insert(temp[i]);
+    // }
+    // cout<<temp2.size()<<endl;
+    // // int i=n-2;
+    // // int ans=0;
+    // // while(i>=0){
+    // //     if(a[i]==god) i--;
+    // //     else{
+    // //         ans++;
+    // //         i=i-(n-i);
+    // //     }
+    // // }
+    // // cout<<ans<<endl;
+    vector<int> b;
+    for(int i=n-1;i>=0;i--){
+        b.pb(a[i]);
+    }
+    int god=b[0];
+    //int cur=1;
+    int ans=0;
+    // for(int i=1;i<n;i++){
+    //     if(b[i]==god) cur++;
+    //     if(b[i]!=god && i+1>cur){
+    //         ans++;
+    //         cur*=2;
+    //     }
+    // }
+    //cout<<ans<<endl; 
+    int len=1;
+    while(len<n){
+        if(a[n-len-1]==god) len++;
+        else{
+            ans++;
+            len*=2;
         }
-        cout<<temp[b]<<" ";
-        temp[b]=1;
     }
-
-    
+    cout<<ans<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

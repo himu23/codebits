@@ -72,21 +72,15 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n,q; cin>>n>>q;
+    int n=4;
     vector<int> a(n);
-    vector<int> temp(51,INF);
+    set<int> s;
     for(int i=0;i<n;i++){
        cin>>a[i];
-       temp[a[i]]=min(temp[a[i]],i+1);
+       s.insert(a[i]);
     }
-    while(q--){
-        int b; cin>>b;
-        for(int i=1;i<=50;i++){
-            if(temp[i]<temp[b]) temp[i]++;
-        }
-        cout<<temp[b]<<" ";
-        temp[b]=1;
-    }
+    cout<<4-s.size()<<endl;
+    
 
     
 }

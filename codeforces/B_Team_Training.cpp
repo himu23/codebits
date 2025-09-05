@@ -72,33 +72,62 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n,q; cin>>n>>q;
+    int n,x; cin>>n>>x;
     vector<int> a(n);
-    vector<int> temp(51,INF);
     for(int i=0;i<n;i++){
        cin>>a[i];
-       temp[a[i]]=min(temp[a[i]],i+1);
     }
-    while(q--){
-        int b; cin>>b;
-        for(int i=1;i<=50;i++){
-            if(temp[i]<temp[b]) temp[i]++;
+    int ans=0;
+    // vector<int> diff;
+    // for(int i=0;i<n;i++){
+    //     if(a[i]>=x) ans++;
+    //     else diff.pb(a[i]);
+    // }
+    // sort(diff.begin(),diff.end());
+    // vector<int> temp2;
+    // vector<int> temp3;
+    // for(int i=0;i<diff.size();i++){
+    //     int temp=x/diff[i];
+    //     if(x%diff[i]!=0) temp++;
+    //     temp2.pb(temp);
+    //     temp3.pb(diff.size()-i);
+    // }
+    // // cout<<temp2<<endl;
+    // // cout<<temp3<<endl;
+    // int i=0;
+    // // cout<<ans<<" ";
+    // while(i<temp2.size()){
+    //     if(temp2[i]<=temp3[i]){
+    //         ans++;
+    //         i+=temp2[i];
+    //     }
+    //     else i++;
+    // }
+    // cout<<ans<<endl;
+    sort(a.begin(),a.end(),greater<int>());
+    int i=0;
+    while(i<n){
+        bool flag=false;
+        for(int j=i;j<n;j++){
+            if(a[j]*(j-i+1)>=x){
+                ans++;
+                i=j+1;
+                flag=true;
+                break;
+
+            }
         }
-        cout<<temp[b]<<" ";
-        temp[b]=1;
+        if(!flag) i++;
     }
-
-    
+    cout<<ans<<endl;
 }
-
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
-        //cout<<fixed<<setprecision(12)<<
     }
 }

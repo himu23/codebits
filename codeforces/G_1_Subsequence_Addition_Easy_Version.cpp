@@ -72,30 +72,28 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n,q; cin>>n>>q;
-    vector<int> a(n);
-    vector<int> temp(51,INF);
-    for(int i=0;i<n;i++){
+    ll n; cin>>n;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
        cin>>a[i];
-       temp[a[i]]=min(temp[a[i]],i+1);
     }
-    while(q--){
-        int b; cin>>b;
-        for(int i=1;i<=50;i++){
-            if(temp[i]<temp[b]) temp[i]++;
+    sort(a.begin(),a.end());
+    ll cur=1;
+    for(ll i=0;i<n;i++){
+        if(a[i]>cur){
+            cout<<"NO"<<endl;
+            return;
         }
-        cout<<temp[b]<<" ";
-        temp[b]=1;
+        if(i!=0) cur+=a[i];
     }
-
-    
+    cout<<"YES"<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

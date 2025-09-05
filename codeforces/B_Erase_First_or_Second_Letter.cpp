@@ -72,30 +72,46 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n,q; cin>>n>>q;
-    vector<int> a(n);
-    vector<int> temp(51,INF);
+    // int n; cin>>n;
+    // string s; cin>>s;
+    // set<string> st;
+    // queue<string> q;
+    // q.push(s);
+    // st.insert(s);
+    // while(!q.empty()){
+    //     string cur=q.front();q.pop();
+    //     string a="",b="";
+    //     string temp=cur;
+    //     if(cur.size()>=1) a=temp.erase(0,1);
+    //     temp=cur;
+    //     if(cur.size()>=2) b=temp.erase(1,1);
+    //     if(st.find(a)==st.end() && a!=""){
+    //         q.push(a);
+    //         st.insert(a);
+    //     }
+    //     if(st.find(b)==st.end() && b!=""){
+    //         q.push(b);
+    //         st.insert(b);
+    //     }
+    // }
+    // cout<<st.size()<<endl;
+    //mle
+    int n; cin>>n;
+    string s; cin>>s;
+    int ans=0;
+    set<char> st;
     for(int i=0;i<n;i++){
-       cin>>a[i];
-       temp[a[i]]=min(temp[a[i]],i+1);
+        st.insert(s[i]);
+        ans+=st.size();
     }
-    while(q--){
-        int b; cin>>b;
-        for(int i=1;i<=50;i++){
-            if(temp[i]<temp[b]) temp[i]++;
-        }
-        cout<<temp[b]<<" ";
-        temp[b]=1;
-    }
-
-    
+    cout<<ans<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

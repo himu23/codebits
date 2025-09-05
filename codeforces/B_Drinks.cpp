@@ -72,23 +72,14 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n,q; cin>>n>>q;
-    vector<int> a(n);
-    vector<int> temp(51,INF);
+    double n; cin>>n;
+    //vector<double> a(n);
+    double ans=0;
     for(int i=0;i<n;i++){
-       cin>>a[i];
-       temp[a[i]]=min(temp[a[i]],i+1);
+        double temp; cin>>temp;
+        ans+=(temp/100);
     }
-    while(q--){
-        int b; cin>>b;
-        for(int i=1;i<=50;i++){
-            if(temp[i]<temp[b]) temp[i]++;
-        }
-        cout<<temp[b]<<" ";
-        temp[b]=1;
-    }
-
-    
+    cout<<fixed<<setprecision(12)<<(ans/n)*100<<endl;
 }
 
 int32_t main() {
@@ -99,6 +90,6 @@ int32_t main() {
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
-        //cout<<fixed<<setprecision(12)<<
     }
+    //cout<<fixed<<setprecision(12)<<
 }

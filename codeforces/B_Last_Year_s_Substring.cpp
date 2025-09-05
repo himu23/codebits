@@ -72,33 +72,25 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n,q; cin>>n>>q;
-    vector<int> a(n);
-    vector<int> temp(51,INF);
-    for(int i=0;i<n;i++){
-       cin>>a[i];
-       temp[a[i]]=min(temp[a[i]],i+1);
+    int n; cin>>n;
+    string s; cin>>s;
+    if((s[0]=='2' && s[1]=='0' && s[2]=='2' && s[3]=='0')||
+    (s[0]=='2' && s[1]=='0' && s[2]=='2' && s[n-1]=='0')||
+    (s[0]=='2' && s[1]=='0' && s[n-2]=='2' && s[n-1]=='0')||
+    (s[0]=='2' && s[n-3]=='0' && s[n-2]=='2' && s[n-1]=='0')||
+    (s[n-4]=='2' && s[n-3]=='0' && s[n-2]=='2' && s[n-1]=='0')){
+        cout<<"YES"<<endl;
     }
-    while(q--){
-        int b; cin>>b;
-        for(int i=1;i<=50;i++){
-            if(temp[i]<temp[b]) temp[i]++;
-        }
-        cout<<temp[b]<<" ";
-        temp[b]=1;
-    }
-
-    
+    else cout<<"NO"<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
-        //cout<<fixed<<setprecision(12)<<
     }
 }

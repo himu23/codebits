@@ -72,22 +72,29 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n,q; cin>>n>>q;
+    int n; cin>>n;
     vector<int> a(n);
-    vector<int> temp(51,INF);
+    int maxx=0;
+    int temp1=101;
+    int minn=101;
+    int temp2=0;
     for(int i=0;i<n;i++){
        cin>>a[i];
-       temp[a[i]]=min(temp[a[i]],i+1);
+       if(a[i]>maxx){
+        maxx=a[i];
+        temp1=i;
+       }
+       else if(a[i]==maxx) temp1=min(temp1,i);
+       if(a[i]<minn){
+        minn=a[i];
+        temp2=i;
+       }
+       else if(a[i]==minn) temp2=max(temp2,i);
     }
-    while(q--){
-        int b; cin>>b;
-        for(int i=1;i<=50;i++){
-            if(temp[i]<temp[b]) temp[i]++;
-        }
-        cout<<temp[b]<<" ";
-        temp[b]=1;
-    }
-
+    //int ans=0;
+    if(maxx==minn) cout<<0<<endl;
+    else if(temp1>temp2) cout<<temp1+n-temp2-1-1;
+    else cout<<temp1+n-temp2-1;
     
 }
 
