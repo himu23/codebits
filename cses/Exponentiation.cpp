@@ -71,39 +71,49 @@ bool isinbounds(int x,int y,int rows,int cols){
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
+ll mod_pow(ll base,ll exp, ll mod){
+    ll res=1;
+    while(exp>0){
+        if(exp&1) res=(res*base)%mod;
+        base=(base*base)%mod;
+        exp>>=1;
+    }
+    return res;
+}
+
+void changem(ll &p, ll &n, ll &ans, ll &m){
+    //if(m==0) return;
+    ll temp=n;
+    // for(ll i=0;i<p;i++){
+    //     temp=(temp*temp)%MOD;
+    // }
+    temp=mod_pow(temp,1LL<<p,MOD);
+    m-=(1LL<<p);
+    if(m>0) p=31-__builtin_clz(m);
+    ans=(ans*temp)%MOD;
+}
+
 void solve() {
-    int n,q; cin>>n>>q;
-    //sparse table
-    vector<int> x(n);
-    for(int i=0;i<n;i++){
-       cin>>x[i];
+    ll n,m; cin>>n>>m;
+    ll p=31-__builtin_clz(m);
+    // cout<<p<<endl;
+    ll ans=1;
+    // for(ll i=0;i<p;i++){
+    //     n=(n*n)%MOD;
+    // }
+    // m-=pow(2,p);
+    // cout<<n<<" "<<m<<endl;
+    while(m>0){
+        changem(p,n,ans,m);
     }
-    int LOG=32-__builtin_clz(n); //floor(log2(n))+1
-    vector<vector<int>> st(n,vector<int>(LOG)); //sparse table
-    vector<int> lg(n+1); //precompute logs
-    lg[1]=0;
-    for(int i=2;i<=n;i++) lg[i]=lg[i/2]+1;
-    //k=0 : copy array
-    for(int i=0;i<n;i++) st[i][0]=x[i];
-    for(int k=1;k<LOG;k++){
-        for(int i=0;i+(1<<k)<=n;i++){
-            st[i][k]=min(st[i][k-1],st[i+(1<<(k-1))][k-1]);
-        }
-    }
-    while(q--){
-        int a,b; cin>>a>>b;
-        a--,b--;
-        int len=b-a+1;
-        int k=lg[len];
-        cout<<min(st[a][k],st[b-(1<<k)+1][k])<<endl;
-    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

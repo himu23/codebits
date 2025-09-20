@@ -72,38 +72,15 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n,q; cin>>n>>q;
-    //sparse table
-    vector<int> x(n);
-    for(int i=0;i<n;i++){
-       cin>>x[i];
-    }
-    int LOG=32-__builtin_clz(n); //floor(log2(n))+1
-    vector<vector<int>> st(n,vector<int>(LOG)); //sparse table
-    vector<int> lg(n+1); //precompute logs
-    lg[1]=0;
-    for(int i=2;i<=n;i++) lg[i]=lg[i/2]+1;
-    //k=0 : copy array
-    for(int i=0;i<n;i++) st[i][0]=x[i];
-    for(int k=1;k<LOG;k++){
-        for(int i=0;i+(1<<k)<=n;i++){
-            st[i][k]=min(st[i][k-1],st[i+(1<<(k-1))][k-1]);
-        }
-    }
-    while(q--){
-        int a,b; cin>>a>>b;
-        a--,b--;
-        int len=b-a+1;
-        int k=lg[len];
-        cout<<min(st[a][k],st[b-(1<<k)+1][k])<<endl;
-    }
+    int n,k; cin>>n>>k;
+    
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

@@ -166,27 +166,12 @@ const int dy[4]={1,0,-1,0};
 
 
 void solve() {
-    int n; cin >> n;
-    vector<ll> a(n + 1);
-    for (int i = 1; i <= n; i++) {
-        cin >> a[i];
+    int n; cin>>n;
+    vector<int> a(n);
+    for(int i=0;i<n;i++){
+       cin>>a[i];
     }
-
-    unordered_map<ll, int> last;
-    vector<ll> dp(n + 1);
-    dp[0] = 1;
-
-    for (int i = 1; i <= n; i++) {
-        dp[i] = dp[i - 1] * 2 % MOD;
-        if (last.count(a[i])) {
-            int j = last[a[i]];
-            dp[i] = (dp[i] - dp[j - 1] + MOD) % MOD;
-        }
-        last[a[i]] = i;
-    }
-
-    ll ans = (dp[n] - 1 + MOD) % MOD;
-    cout << ans << endl;
+    
 }
 
 int32_t main() {

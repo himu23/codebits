@@ -88,18 +88,19 @@ void solve() {
     for(ll i=0;i<n;i++){
        cin>>x[i];
     }
-    ll l=0;
-    ll ans=0;
-    safe_umap<ll,ll> curr;
-    for(ll r=0;r<n;r++){
-        curr[x[r]]++;
-        while(curr[x[r]]>1){
-            curr[x[l]]--;
-            l++;
-        }
-        ans+=r-l+1;
-    }
-    cout<<ans<<endl;
+    // ll l=0;
+    // ll ans=0;
+    // safe_umap<ll,ll> curr;
+    // for(ll r=0;r<n;r++){
+    //     curr[x[r]]++;
+    //     while(curr[x[r]]>1){
+    //         curr[x[l]]--;
+    //         l++;
+    //     }
+    //     ans+=r-l+1;
+    // }
+    // cout<<ans<<endl;
+    
     
 }
 
