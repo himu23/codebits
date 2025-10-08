@@ -75,7 +75,6 @@ void solve() {
         }
     }
     ll ans=temp2;
-    int n;
     for(ll i=0;i<=30;i++){
         ans=gcd(ans,temp[i]);
     }
