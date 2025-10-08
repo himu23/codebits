@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-
+//hi
 using namespace std;
 
 template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
@@ -75,6 +75,7 @@ void solve() {
         }
     }
     ll ans=temp2;
+    int n;
     for(ll i=0;i<=30;i++){
         ans=gcd(ans,temp[i]);
     }
