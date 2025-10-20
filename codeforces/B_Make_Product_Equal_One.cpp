@@ -81,11 +81,23 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
+    ll n; cin>>n;
+    vector<ll> a(n);
+    ll cnt=0;
+    ll cnt_neg=0;
+    ll cnt_zero=0;
+    for(ll i=0;i<n;i++){
         cin>>a[i];
+        if(a[i]==0) cnt_zero++;
+        if(a[i]<0) cnt_neg++;
+        ll c=a[i]-1;
+        ll d=a[i]+1;
+        if(c<0) c*=-1;
+        if(d<0) d*=-1;
+        cnt+=min(c,d);
     }
+    if(cnt_neg%2==1 && cnt_zero==0) cnt+=2;
+    cout<<cnt<<endl;
     
 }
 
@@ -93,7 +105,7 @@ int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

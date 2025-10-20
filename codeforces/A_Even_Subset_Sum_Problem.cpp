@@ -61,15 +61,6 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-ll binpow(ll a, ll b) {
-    ll res = 1;
-    while (b > 0) {
-        if (b & 1) res *= a;
-        a *= a;
-        b >>= 1;
-    }
-    return res;
-}
 void add_self(int& a,int b){
     a+=b;
     if(a>=MOD) a-=MOD;
@@ -86,7 +77,25 @@ void solve() {
     for(int i=0;i<n;i++){
         cin>>a[i];
     }
-    
+    int eve=0,odd=0;
+    int odd1=0;
+    for(int i=0;i<n;i++){
+        int odd2=odd1;
+        if(a[i]%2==0) eve++;
+        else odd++;
+        odd1=i+1;
+        if(eve>=1){
+            cout<<1<<endl;
+            cout<<i+1<<endl;
+            return;
+        }
+        if(odd2!=0){
+            cout<<2<<endl;
+            cout<<odd2<<" "<<odd1<<endl;
+            return;
+        }
+    }
+    cout<<-1<<endl;
 }
 
 int32_t main() {

@@ -81,12 +81,42 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
+    int n,m,x,y; cin>>n>>m>>x>>y;
+    if(y>2*x) y=2*x;
+    vector<vector<char>> grid(n,vector<char>(m));
     for(int i=0;i<n;i++){
-        cin>>a[i];
+        //string s; cin>>s;
+        for(int j=0;j<m;j++){
+            cin>>grid[i][j];
+        }
     }
-    
+    int ans=0;
+    for(int i=0;i<n;i++){
+        int j=0;
+        while(j<m){
+            if(j!=m-1){
+                if(grid[i][j]=='.' && grid[i][j+1]=='.'){
+                    ans+=y;
+                    j+=2;
+                }
+                else if(grid[i][j]=='.'){
+                    ans+=x;
+                    j++;
+                }
+                else{
+                    j++;
+                }
+            }
+            else if(grid[i][j]=='.'){
+                ans+=x;
+                j++;
+            }
+            else{
+                j++;
+            }
+        }
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {

@@ -75,9 +75,14 @@ void solve() {
     int n; cin>>n;
     vector<int> a(n);
     for(int i=0;i<n;i++){
-       cin>>a[i];
+        cin>>a[i];
     }
-    
+    bool flag=false;
+    for(int i=0;i<n-1;i++){
+        if(2*min(a[i],a[i+1])>max(a[i],a[i+1])) flag=true;
+    }
+    if(flag) cout<<"YES"<<endl;
+    else cout<<"NO"<<endl;
 }
 
 int32_t main() {

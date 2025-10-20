@@ -75,17 +75,16 @@ void solve() {
     int n,x; cin>>n>>x;
     vector<int> a(n);
     for(int i=0;i<n;i++){
-       cin>>a[i];
+        cin>>a[i];
     }
     vector<int> b(n);
     for(int i=0;i<n;i++){
-       cin>>b[i];
+        cin>>b[i];
     }
     vector<int> c(n);
     for(int i=0;i<n;i++){
-       cin>>c[i];
+        cin>>c[i];
     }
-    vector<int> 
     
 }
 

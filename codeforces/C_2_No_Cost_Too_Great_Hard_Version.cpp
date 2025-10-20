@@ -1,3 +1,4 @@
+//author: himu23
 #include <bits/stdc++.h>
 // #include<ext/pb_ds/assoc_container.hpp>
 // #include<ext/pb_ds/tree_policy.hpp>
@@ -80,13 +81,70 @@ bool isinbounds(int x,int y,int rows,int cols){
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
+const int N = 200000;
+vector<vector<int>> pfac(N + 1); // prime factors of each number
+
+void preprocessfactors() {
+    for (int i = 2; i <= N; i++) {
+        if (!pfac[i].empty()) continue;
+        for (int j = i; j <= N; j += i)
+            pfac[j].push_back(i);
+    }
+}
+
 void solve() {
     int n; cin>>n;
     vector<int> a(n);
     for(int i=0;i<n;i++){
         cin>>a[i];
     }
-    
+    vector<int> b(n);
+    for(int i=0;i<n;i++){
+        cin>>b[i];
+    }
+    vector<pair<int,int>> c;
+    for(int i=0;i<n;i++){
+        c.pb({b[i],a[i]});
+    }
+    sort(c.begin(),c.end());
+    umap <int,int> um;
+    for(int i=0;i<n;i++){
+        for(int p: pfac[a[i]]){
+            um[p]++;
+            if(um[p]>1){
+                cout<<0<<endl;
+                return;
+            }
+        }
+    }
+    ll ans=INT_MAX;
+    bool flag=false;
+    for(int i=0;i<n;i++){
+        if(flag) break;
+        for(int p:pfac[c[i].s+1]){
+            if(um[p]>0){
+                ans=1LL*c[i].f;
+                flag=true;
+                break;
+            }
+        }
+    }
+    umap<int,int> um2;
+    for(int i=1;i<n;i++){
+        for(int p: pfac[c[i].s]){
+            um2[p]++;
+        }
+    }
+    for(auto pa : um2){
+        int cur=c[0].s;
+        //if(pa.f>cur) break;
+        int temp=cur%pa.f;
+        temp=pa.f-temp;
+        ans=min(ans,1LL*c[0].f*temp);
+    }
+    //cout<<ans<<endl;
+    ans=min(ans,1LL*(c[0].f+c[1].f));
+    cout<<ans<<endl;
 }
 
 int32_t main() {
@@ -94,6 +152,7 @@ int32_t main() {
     cin.tie(0); cout.tie(0);
     int tc = 1;
     cin >> tc;
+    preprocessfactors();
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

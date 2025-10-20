@@ -82,11 +82,29 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
+    string s; cin>>s;
     vector<int> a(n);
     for(int i=0;i<n;i++){
-        cin>>a[i];
+        a[i]=s[i]-'0';
     }
-    
+    int ans=0;
+    bool is_gre=true;
+    for(int i=1;i<n;i++){
+        if(a[i]<a[i-1] && is_gre){
+            ans++;
+            is_gre=false;
+            //cout<<1;
+        }
+        else if(a[i]>a[i-1] && !is_gre){
+            ans++;
+            is_gre=true;
+            //cout<<2;
+        }
+        // if(is_gre) cout<<1;
+        // else cout<<0;
+    }
+    //cout<<endl;
+    cout<<ans<<endl;
 }
 
 int32_t main() {

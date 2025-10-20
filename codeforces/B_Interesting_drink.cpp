@@ -83,8 +83,27 @@ const int dy[4]={1,0,-1,0};
 void solve() {
     int n; cin>>n;
     vector<int> a(n);
+    int maxx=0;
     for(int i=0;i<n;i++){
         cin>>a[i];
+        maxx=max(maxx,a[i]);
+    }
+    vector<int> b(maxx+1,0);
+    for(int i=0;i<n;i++){
+        b[a[i]]++;
+    }
+    vector<int> prefix(maxx+1);
+    prefix[0]=b[0];
+    for(int i=1;i<maxx+1;i++){
+        prefix[i]=prefix[i-1]+b[i];
+    }
+    int q; cin>>q;
+    while(q--){
+        int m; cin>>m;
+        if(m>=maxx){
+            cout<<prefix[maxx]<<endl;
+        }
+        else cout<<prefix[m]<<endl;
     }
     
 }
@@ -93,7 +112,7 @@ int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

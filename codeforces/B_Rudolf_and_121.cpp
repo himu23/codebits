@@ -86,7 +86,21 @@ void solve() {
     for(int i=0;i<n;i++){
         cin>>a[i];
     }
-    
+    //cout<<0<<" ";
+    for(int i=0;i<n-2;i++){
+        if(a[i]>0){
+            a[i+1]-=a[i]*2;
+            a[i+2]-=a[i];
+            a[i]=0;
+        }
+    }
+    for(int i=0;i<n;i++){
+        if(a[i]!=0){
+            cout<<"NO"<<endl;
+            return;
+        }
+    }
+    cout<<"YES"<<endl;
 }
 
 int32_t main() {

@@ -81,19 +81,23 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
+    string s; cin>>s;
+    int n=s.length();
+    //vector<char> vec;
     for(int i=0;i<n;i++){
-        cin>>a[i];
+        char c=tolower(s[i]);
+        if(!(c=='a' || c=='e' ||c=='i' ||c=='o' ||c=='u'||c=='y')){
+            cout<<'.'<<c;
+        }
     }
-    
+    cout<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

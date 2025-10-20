@@ -81,19 +81,29 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
+    int n,m; cin>>n>>m;
     vector<int> a(n);
     for(int i=0;i<n;i++){
         cin>>a[i];
     }
-    
+    set<int> s;
+    vector<int> b(n);
+    for(int i=n-1;i>=0;i--){
+        s.insert(a[i]);
+        b[i]=s.size();
+    }
+    while(m--){
+        int l; cin>>l;
+        l--;
+        cout<<b[l]<<endl;
+    }
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

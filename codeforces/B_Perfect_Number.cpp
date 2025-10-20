@@ -80,20 +80,35 @@ bool isinbounds(int x,int y,int rows,int cols){
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
-void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+int getsum(int i){
+    int ans=0;
+    while(i>0){
+        ans+=(i%10);
+        i/=10;
     }
-    
+    return ans;
+}
+
+void solve() {
+    int k; cin>>k;
+    int cnt=0;
+    int i=18;
+    while(cnt<=k){
+        if(cnt==k){
+            cout<<i<<endl;
+            return;
+        }
+        i++;
+        if(getsum(i)==10) cnt++;
+    }
+
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

@@ -81,12 +81,28 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
+    int n,m; cin>>n>>m;
+    vector<vector<char>> grid(n,vector<char>(m));
     for(int i=0;i<n;i++){
-        cin>>a[i];
+        for(int j=0;j<m;j++){
+            cin>>grid[i][j];
+        }
     }
-    
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            if(grid[i][j]=='0') continue;
+            bool con1=true;
+            bool con2=true;
+            for(int i1=0;i1<=i;i1++){
+                if(grid[i1][j]=='0'){con1=false;break;}
+            }
+            for(int j1=0;j1<=j;j1++){
+                if(grid[i][j1]=='0'){con2=false;break;}
+            }
+            if(!(con1 || con2)){cout<<"NO"<<endl;return;}
+        }
+    }
+    cout<<"YES"<<endl;
 }
 
 int32_t main() {

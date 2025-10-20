@@ -81,12 +81,32 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
+    int n,k; cin>>n>>k;
+    string s; cin>>s;
+    vector<int> arr;
     for(int i=0;i<n;i++){
-        cin>>a[i];
+        if(s[i]=='1') arr.pb(1);
+        else arr.pb(0);
     }
-    
+    vector<int> arr2(n,0);
+    for(int i=0;i<n;i++){
+        if(arr[i]==1){
+            if(i+1<n) arr2[i+1]++;
+            if(i+k<n) arr2[i+k]--;
+        }
+    }
+    vector<int> arr3(n,0);
+    arr3[0]=arr2[0];
+    for(int i=1;i<n;i++){
+        arr3[i]=arr3[i-1]+arr2[i];
+    }
+    // cout<<arr3<<endl;
+    // cout<<arr<<endl;
+    int ans=0;
+    for(int i=0;i<n;i++){
+        if(arr3[i]==0 && arr[i]==1) ans++;
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {

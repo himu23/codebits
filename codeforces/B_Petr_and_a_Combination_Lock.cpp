@@ -80,20 +80,50 @@ bool isinbounds(int x,int y,int rows,int cols){
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
+string to_bin_str(int m,int n){
+    n--;
+    string s="";
+    while(n>=0){
+        if(m>=pow(2,n)) s+="1";
+        else s+="0";
+        if(m>=pow(2,n)) m-=pow(2,n);
+        n--;
+        //s+=to_string(m/)
+    }
+    return s;
+}
+bool check(string s, vector<int>& a){
+    int sum=0;
+    for(int i=0;i<s.length();i++){
+        if(s[i]=='0') sum-=a[i];
+        else sum+=a[i];
+    }
+    if(sum%360==0) return true;
+    return false;
+}
 void solve() {
     int n; cin>>n;
     vector<int> a(n);
     for(int i=0;i<n;i++){
         cin>>a[i];
     }
-    
+    int m=pow(2,n)-1;
+    for(int i=0;i<=m;i++){
+        string s=to_bin_str(i,n);
+        //cout<<s<<endl;
+        if(check(s,a)){
+            cout<<"YES"<<endl;
+            return;
+        }
+    }
+    cout<<"NO"<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

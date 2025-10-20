@@ -81,12 +81,26 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
+    ll n; cin>>n;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
         cin>>a[i];
     }
-    
+    vector<ll> b(n);
+    ll curr_max=0;
+    for(ll i=0;i<n;i++){
+        curr_max=max(curr_max,a[i]);
+        b[i]=curr_max;
+    }
+    vector<ll> suffix_sum(n+1);
+    suffix_sum[n]=0;
+    for(ll i=n-1;i>=0;i--){
+        suffix_sum[i]=suffix_sum[i+1]+a[i];
+    }
+    for(ll i=0;i<n;i++){
+        cout<<suffix_sum[n-i]+b[n-1-i]<<" ";
+    }
+    cout<<endl;
 }
 
 int32_t main() {

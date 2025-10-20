@@ -81,12 +81,49 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    string a,b; cin>>a>>b;
+    int n=a.length();
+    if(a==b){
+        cout<<"YES"<<endl;
+        return;
     }
+    // vector<int> not_equal;
+    // vector<int> equal_one;
+    // vector<int> equal_zero;
+    // for(int i=0;i<n;i++){
+    //     if(a[i]==b[i]){
+    //         if(a[i]=='1') equal_one.push_back(i);
+    //         else equal_zero.push_back(i);
+    //     }
+    //     else{
+    //         not_equal.push_back(i);
+    //     }
+    // }
+    // unordered_map<int,bool> um;
+    // int eqof=equal_one[0];
+    // int eqol=equal_one[equal_one.size()-1];
+    // int eqzf=equal_zero[0];
+    // int eqzl=equal_zero[equal_zero.size()-1];
+    // for(int i=0;i<not_equal.size();i++){
+    //     um[not_equal[i]]=true;
+    //     if(i>=eqof && i<=eqol) um[not_equal[i]]=false;
+    //     if(i>=eqzf && i<=eqzl) um[not_equal[i]]=false;
+    // }
+    // for(int i=0;i<not_equal.size();i++){
+    //     if(um[not_equal[i]]){
+    //         cout<<"NO"<<endl;
+    //         return;
+    //     }
+    // }
+    // cout<<"YES"<<endl;
     
+    for(int i=0;i<n-1;i++){
+        if(a[i]==b[i] && a[i]=='0' && a[i+1]==b[i+1] && a[i+1]=='1'){
+            cout<<"YES"<<endl;
+            return;
+        }
+    }
+    cout<<"NO"<<endl;
 }
 
 int32_t main() {

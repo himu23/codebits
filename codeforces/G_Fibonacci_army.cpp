@@ -82,18 +82,20 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    vector<int> a(n+1);
+    a[0]=1;
+    if(n>=1) a[1]=1;
+    for(int i=2;i<=n;i++){
+        a[i]=a[i-1]+a[i-2];
     }
-    
+    cout<<a[n]<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

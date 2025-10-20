@@ -64,8 +64,8 @@ using safe_uset = unordered_set<T, custom_hash>;
 ll binpow(ll a, ll b) {
     ll res = 1;
     while (b > 0) {
-        if (b & 1) res *= a;
-        a *= a;
+        if (b & 1) res=(res*a)%MOD;
+        a =(a*a)%MOD;
         b >>= 1;
     }
     return res;
@@ -81,12 +81,8 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        cin>>a[i];
-    }
-    
+    ll n; cin>>n;
+    cout<<n<<endl;
 }
 
 int32_t main() {

@@ -80,13 +80,47 @@ bool isinbounds(int x,int y,int rows,int cols){
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
-void solve() {
+// int dodp(int i, vector<int>& dp,vector<int>& a){
+//     if(i>=a.size()) return 0;
+//     if(dp[i]!=-1) return dp[i];
+//     int c=i+a[i];
+//     dp[i]=a[i]+dodp(c,dp,a);
+//     return dp[i];
+// }
+
+// void solve() {
+//     int n; cin>>n;
+//     vector<int> a(n);
+//     for(int i=0;i<n;i++){
+//         cin>>a[i];
+//     }
+//     vector<int> dp(n,-1);
+//     int ans=0;
+//     for(int i=0;i<n;i++){
+//         ans=max(ans,dodp(i,dp,a));
+//     }
+//     cout<<ans<<endl;
+// }
+//firt dp question after a while 
+//above was recursive it works good
+//but lets do iterative
+void solve(){
     int n; cin>>n;
     vector<int> a(n);
     for(int i=0;i<n;i++){
         cin>>a[i];
     }
-    
+    vector<int> dp(n,0);
+    for(int i=n-1;i>=0;i--){
+        int next=i+a[i];
+        dp[i]=a[i];
+        if(next<n) dp[i]+=dp[next];
+    }
+    int ans=0;
+    for(int i=0;i<n;i++){
+        ans=max(ans,dp[i]);
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {

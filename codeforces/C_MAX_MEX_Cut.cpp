@@ -82,11 +82,59 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    string a,b; cin>>a>>b;
+    int ans=0;
+    // for(int i=0;i<n;i++){
+    //     if(a[i]==b[i] && a[i]=='1'){
+    //         if(i+1<=n-1){
+    //             if(a[i+1]==b[i+1] && a[i+1]=='0'){
+    //                 a[i]='2',a[i+1]='2';
+    //                 b[i]='2',b[i+1]='2';
+    //             }
+    //         }
+    //         if(i-1>=0){
+    //             if(a[i-1]==b[i-1] && a[i-1]=='0'){
+    //                 a[i]='2',a[i-1]='2';
+    //                 b[i]='2',b[i-1]='2';
+    //             }
+    //         }
+    //     }
+    // }
+    // for(int i=0;i<n;i++){
+    //     if(a[i]!=b[i]) ans+=2;
+    //     if(a[i]==b[i] && a[i]!='1') ans+=1;
+    // }
+    // cout<<ans<<endl;
+    //i dont know what is wrong
+    //yeah i got it if its 010 my code will do 222 instead of 220 or 022, double or overlapping pairing
+    int i=0;
+    while(i<n){
+        if(a[i]!=b[i]){
+            ans+=2;
+            i++;
+        }
+        else if(a[i]==b[i] && a[i]=='0'){
+            if(i+1<n && a[i+1]=='1' && b[i+1]=='1'){
+                ans+=2;
+                i+=2;
+            }
+            else{
+                ans+=1;
+                i++;
+            }
+        }
+        else{
+            if(i+1<n && a[i+1]=='0' && b[i+1]=='0'){
+                ans+=2;
+                i+=2;
+            }
+            else{
+                i++;
+            }
+        }
     }
-    
+    cout<<ans<<endl;
+
 }
 
 int32_t main() {

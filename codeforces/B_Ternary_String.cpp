@@ -81,12 +81,47 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    // string s; cin>>s;
+    // int n=s.length();
+    // //s+='4';
+    // // int c1=0,c2=0,c3=0;
+    // vector<int> c={0,0,0,0};
+    // int l=0,r=0;
+    // while(!(c[1]!=0 && c[2]!=0 && c[3]!=0)&&(r<n)){
+    //     if(s[r]=='1') c[1]++;
+    //     else if(s[r]=='2') c[2]++;
+    //     else if(s[r]=='3') c[3]++;
+    //     r++;
+    // }
+    // if(r==n && (c[1]==0 || c[2]==0 || c[3]==0)) {cout<<0<<endl; return;}
+    // int ans=r-l;
+    // for(int i=r;i<n;i++){
+    //     c[s[i]-'0']++;
+    //     ans=min(ans,i-l);
+    //     while(c[s[l]-'0']>1){
+    //         c[s[l]-'0']--;
+    //         l++;
+    //     }
+    //     ans=min(ans,i-l);
+    // }
+    // //ans=min(ans,r-l);
+    // cout<<ans<<endl;
+    //my core understanding of sliding window is broken
+    //i mostly do first find a valid window then only expand
+    //but we should expand and shrink simultaneously
+    string s; cin>>s;
+    int n=s.length();
+    vector<int> cnt={0,0,0,0};
+    int l=0,ans=INT_MAX;
+    for(int r=0;r<n;r++){
+        cnt[s[r]-'0']++;
+        while(cnt[1] && cnt[2] && cnt[3]){
+            ans=min(ans,r-l+1);
+            cnt[s[l]-'0']--;
+            l++;
+        }
     }
-    
+    cout<<(ans==INT_MAX ? 0:ans)<<endl;
 }
 
 int32_t main() {

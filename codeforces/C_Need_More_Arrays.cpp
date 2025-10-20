@@ -86,7 +86,26 @@ void solve() {
     for(int i=0;i<n;i++){
         cin>>a[i];
     }
-    
+    int ans=1;
+    // int i=1;
+    int curr=a[0];
+    // while(i<n){
+    //     if(a[i]<=curr+1){
+    //         i++;
+    //     }
+    //     else{
+    //         ans++;
+    //         curr=a[i];
+    //         i++;
+    //     }
+    // }
+    for(int i=1;i<n;i++){
+        if(a[i]>curr+1){
+            ans++;
+            curr=a[i];
+        }
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {

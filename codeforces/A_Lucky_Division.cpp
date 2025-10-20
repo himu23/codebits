@@ -82,18 +82,21 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    vector<int> temp={4,7,44,47,74,77,444,447,474,477,744,747,774,777};
+    for(int i=0;i<temp.size();i++){
+        if(n>=temp[i] && n%temp[i]==0){
+            cout<<"YES"<<endl;
+            return;
+        }
     }
-    
+    cout<<"NO"<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

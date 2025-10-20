@@ -81,12 +81,33 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    // string s; cin>>s;
+    // int n=s.length();
+    // int ans=1;
+    // for(int i=0;i<n-1;i++){
+    //     if(s[i]=='1' && s[i+1]=='0') ans++;
+    // }
+    // cout<<ans<<endl;
+    //nope wont work for 0101, mine returns 2 but the ans is obvsly 3
+    string s; cin>>s;
+    int n=s.length();
+    //we will have max one of type 0011(to place at the broder) rest all groups must be all 0 or all 1
+    //lets pick that and move forward and backward
+    int idx=0;
+    for(int i=0;i<n-1;i++){
+        if(s[i]=='0' && s[i+1]=='1') idx=i;
     }
-    
+    int ans=1;
+    for(int i=idx;i<n-1;i++){
+        if(s[i]!=s[i+1]){
+            ans++;
+            if(i==idx && s[i]=='0' && s[i+1]=='1') ans--;
+        }
+    }
+    for(int i=idx;i>0;i--){
+        if(s[i]!=s[i-1]) ans++;
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {

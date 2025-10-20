@@ -73,9 +73,9 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    vector<int> p(n);
+    vector<int> a(n);
     for(int i=0;i<n;i++){
-       cin>>p[i];
+        cin>>a[i];
     }
     
 }
@@ -88,5 +88,6 @@ int32_t main() {
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
+        //cout<<fixed<<setprecision(12)<<
     }
 }

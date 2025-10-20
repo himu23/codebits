@@ -81,12 +81,18 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        cin>>a[i];
-    }
+    string s; cin>>s;
+    int n=s.length();
+    // int last_zero=0;
+    // int first_one=n-1;
+    // for(int i=1;i<n;i++){
+    //     if(s[i]=='0') last_zero=i;
+    // }
+    // for(int i=n-2;i>=0;i--){
+    //     if(s[i]=='1') first_one=i;
+    // }
     
+
 }
 
 int32_t main() {

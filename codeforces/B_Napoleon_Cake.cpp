@@ -82,11 +82,27 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
+    vector<int> a(n+1);
+    for(int i=1;i<=n;i++){
         cin>>a[i];
     }
-    
+    vector<int> b(n+1,0);
+    for(int i=n;i>0;i--){
+        b[i]++;
+        int c=i-a[i];
+        if(c<0) c=0;
+        b[c]--;
+    }
+    vector<int> c(n+1);
+    c[n]=b[n];
+    for(int i=n-1;i>=0;i--){
+        c[i]=c[i+1]+b[i];
+    }
+    for(int i=1;i<=n;i++){
+        if(c[i]>0) cout<<1<<" ";
+        else cout<<0<<" ";
+    }
+    cout<<endl;
 }
 
 int32_t main() {

@@ -86,7 +86,24 @@ void solve() {
     for(int i=0;i<n;i++){
         cin>>a[i];
     }
-    
+    int m; cin>>m;
+    vector<int> b(m);
+    for(int i=0;i<m;i++){
+        cin>>b[i];
+    }
+    int maxxa=a[0],curra=a[0];
+    int maxxb=b[0],currb=b[0];
+    for(int i=1;i<n;i++){
+        curra=curra+a[i];
+        maxxa=max(maxxa,curra);
+    }
+    for(int i=1;i<m;i++){
+        currb=currb+b[i];
+        maxxb=max(maxxb,currb);
+    }
+    if(maxxa<0) maxxa=0;
+    if(maxxb<0) maxxb=0;
+    cout<<maxxa+maxxb<<endl;
 }
 
 int32_t main() {

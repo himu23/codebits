@@ -61,15 +61,6 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-ll binpow(ll a, ll b) {
-    ll res = 1;
-    while (b > 0) {
-        if (b & 1) res *= a;
-        a *= a;
-        b >>= 1;
-    }
-    return res;
-}
 void add_self(int& a,int b){
     a+=b;
     if(a>=MOD) a-=MOD;
@@ -86,14 +77,23 @@ void solve() {
     for(int i=0;i<n;i++){
         cin>>a[i];
     }
-    
+    int len=0;
+    int l=0;
+    for(int r=1;r<n;r++){
+        if(a[r]<a[r-1]){
+            len=max(len,r-l);
+            l=r;
+        }
+    }
+    len=max(len,n-l);
+    cout<<len<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

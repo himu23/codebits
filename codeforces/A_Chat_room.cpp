@@ -81,19 +81,29 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
+    string s; cin>>s;
+    int n=s.length();
+    string s1="hello";
+    int m=5;
+    int cur=1;
+    vector<bool> temp(m+1,false);
+    temp[0]=true;
     for(int i=0;i<n;i++){
-        cin>>a[i];
+        char c=s[i];
+        if(s1[cur-1]==c) cur++;
+        if(cur==6){
+            cout<<"YES"<<endl;
+            return;
+        }
     }
-    
+    cout<<"NO"<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

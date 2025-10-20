@@ -81,12 +81,36 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    int n,m; cin>>n>>m;
+    int a=n;
+    int b=m;
+    int tinn=0,winn=0;
+    int tinm=0,winm=0;
+    while(n>0 && n%3==0){
+        n/=3;
+        tinn++;
     }
-    
+    //n=a;
+    while(n>0 && n%2==0){
+        n/=2;
+        winn++;
+    }
+    //n=a;
+    while(m>0 && m%3==0){
+        m/=3;
+        tinm++;
+    }
+    //m=b;
+    while(m>0 && m%2==0){
+        m/=2;
+        winm++;
+    }
+    //m=b;
+    tinn-=tinm;
+    winn-=winm;
+    winn*=-1;
+    if(winn>=0 && winn<=tinn && m==n) cout<<"YES"<<endl;
+    else cout<<"NO"<<endl;
 }
 
 int32_t main() {
