@@ -81,12 +81,30 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
+    ll n; cin>>n;
+    vector<ll> a(n);
+    ll maxx=0;
+    for(ll i=0;i<n;i++){
         cin>>a[i];
+        maxx=max(maxx,a[i]);
     }
-    //wasnt able to do it
+    vector<ll> cnt(maxx+1,0);
+    for(ll i=0;i<n;i++){
+        cnt[a[i]]++;
+    }
+    // actually a new problem can be made like ind=stead of deleting ai-1 & ai+1
+    //delete elements at i-1 & i+1;
+    cnt[0]=0;
+    vector<ll>dp(maxx+1);
+    ll ans=0;
+    dp[1]=cnt[1];
+    for(ll i=2;i<=maxx;i++){
+        dp[i]=max(dp[i-1],dp[i-2]+cnt[i]*i);
+        ans=max(ans,dp[i]);
+    }
+    cout<<dp[maxx]<<endl;
+
+    
 }
 
 int32_t main() {

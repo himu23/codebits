@@ -82,23 +82,38 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
+    int n,k; cin>>n>>k;
+    string s; cin>>s;
+    int lon=0;
     int ans=0;
-    int z=0,p=0,m=0;
-    for(int i=0;i<n;i++){
-        cin>>a[i];
-        if(a[i]==1) p++;
-        else if(a[i]==0) z++;
-        else if(a[i]==-1) m++;
+    if(s[0]=='1') lon++;
+    for(int i=1;i<n;i++){
+        if(s[i]=='1' && s[i-1]=='1') lon++;
+        else{
+            ans=max(ans,lon);
+            if(s[i]=='1') lon=1;
+            else lon=0;
+        }
     }
-    ans+=z;
-    if(m%2==0){
-        cout<<ans<<endl;
+    ans=max(ans,lon);
+    // cout<<ans<<endl;
+    if(ans>=k){
+        cout<<"NO"<<endl;
         return;
     }
-    cout<<ans+2<<endl;
-    
+    int cur=n;
+    vector<int> temp(n);
+    for(int i=0;i<n;i++){
+        if(s[i]=='0') {temp[i]=cur;cur--;}
+    }
+    for(int i=0;i<n;i++){
+        if(s[i]=='1'){temp[i]=cur;cur--;}
+    }
+    cout<<"YES"<<endl;
+    for(int i=0;i<n;i++){
+        cout<<temp[i]<<" ";
+    }
+    cout<<endl;
 }
 
 int32_t main() {

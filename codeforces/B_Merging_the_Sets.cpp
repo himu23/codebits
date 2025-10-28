@@ -82,23 +82,88 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    int ans=0;
-    int z=0,p=0,m=0;
-    for(int i=0;i<n;i++){
-        cin>>a[i];
-        if(a[i]==1) p++;
-        else if(a[i]==0) z++;
-        else if(a[i]==-1) m++;
-    }
-    ans+=z;
-    if(m%2==0){
-        cout<<ans<<endl;
-        return;
-    }
-    cout<<ans+2<<endl;
+    // int n,m; cin>>n>>m;
+    // vector<vector<int>> temp (m+1);
+    // vector<vector<int>> sets(n+1);
+    // for(int i=1;i<=n;i++){
+    //     int l; cin>>l;
+    //     for(int j=0;j<l;j++){
+    //         int x; cin>>x;
+    //         temp[x].pb(i);
+    //         sets[i].pb(x);
+    //     }
+    // }
     
+    // for(int i=1;i<=m;i++){
+    //     if(temp[i].size()==0){
+    //         cout<<"NO"<<endl;
+    //         return;
+    //     }
+    // }
+    // vector<vector<int>> temp2;
+    // for(int i=1;i<=m;i++){
+    //     if(temp[i].size()>=3){
+    //         cout<<"YES"<<endl;
+    //         return;
+    //     }
+    //     if(temp[i].size()==2) temp2.pb(temp[i]);
+    // }
+    // sort(temp2.begin(),temp2.end());
+    // for(int i=1;i<temp2.size();i++){
+    //     if(temp2[i-1]!=temp2[i]){
+    //         cout<<"YES"<<endl;
+    //         return;
+    //     }
+    // } 
+    // if(m==1 && n>=2){
+    //     cout<<"YES"<<endl;
+    //     return;
+    // }
+    // cout<<"NO"<<endl;
+    // // something wrong
+    int n,m; cin>>n>>m;
+    vector<vector<int>> s(n);
+    vector<int> temp(m+1,0);
+    for(int i=0;i<n;i++){
+        int l; cin>>l;
+        s[i].resize(l); //important
+        for(int j=0;j<l;j++){
+            cin>>s[i][j];
+            temp[s[i][j]]++;
+        }
+    }
+    for(int i=1;i<=m;i++){
+        if(temp[i]==0){
+            cout<<"NO"<<endl;
+            return;
+        }
+    }
+    bool flag1=false,flag2=false;
+    for(int i=0;i<n;i++){
+        bool flag3=false;
+        int l=s[i].size();
+        for(int j=0;j<l;j++){
+            if(temp[s[i][j]]==1){
+                flag3=true;
+                break;
+            }
+        }
+        if(flag3) continue;
+        if(!flag1){
+            flag1=true;
+        }
+        else{
+            flag2=true;
+            break;
+        }
+    }
+    if(flag2){
+        cout<<"YES"<<endl;
+    }
+    else{
+        cout<<"NO"<<endl;
+    }
+
 }
 
 int32_t main() {

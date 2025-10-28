@@ -84,21 +84,36 @@ const int dy[4]={1,0,-1,0};
 void solve() {
     int n; cin>>n;
     vector<int> a(n);
-    int ans=0;
-    int z=0,p=0,m=0;
     for(int i=0;i<n;i++){
         cin>>a[i];
-        if(a[i]==1) p++;
-        else if(a[i]==0) z++;
-        else if(a[i]==-1) m++;
     }
-    ans+=z;
-    if(m%2==0){
-        cout<<ans<<endl;
-        return;
+    vector<int> temp;
+    int temp2=1;
+    for(int i=1;i<n;i++){
+        if(a[i]==a[i-1]) temp2++;
+        else{
+            temp.pb(temp2);
+            temp2=1;
+        }
     }
-    cout<<ans+2<<endl;
-    
+    temp.pb(temp2);
+    // cout<<temp<<endl;
+    int ans=0;
+    // for(int i=1;i<temp.size();i++){
+    //     ans=max(ans,2*min(temp[i],temp[i-1]));
+    // }
+    // int maxx=0;
+    // for(int i=0;i<temp.size();i++){
+    //     maxx=max(maxx,temp[i]);
+    // }
+    // for(int )
+    //ok if it was subarray it was like 1400 but this is easy
+    sort(temp.begin(),temp.end());
+    int m=temp.size();
+    for(int i=0;i<m;i++){
+        ans=max(ans,temp[i]*(m-i));
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {

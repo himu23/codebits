@@ -81,31 +81,57 @@ bool isinbounds(int x,int y,int rows,int cols){
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
+double getncr(double n,double r){
+    double numerator=1;
+    double denominator=1;
+    for(int i=n;i>n-r;i--) numerator*=i;
+    for(int j=1;j<=r;j++) denominator*=j;
+    return numerator/denominator;
+}
+
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    int ans=0;
-    int z=0,p=0,m=0;
+    string s,t; cin>>s>>t;
+    int n=s.length();
+    int sum1=0,sum2=0;
+    int c2=0;
     for(int i=0;i<n;i++){
-        cin>>a[i];
-        if(a[i]==1) p++;
-        else if(a[i]==0) z++;
-        else if(a[i]==-1) m++;
+        if(s[i]=='+') sum1++;
+        else if(s[i]=='-') sum1--;
+        if(t[i]=='+') sum2++;
+        else if(t[i]=='-') sum2--;
+        else if(t[i]=='?') c2++;
     }
-    ans+=z;
-    if(m%2==0){
-        cout<<ans<<endl;
-        return;
-    }
-    cout<<ans+2<<endl;
+    sum2=sum1-sum2;
+    // cout<<sum2<<endl;
+    // cout<<sum2<<" "<<c2<<endl;
+    sum2+=c2;
+    if(sum2<0 || sum2>2*c2 || sum2%2!=0) {cout<<fixed<<setprecision(12)<<(double)0<<endl; return;}
+    //1 1
+    //-1 1
+    //0 2
+    //1 2 1
+    //-2 0 2
+    //0 2 4
+    //1 3 3 1
+    //-3 -1 1 3
+    //0 2 4 6
+    //1 4 6 4 1
+    //-4 -2 0 2 4
+    //0 2 4 6 8
+    sum2/=2;
+    // cout<<sum2<<endl;
+    double numerator=getncr((double)c2,(double)sum2);
+    double denominator=pow(2,c2);
+    cout<<fixed<<setprecision(12)<<numerator/denominator<<endl;
     
+
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

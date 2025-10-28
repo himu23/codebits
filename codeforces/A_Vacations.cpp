@@ -84,28 +84,61 @@ const int dy[4]={1,0,-1,0};
 void solve() {
     int n; cin>>n;
     vector<int> a(n);
-    int ans=0;
-    int z=0,p=0,m=0;
     for(int i=0;i<n;i++){
         cin>>a[i];
-        if(a[i]==1) p++;
-        else if(a[i]==0) z++;
-        else if(a[i]==-1) m++;
     }
-    ans+=z;
-    if(m%2==0){
-        cout<<ans<<endl;
-        return;
+    // int ans=0;
+    // int pre=3;
+    // for(int i=0;i<n;i++){
+    //     if(a[i]==0){
+    //         ans++;
+    //         pre=0;
+    //     }
+    //     else if(a[i]==1){
+    //         if(pre==2){
+    //             ans++;
+    //             pre=0;
+    //         }
+    //         else{
+    //             pre=2;
+    //         }
+    //     }
+    //     else if(a[i]==2){
+    //         if(pre==1){
+    //             ans++;
+    //             pre=1;
+    //         }
+    //         else{
+    //             pre=1;
+    //         }
+    //     }
+    //     else{
+    //         if(pre==1) pre=2;
+    //         else if(pre==2) pre=1;
+    //         else{
+    //             //the curx of the problem
+    //             //and thats why thsi method fails
+    //         }
+    //     }
+    // }
+    // cout<<ans<<endl;
+    vector<vector<int>> dp(n,vector<int>(3,INF));
+    dp[0][0]=1;
+    if(a[0]==1 || a[0]==3) dp[0][1]=0;
+    if(a[0]==2 || a[0]==3) dp[0][2]=0;
+    for(int i=1;i<n;i++){
+        dp[i][0]=min({dp[i-1][0],dp[i-1][1],dp[i-1][2]})+1;
+        if(a[i]==1 || a[i]==3) dp[i][1]=min(dp[i-1][0],dp[i-1][2]);
+        if(a[i]==2 || a[i]==3) dp[i][2]=min(dp[i-1][0],dp[i-1][1]);
     }
-    cout<<ans+2<<endl;
-    
+    cout<<min({dp[n-1][0],dp[n-1][1],dp[n-1][2]})<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

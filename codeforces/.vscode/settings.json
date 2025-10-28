@@ -3,6 +3,16 @@
     "iostream": "cpp",
     "ostream": "cpp",
     "array": "cpp",
-    "cmath": "cpp"
+    "cmath": "cpp",
+    "bitset": "cpp",
+    "string_view": "cpp",
+    "flat_map": "cpp",
+    "flat_set": "cpp",
+    "initializer_list": "cpp",
+    "ranges": "cpp",
+    "span": "cpp",
+    "stacktrace": "cpp",
+    "regex": "cpp",
+    "valarray": "cpp"
   }
 }

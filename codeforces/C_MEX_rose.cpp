@@ -82,23 +82,28 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
+    int n,k; cin>>n>>k;
     vector<int> a(n);
-    int ans=0;
-    int z=0,p=0,m=0;
+    vector<bool> temp(n+1,false);
+    int cnt=0;
     for(int i=0;i<n;i++){
         cin>>a[i];
-        if(a[i]==1) p++;
-        else if(a[i]==0) z++;
-        else if(a[i]==-1) m++;
+        temp[a[i]]=true;
+        if(a[i]==k) cnt++;
     }
-    ans+=z;
-    if(m%2==0){
-        cout<<ans<<endl;
+    vector<int> temp2;
+    bool flag=false;
+    for(int i=0;i<=n;i++){
+        if(!temp[i] && i<=k) temp2.pb(i);
+        if(!temp[i] && i==k) flag=true;
+    }
+    if(temp2.size()==1 && temp2[0]==k){
+        cout<<0<<endl;
         return;
     }
-    cout<<ans+2<<endl;
-    
+    int ans=max(cnt,(int)temp2.size());
+    if(flag) ans--;
+    cout<<ans<<endl;
 }
 
 int32_t main() {

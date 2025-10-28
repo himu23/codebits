@@ -82,30 +82,39 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    int ans=0;
-    int z=0,p=0,m=0;
-    for(int i=0;i<n;i++){
+    ll n; cin>>n;
+    vector<ll> a(n);
+    vector<ll> b(n);
+    for(ll i=0;i<n;i++){
         cin>>a[i];
-        if(a[i]==1) p++;
-        else if(a[i]==0) z++;
-        else if(a[i]==-1) m++;
+        b[i]=a[i];
     }
-    ans+=z;
-    if(m%2==0){
-        cout<<ans<<endl;
-        return;
+    sort(b.begin(),b.end());
+    vector<ll> prea(n+1,0);
+    vector<ll> preb(n+1,0);
+    for(ll i=1;i<=n;i++){
+        prea[i]=prea[i-1]+a[i-1];
+        preb[i]=preb[i-1]+b[i-1];
     }
-    cout<<ans+2<<endl;
-    
+    ll m; cin>>m;
+    while(m--){
+        ll type,l,r; cin>>type>>l>>r;
+        // l--,r--;
+        if(type==1){
+            cout<<prea[r]-prea[l-1];
+        }
+        else if(type==2){
+            cout<<preb[r]-preb[l-1];
+        }
+        cout<<endl;
+    }
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

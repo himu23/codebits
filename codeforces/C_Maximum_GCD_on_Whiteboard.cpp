@@ -82,22 +82,19 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
+    int n,k; cin>>n>>k;
     vector<int> a(n);
-    int ans=0;
-    int z=0,p=0,m=0;
+    bool is2=false;
+    int c1=0;
     for(int i=0;i<n;i++){
         cin>>a[i];
-        if(a[i]==1) p++;
-        else if(a[i]==0) z++;
-        else if(a[i]==-1) m++;
+        if(a[i]==1) c1++;
+        if(a[i]==2) is2=true;
     }
-    ans+=z;
-    if(m%2==0){
-        cout<<ans<<endl;
+    if(c1>k){
+        cout<<1<<endl;
         return;
     }
-    cout<<ans+2<<endl;
     
 }
 

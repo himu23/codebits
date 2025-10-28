@@ -83,29 +83,28 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    vector<int> a(n);
-    int ans=0;
-    int z=0,p=0,m=0;
-    for(int i=0;i<n;i++){
-        cin>>a[i];
-        if(a[i]==1) p++;
-        else if(a[i]==0) z++;
-        else if(a[i]==-1) m++;
-    }
-    ans+=z;
-    if(m%2==0){
-        cout<<ans<<endl;
-        return;
-    }
-    cout<<ans+2<<endl;
-    
+    // vector<int> temp={9,189,2889,38889};
+    int pos;
+    int cur;
+    if(n<=9){pos=n,cur=1;}
+    else if(n<=189) pos=n-9,cur=2;
+    else if(n<=2889) pos=n-189,cur=3;
+    else if(n<=38889) pos=n-2889,cur=4;
+    int num=pos/cur;
+    int num2=pos%cur;
+    num=pow(10,cur-1)+num-1;
+    if(num2==0) num2=cur;
+    else num++;
+    cout<<to_string(num)[num2-1]<<endl;
+    // cout<<num2<<endl;
+    // cout<<num<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

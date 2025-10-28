@@ -82,23 +82,27 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    int ans=0;
-    int z=0,p=0,m=0;
-    for(int i=0;i<n;i++){
-        cin>>a[i];
-        if(a[i]==1) p++;
-        else if(a[i]==0) z++;
-        else if(a[i]==-1) m++;
+    ll k,x; cin>>k>>x;
+    ll m=binpow(2,k+1);
+    ll y=m-x;
+    vector<ll> temp;
+    while(x!=y){
+        if(x<y){
+            y-=x;
+            x*=2;
+            temp.pb(1);
+        }
+        else if(x>y){
+            x-=y;
+            y*=2;
+            temp.pb(2);
+        }
     }
-    ans+=z;
-    if(m%2==0){
-        cout<<ans<<endl;
-        return;
+    cout<<temp.size()<<endl;
+    for(ll i=temp.size()-1;i>=0;i--){
+        cout<<temp[i]<<" ";
     }
-    cout<<ans+2<<endl;
-    
+    cout<<endl;
 }
 
 int32_t main() {

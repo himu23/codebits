@@ -82,23 +82,42 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    int ans=0;
-    int z=0,p=0,m=0;
-    for(int i=0;i<n;i++){
+    ll n; cin>>n;
+    vector<ll> a(n);
+    // ll mlen=0;
+    // ll par=0;
+    // for(ll i=0;i<n;i++){
+    //     cin>>a[i];
+    //     ll curpar;
+    //     if(a[i]<0) curpar=-1;
+    //     else curpar=1;
+    //     if(curpar!=par) mlen++;
+    //     par=curpar;
+    // }
+    // cout<<mlen<<endl;
+    for(ll i=0;i<n;i++){
         cin>>a[i];
-        if(a[i]==1) p++;
-        else if(a[i]==0) z++;
-        else if(a[i]==-1) m++;
     }
-    ans+=z;
-    if(m%2==0){
-        cout<<ans<<endl;
-        return;
+    // vector<ll> temp;
+    ll ans=0;
+    ll cur=a[0];
+    for(ll i=1;i<n;i++){
+        if((a[i]>0 && a[i-1]<0)||(a[i-1]>0 && a[i]<0)){
+            // temp.pb(cur);
+            ans+=cur;
+            cur=a[i];
+        }
+        else{
+            cur=max(cur,a[i]);
+        }
     }
-    cout<<ans+2<<endl;
-    
+    // temp.pb(cur);
+    ans+=cur;
+    // ll ans=0;
+    // for(ll i=0;i<temp.size();i++){
+    //     ans+=temp[i];
+    // }
+    cout<<ans<<endl;
 }
 
 int32_t main() {

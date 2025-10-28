@@ -82,30 +82,45 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    int ans=0;
-    int z=0,p=0,m=0;
+    string s; cin>>s;
+    int n=s.length();
+    bool flag1=false,flag2=false;
+    vector<bool> temp(n,true);
     for(int i=0;i<n;i++){
-        cin>>a[i];
-        if(a[i]==1) p++;
-        else if(a[i]==0) z++;
-        else if(a[i]==-1) m++;
+        if(!flag1 && i!=n-1 && s[i]=='A' && s[i+1]=='B' && temp[i] && temp[i+1]){
+            flag1=true;
+            temp[i]=false;
+            temp[i+1]=false;
+        }
+        if(!flag2 && i!=n-1 && s[i]=='B' && s[i+1]=='A' && temp[i] && temp[i+1]){
+            flag2=true;
+            temp[i]=false;
+            temp[i+1]=false;
+        }
     }
-    ans+=z;
-    if(m%2==0){
-        cout<<ans<<endl;
-        return;
+    vector<bool> temp2(n,true);
+    bool flag11=false,flag22=false;
+    for(int i=n-1;i>=0;i--){
+        if(!flag22 && i!=0 && s[i]=='B' && s[i-1]=='A' && temp2[i] && temp2[i-1]){
+            flag22=true;
+            temp2[i]=false;
+            temp2[i-1]=false;
+        }
+        if(!flag11 && i!=0 && s[i]=='A' && s[i-1]=='B' && temp2[i] && temp2[i-1]){
+            flag11=true;
+            temp2[i]=false;
+            temp2[i-1]=false;
+        }
     }
-    cout<<ans+2<<endl;
-    
+    if((flag1 && flag2)||(flag11 && flag22)) cout<<"YES"<<endl;
+    else cout<<"NO"<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

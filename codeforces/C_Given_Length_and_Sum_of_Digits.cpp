@@ -82,30 +82,59 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    int ans=0;
-    int z=0,p=0,m=0;
+    int n,m; cin>>n>>m;
+    if(n==1 && m==0){cout<<0<<" "<<0; return;}
+    //if(m==0 || m>9*n){cout<<-1<<" "<<-1<<endl; return;}
+    vector<int> bigg(n,0);
+    int temp=m;
     for(int i=0;i<n;i++){
-        cin>>a[i];
-        if(a[i]==1) p++;
-        else if(a[i]==0) z++;
-        else if(a[i]==-1) m++;
+        if(m>9){
+            bigg[i]=9;
+            m-=9;
+        }
+        else{
+            bigg[i]=m;
+            m-=m;
+        }
     }
-    ans+=z;
-    if(m%2==0){
-        cout<<ans<<endl;
-        return;
+    vector<int> small(n,0);
+    small[n-1]=1;
+    m=temp;
+    m--;
+    for(int i=0;i<n;i++){
+        if(small[i]+m>9){
+            int temp2=small[i];
+            small[i]=9;
+            m-=small[i]-temp2;
+        }
+        else{
+            small[i]+=m;
+            m-=m;
+        }
     }
-    cout<<ans+2<<endl;
-    
+    m=temp;
+    if(m==0 || m>9*n) cout<<-1;
+    else{
+        for(int i=n-1;i>=0;i--){
+            cout<<small[i];
+        }
+    }
+    cout<<" ";
+    if(m==0 || m>9*n) cout<<-1;
+    else{
+        for(int i=0;i<n;i++){
+            cout<<bigg[i];
+        }
+    }
+    cout<<endl;
+
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    //cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

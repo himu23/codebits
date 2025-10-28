@@ -82,23 +82,67 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    int ans=0;
-    int z=0,p=0,m=0;
-    for(int i=0;i<n;i++){
-        cin>>a[i];
-        if(a[i]==1) p++;
-        else if(a[i]==0) z++;
-        else if(a[i]==-1) m++;
-    }
-    ans+=z;
-    if(m%2==0){
-        cout<<ans<<endl;
+    int n,k; cin>>n>>k;
+    int m=n*n;
+    int rem=m-k;
+    // cout<<rem<<endl;
+    // if(n==2){
+    //     if(rem>0) cout<<"NO"<<endl;
+    //     else{
+    //         cout<<"YES"<<endl;;
+    //         cout<<"UU"<<endl<<"UU"<<endl;
+    //     }
+    //     return;
+    // }
+    if(rem==0){
+        cout<<"YES"<<endl;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                cout<<"U";
+            }
+            cout<<endl;
+        }
         return;
     }
-    cout<<ans+2<<endl;
-    
+    if(rem==1){
+        cout<<"NO"<<endl;
+        return;
+    }
+    cout<<"YES"<<endl;
+    vector<vector<char>> grid(n,vector<char>(n));
+    grid[0][0]='R';
+    rem--;
+    for(int i=0;i<n;i++){
+        if(i==0){
+            for(int j=1;j<n;j++){
+                if(rem>0){
+                    grid[i][j]='L';
+                    rem--;
+                }
+                else{
+                    grid[i][j]='U';
+                }
+            }
+        }
+        else{
+            for(int j=0;j<n;j++){
+                if(rem>0){
+                    grid[i][j]='U';
+                    rem--;
+                }
+                else{
+                    grid[i][j]='R';
+                }
+            }
+        }
+    }
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            cout<<grid[i][j];
+        }
+        cout<<endl;
+    }
+    return;
 }
 
 int32_t main() {

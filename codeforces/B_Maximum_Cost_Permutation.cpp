@@ -83,22 +83,37 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    vector<int> a(n);
-    int ans=0;
-    int z=0,p=0,m=0;
-    for(int i=0;i<n;i++){
+    int c0=0;
+    vector<int> a(n+1);
+    int temp2=0;
+    vector<bool> temp (n+1,false);
+    for(int i=1;i<=n;i++){
         cin>>a[i];
-        if(a[i]==1) p++;
-        else if(a[i]==0) z++;
-        else if(a[i]==-1) m++;
+        temp[a[i]]=true;
+        if(a[i]==0){
+            c0++;
+            temp2=i;
+        }
     }
-    ans+=z;
-    if(m%2==0){
-        cout<<ans<<endl;
+    int l=1,r=n;
+    if(c0==1){
+        for(int i=1;i<=n;i++){
+            if(!temp[i]){
+                a[temp2]=i;
+                break;
+            }
+        }
+    }
+    while(l<=n && a[l]==l) l++;
+    while(r>=1 && a[r]==r) r--;
+    // cout<<l<<" "<<r<<endl;
+    if(r-l+1<=1){
+        cout<<0<<endl;
         return;
     }
-    cout<<ans+2<<endl;
-    
+    else{
+        cout<<r-l+1<<endl;
+    }
 }
 
 int32_t main() {
