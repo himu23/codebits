@@ -82,29 +82,46 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    string s; cin>>s;
-    int min0=n,max0=-1,min1=n,max1=-1;
+    int n,k,x; cin>>n>>k>>x;
+    vector<int> a(n);
     for(int i=0;i<n;i++){
-        if(s[i]=='a'){
-            max0=max(max0,i);
-            min0=min(min0,i);
+        cin>>a[i];
+    }
+    sort(a.begin(),a.end());
+    int minn=x;
+    int maxx=0;
+    for(int i=0;i<n;i++){
+        minn=min(minn,a[i]);
+        maxx=max(maxx,a[i]);
+    }
+    // vector<int> midd;
+    set<pair<int,int>> temp;
+    temp.insert({a[0],0});
+    temp.insert({x-a[n-1],x});
+    for(int i=1;i<n;i++){
+        // midd.insert((a[i]+a[i-1])/2);
+        int dist=a[i]-a[i-1];
+        if(dist%2==0){
+            temp.insert({dist/2,a[i-1]+dist/2});
         }
         else{
-            max1=max(max1,i);
-            min1=min(min1,i);
+            temp.insert({dist/2,a[i-1]+dist/2});
+            temp.insert({dist/2,a[i]-dist/2});
         }
     }
-    // cout<<max1<<min1<<min0<<max0<<endl;
-    int a=0;
-    for(int i=min0;i<=max0;i++){
-        if(s[i]=='b') a++;
+    // sort(temp.begin(),temp.end(),[](auto &a, auto &b){
+    //     if(a.first==b.first) return a.second>b.second;
+    //     return a.first>b.first;
+    // });
+    vector<int> ans;
+    while(k--){
+        auto last=*temp.rbegin();
+        int val=last.second;
+        int val2=last.first;
+        val2--;
+        
     }
-    int b=0;
-    for(int i=min1;i<=max1;i++){
-        if(s[i]=='a') b++;
-    }
-    cout<<min(a,b)<<endl;
+
 }
 
 int32_t main() {

@@ -83,28 +83,20 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    string s; cin>>s;
-    int min0=n,max0=-1,min1=n,max1=-1;
+    vector<int> a(n);
+    bool ise=false;
+    bool iso=false;
     for(int i=0;i<n;i++){
-        if(s[i]=='a'){
-            max0=max(max0,i);
-            min0=min(min0,i);
-        }
-        else{
-            max1=max(max1,i);
-            min1=min(min1,i);
-        }
+        cin>>a[i];
+        if(a[i]%2==0) ise=true;
+        if(a[i]%2!=0) iso=true;
     }
-    // cout<<max1<<min1<<min0<<max0<<endl;
-    int a=0;
-    for(int i=min0;i<=max0;i++){
-        if(s[i]=='b') a++;
+    if(ise && iso) sort(a.begin(),a.end());
+    for(int i=0;i<n;i++){
+        cout<<a[i]<<" ";
     }
-    int b=0;
-    for(int i=min1;i<=max1;i++){
-        if(s[i]=='a') b++;
-    }
-    cout<<min(a,b)<<endl;
+    cout<<endl;
+
 }
 
 int32_t main() {

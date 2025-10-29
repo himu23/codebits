@@ -82,29 +82,11 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    string s; cin>>s;
-    int min0=n,max0=-1,min1=n,max1=-1;
-    for(int i=0;i<n;i++){
-        if(s[i]=='a'){
-            max0=max(max0,i);
-            min0=min(min0,i);
-        }
-        else{
-            max1=max(max1,i);
-            min1=min(min1,i);
-        }
+    int a,b,c,d; cin>>a>>b>>c>>d;
+    if(a==b && a==c && a==d){
+        cout<<"YES"<<endl;
     }
-    // cout<<max1<<min1<<min0<<max0<<endl;
-    int a=0;
-    for(int i=min0;i<=max0;i++){
-        if(s[i]=='b') a++;
-    }
-    int b=0;
-    for(int i=min1;i<=max1;i++){
-        if(s[i]=='a') b++;
-    }
-    cout<<min(a,b)<<endl;
+    else cout<<"NO"<<endl;
 }
 
 int32_t main() {
