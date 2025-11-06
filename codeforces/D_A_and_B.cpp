@@ -202,30 +202,41 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
+    ll n; cin>>n;
     string s; cin>>s;
-    vector<int> ap;
-    vector<int> bp;
-    for(int i=0;i<n;i++){
+    ll ca=0,cb=0;
+    for(ll i=0;i<n;i++){
+        if(s[i]=='a') ca++;
+        else cb++;
+    }
+    if(ca==0 || cb==0){
+        cout<<0<<endl;
+        return;
+    }
+    vector<ll> ap;
+    vector<ll> bp;
+    for(ll i=0;i<n;i++){
         if(s[i]=='a') ap.pb(i);
         else bp.pb(i);
     }
-    for(int i=0;i<ap.size();i++){
+    for(ll i=0;i<ap.size();i++){
         ap[i]=ap[i]-i;
     }
-    for(int i=0;i<bp.size();i++){
+    for(ll i=0;i<bp.size();i++){
         bp[i]=bp[i]-i;
     }
-    int meda,medb;
-    if(ap.size()%2==0) meda=(ap[ap.size()/2]+ap[(ap.size()+1)/2])/2;
-    else meda=ap[(ap.size()+1)/2];
-    if(bp.size()%2==0) medb=(bp[bp.size()/2]+bp[(bp.size()+1)/2])/2;
-    else medb=bp[(bp.size()+1)/2];
-    int ansa=0,ansb=0;
-    for(int i=0;i<ap.size();i++){
+    // ll meda,medb;
+    // if(ap.size()%2==0) meda=(ap[ap.size()/2]+ap[(ap.size()+1)/2])/2;
+    // else meda=ap[(ap.size()+1)/2];
+    // if(bp.size()%2==0) medb=(bp[bp.size()/2]+bp[(bp.size()+1)/2])/2;
+    // else medb=bp[(bp.size()+1)/2];
+    ll meda=ap[ap.size()/2];
+    ll medb=bp[bp.size()/2];
+    ll ansa=0,ansb=0;
+    for(ll i=0;i<ap.size();i++){
         ansa+=abs(ap[i]-meda);
     }
-    for(int i=0;i<bp.size();i++){
+    for(ll i=0;i<bp.size();i++){
         ansb+=abs(bp[i]-medb);
     }
     cout<<min(ansa,ansb)<<endl;

@@ -1,3 +1,4 @@
+//author: himu23
 #include <bits/stdc++.h>
 // #include<ext/pb_ds/assoc_container.hpp>
 // #include<ext/pb_ds/tree_policy.hpp>
@@ -61,6 +62,15 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
+ll binpow(ll a, ll b) {
+    ll res = 1;
+    while (b > 0) {
+        if (b & 1) res *= a;
+        a *= a;
+        b >>= 1;
+    }
+    return res;
+}
 void add_self(int& a,int b){
     a+=b;
     if(a>=MOD) a-=MOD;
@@ -72,38 +82,23 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    ll n,x; cin>>n>>x;
+    ll n; cin>>n;
     vector<ll> a(n);
+    bool eve=false,od=false;
     for(ll i=0;i<n;i++){
         cin>>a[i];
+        if(a[i]%2==0) eve=true;
+        if(a[i]%2!=0) od=true;
     }
-    vector<ll> b(n);
-    for(ll i=0;i<n;i++){
-        cin>>b[i];
+    if(eve && od){
+        cout<<2<<endl;
+        return;
     }
-    vector<ll> c(n);
-    for(ll i=0;i<n;i++){
-        cin>>c[i];
+    if(n==2){
+        cout<<max(a[0],a[1])+1<<endl;
+        return;
     }
-    ll prefa=0,prefb=0,prefc=0;
-    for(ll i=0;i<n;i++){
-        if((a[i]|x)==x) prefa|=a[i];
-        else break;
-    }
-    for(ll i=0;i<n;i++){
-        if((b[i]|x)==x) prefb|=b[i];
-        else break;
-    }
-    for(ll i=0;i<n;i++){
-        if((c[i]|x)==x) prefc|=c[i];
-        else break;
-    }
-    if(((prefa|prefb)|prefc) == x){
-        cout<<"Yes"<<endl;
-    }
-    else{
-        cout<<"No"<<endl;
-    }
+    cout<<4<<endl;
 
 }
 

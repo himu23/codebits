@@ -86,7 +86,33 @@ void solve() {
     for(int i=0;i<n;i++){
         cin>>a[i];
     }
-    
+    vector<vector<int>> temp;
+    vector<int> temp2;
+    temp2.pb(a[0]);
+    for(int i=1;i<n;i++){
+        if((abs(a[i])%2)==(abs(a[i-1])%2)){
+            if(temp2.size()!=0) temp.pb(temp2);
+            temp2.clear();
+            // continue;
+        }
+        temp2.pb(a[i]);
+    }
+    if(temp2.size()!=0) temp.pb(temp2);
+    // cout<<temp.size()<<" ";
+    // cout<<temp<<endl;
+    int ans=INT_MIN;
+    for(int i=0;i<temp.size();i++){
+        int ans2=temp[i][0];
+        int temp9=temp[i][0];////impppppppppp
+        for(int j=1;j<temp[i].size();j++){
+            ans2=max(ans2+temp[i][j],temp[i][j]);
+            temp9=max(ans2,temp9);
+        }
+        // cout<<ans2<<" ";
+        // ans=max(ans,ans2);///////incorrectttttttt
+        ans=max(ans,temp9);
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {
