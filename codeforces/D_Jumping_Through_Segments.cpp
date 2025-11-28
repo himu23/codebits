@@ -1,6 +1,12 @@
+//author: himu23
 #include <bits/stdc++.h>
+// #include<ext/pb_ds/assoc_container.hpp>
+// #include<ext/pb_ds/tree_policy.hpp>
 
 using namespace std;
+// using namespace __gnu_pbds;
+// template<typename T>
+// using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>; // find_by_order, order_of_key
 
 template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
 template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}'; }
@@ -17,8 +23,13 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define ld long double
 #define sza(x) ((int)x.size())
 #define all(a) (a).begin(), (a).end()
+#define pb push_back
+#define umap unordered_map
+#define fi first
+#define se second
+#define pai pair<int,int>
 
-const int MAX_N = 1e5 + 5;
+const int MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
@@ -42,26 +53,73 @@ struct custom_hash {
         return h1 ^ (h2 << 1);
     }
 };
+struct hash_pair{
+    size_t operator()(const std::pair<int, int>& p) const {
+        return std::hash<int>()(p.first) ^ (std::hash<int>()(p.second) << 1);
+    }
+};
 template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
+ll binpow(ll a, ll b) {
+    ll res = 1;
+    while (b > 0) {
+        if (b & 1) res *= a;
+        a *= a;
+        b >>= 1;
+    }
+    return res;
+}
+void add_self(int& a,int b){
+    a+=b;
+    if(a>=MOD) a-=MOD;
+}
+bool isinbounds(int x,int y,int rows,int cols){
+    return x>=0 && y>=0 && x<rows && y<cols;
+}
+const int dx[4]={0,1,0,-1};
+const int dy[4]={1,0,-1,0};
 
-
+bool isok(int m,vector<pair<int,int>> &temp){
+    // int li=0,ri=0;
+    // int n=temp.size();
+    // bool flag=true;
+    // for(int i=0;i<n;i++){
+    //     if(temp[i].se>m*(i+1)){
+    //         return false;
+    //     }
+    // }
+    // return true;
+    //kind of incorrect
+    int li=0,ri=0;
+    int n=temp.size();
+    for(int i=0;i<n;i++){
+        ri+=m,li-=m;
+        li=max(li,temp[i].fi);
+        ri=min(ri,temp[i].se);
+        if(li>ri) return false;
+    }
+    return true;
+}
 
 void solve() {
     int n; cin>>n;
-    vector<int> l(n);
-    vector<int> r(n);
+    vector<pair<int,int>> temp(n);
     for(int i=0;i<n;i++){
-       cin>>l[i];
-       cin>>r[i];
+        int a,b; cin>>a>>b;
+        temp[i]={a,b};
     }
-    
-    
+    int l=0,r=1e9;
+    while(l<r){
+        int m=l+(r-l)/2;
+        if(isok(m,temp)) r=m;
+        else l=m+1;
+    }
+    cout<<l<<endl;
 }
 
-int main() {
+int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
@@ -69,5 +127,6 @@ int main() {
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
+        //cout<<fixed<<setprecision(12)<<
     }
 }

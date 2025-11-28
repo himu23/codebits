@@ -98,7 +98,18 @@ void solve() {
         cout<<max(a[0],a[1])+1<<endl;
         return;
     }
-    cout<<4<<endl;
+    for(ll i=2;i<100;i++){
+        ll cur=binpow(2,i);
+        umap<ll,ll> um;
+        for(ll j=0;j<n;j++){
+            um[a[j]%cur]++;
+        }
+        if(um.size()>=2){
+            cout<<cur<<endl;
+            return;
+        }
+    }
+    cout<<"hahaha"<<endl;
 
 }
 
