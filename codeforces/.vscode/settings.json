@@ -13,7 +13,8 @@
     "span": "cpp",
     "stacktrace": "cpp",
     "regex": "cpp",
-    "valarray": "cpp"
+    "valarray": "cpp",
+    "numeric": "cpp"
   },
   "editor.hover.enabled": false,
   "editor.parameterHints.enabled": false,

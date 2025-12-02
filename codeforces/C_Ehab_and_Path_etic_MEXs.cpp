@@ -83,18 +83,64 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    vector<vector<int>> tree(n);
+    safe_umap<int,pair<int,int>> um;
+    vector<pair<int,int>> edg(n-1);
+    safe_umap<pair<int,int>,bool> visi;
+    for(int i=0;i<n-1;i++){
+        int a,b; cin>>a>>b;
+        a--,b--;
+        tree[a].pb(b);
+        tree[b].pb(a);
+        int temp=a;
+        a=min(a,b);
+        b=max(temp,b);
+        um[i]={a,b};
+        edg[i]={a,b};
+        visi[{a,b}]=false;
     }
+    safe_umap<pair<int,int>,int> um1;
     
+    int cur=0;
+    for(int i=0;i<n;i++){
+        if(tree[i].size()==1){
+            int a=i,b=tree[i][0];
+            int temp=a;
+            a=min(a,b);
+            b=max(temp,b);
+            if(visi[{a,b}]) continue;
+            um1[{a,b}]=cur;
+            cur++;
+            visi[{a,b}]=true;
+        }
+    }
+    for(int i=0;i<n;i++){
+        if(tree[i].size()!=1){
+            for(int j=0;j<tree[i].size();j++){
+                int a=i,b=tree[i][j];
+                int temp=a;
+                a=min(a,b);
+                b=max(temp,b);
+                if(visi[{a,b}]) continue;
+                um1[{a,b}]=cur;
+                cur++;
+                visi[{a,b}]=true;
+            }
+        }
+    }
+    vector<int> ans(n-1);
+    for(int i=0;i<n-1;i++){
+        ans[i]=um1[um[i]];
+        cout<<ans[i]<<endl;
+    }
+    // cout<<ans<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

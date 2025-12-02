@@ -65,8 +65,8 @@ using safe_uset = unordered_set<T, custom_hash>;
 ll binpow(ll a, ll b) {
     ll res = 1;
     while (b > 0) {
-        if (b & 1) res=(res*a)%MOD;
-        a =(a*a)%MOD;
+        if (b & 1) res *= a;
+        a *= a;
         b >>= 1;
     }
     return res;
@@ -84,17 +84,46 @@ const int dy[4]={1,0,-1,0};
 void solve() {
     int n; cin>>n;
     vector<int> a(n);
+    // bool isone=false;
+    int c1=0;
     for(int i=0;i<n;i++){
         cin>>a[i];
+        if(a[i]==1) c1++;
     }
-    
+    // bool flag=true;
+    int gcdd=a[0];
+    for(int i=1;i<n;i++){
+        // if(gcd(a[i],a[i-1])==1) flag=false;
+        gcdd=gcd(gcdd,a[i]);
+    }
+    if(gcdd!=1){
+        cout<<-1<<endl;
+        return;
+    }
+    if(c1!=0){
+        cout<<n-c1<<endl;
+        return;
+    }
+    //it allows on2
+    int minlen=n;
+    for(int i=0;i<n;i++){
+        int curgcd=a[i];
+        for(int j=i+1;j<n;j++){
+            curgcd=gcd(curgcd,a[j]);
+            if(curgcd==1){
+                minlen=min(minlen,j-i+1);
+                break;
+            }
+        }
+    }
+    cout<<minlen-1+n-1<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

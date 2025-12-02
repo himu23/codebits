@@ -66,7 +66,7 @@ ll binpow(ll a, ll b) {
     ll res = 1;
     while (b > 0) {
         if (b & 1) res=(res*a)%MOD;
-        a =(a*a)%MOD;
+        a=(a*a)%MOD;
         b >>= 1;
     }
     return res;
@@ -82,19 +82,51 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    ll n,k; cin>>n>>k;
+    ll ans=binpow(n,k);
+    vector<vector<ll>> tree(n);
+    for(ll i=0;i<n-1;i++){
+        ll a,b,c; cin>>a>>b>>c;
+        if(c==0){
+            a--,b--;
+            tree[a].pb(b);
+            tree[b].pb(a);
+        }
     }
-    
+    ll ans2=0;
+    vector<ll> compos;
+    vector<bool> visi(n,false);
+    for(ll i=0;i<n;i++){
+        if(visi[i]) continue;
+        ll cursum=1;
+        queue<ll> q;
+        q.push(i);
+        visi[i]=true;
+        while(!q.empty()){
+            ll cur=q.front();q.pop();
+            for(ll j=0;j<tree[cur].size();j++){
+                if(!visi[tree[cur][j]]){
+                    visi[tree[cur][j]]=true;
+                    q.push(tree[cur][j]);
+                    cursum++;
+                }
+            }
+        }
+        // compos.pb(cursum);
+        // ans-=(binpow(cursum,k));
+        ans2=(ans2+binpow(cursum,k))%MOD;
+    }
+    // for(ll i=0;i<compos.size();i++){
+    //     ans-=(binpow(compos[i],k));
+    // }
+    cout<<(ans-ans2+MOD)%MOD<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

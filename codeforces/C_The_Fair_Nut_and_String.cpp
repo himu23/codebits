@@ -82,32 +82,51 @@
 // const int dy[4]={1,0,-1,0};
 
 // void solve() {
-//     int n,k; cin>>n>>k;
-//     vector<vector<int>> factors(n+1);
-//     for(int i=1;i<=n;i++){
-//         for(int j=1;j*j<=i;j++){
-//             if(i%j==0){
-//                 factors[i].pb(j);
-//                 if(i/j!=j) factors[i].pb(i/j);
-//             }
+//     string s; cin>>s;
+//     ll n=s.length();
+//     vector<ll> temp;
+//     vector<ll> temp1(n);
+//     ll temp2=0;
+//     vector<ll> temp3;
+//     for(ll i=0;i<n;i++){
+//         if(s[i]=='b') temp2++;
+//         temp1[i]=temp2;
+//         if(s[i]=='a'){
+//             temp.pb(i);
+//             temp3.pb(temp2);
 //         }
 //     }
-//     vector<vector<int>> dp(k+1,vector<int>(n+1));
-//     for(int i=1;i<=n;i++){
-//         dp[1][i]=1;
+//     // cout<<temp<<endl;
+//     // cout<<temp1<<endl;
+//     // cout<<temp3<<endl;
+//     ll ans=temp.size();
+//     if(temp2==0){
+//         cout<<temp.size()<<endl;
+//         return;
 //     }
-//     for(int i=2;i<=k;i++){
-//         for(int j=1;j<=n;j++){
-//             dp[i][j]=0;
-//             for(auto x: factors[j]){
-//                 dp[i][j]=(dp[i][j]+dp[i-1][x])%MOD;
-//             }
-//         }
+//     ll m=temp3.size();
+//     vector<ll> temp4(m,0);
+//     for(ll i=1;i<m;i++){
+//         if(temp3[i]>temp3[i-1]) temp4[i]=1;
 //     }
-//     int ans=0;
-//     for(int i=1;i<=n;i++){
-//         ans=(ans+dp[k][i])%MOD;
+//     // cout<<temp4<<endl;
+//     ll temp5=m;
+//     vector<ll> temp6(m,m);
+//     for(ll i=m-1;i>=0;i--){
+//         temp6[i]=temp5;
+//         if(temp4[i]==1) temp5=i;
 //     }
+//     // cout<<temp6<<endl;
+//     // vector<int> temp7(m);
+//     // vector<int> temp8(m,0);
+//     for(ll i=0;i<m;i++){
+//         ans+=m-temp6[i];
+//     }
+//     // for(int i=m-2;i>=0;i--){
+//     //     temp8[i]=temp8[i+1]+temp7[i];
+//     //     ans+=temp8[i];
+//     // }
+//     // // cout<<temp7<<endl;
 //     cout<<ans<<endl;
 // }
 
@@ -122,9 +141,8 @@
 //         //cout<<fixed<<setprecision(12)<<
 //     }
 // }
-// //this is pull dp
-
-
+// //above code will have been totally correct and nice if the question was about 
+// //to find number of pairs of pi and pj. but it asks about the range form pi to pj
 //author: himu23
 #include <bits/stdc++.h>
 // #include<ext/pb_ds/assoc_container.hpp>
@@ -208,28 +226,33 @@ bool isinbounds(int x,int y,int rows,int cols){
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
-void solve() {
-    int n,k; cin>>n>>k;
-    vector<vector<int>> dp(k+1,vector<int>(n+1,0));
-    for(int i=1;i<=n;i++){
-        dp[1][i]=1;
-    }
-    // for(int i=1;i<=n;i++){
-    //     for(int j=i;j<=k;j+=i){
-    //         dp[j][i]=(dp[j-i][i]+dp[j][i])%MOD;
-    //     }
-    // }
-    for(int len=1;len<k;len++){
-        for(int i=1;i<=n;i++){
-            if(dp[len][i]==0) continue;
-            for(int j=i;j<=n;j+=i){
-                dp[len+1][j]=(dp[len+1][j]+dp[len][i])%MOD;
-            }
+// void solve() {
+//     string s; cin>>s;
+//     ll ans=1;
+//     ll cnt=0;
+//     for(ll i=0;i<s.length();i++){
+//         if(s[i]=='a') cnt++;
+//         else if(s[i]=='b'){
+//             ans=(ans*(cnt+1))%MOD;
+//             cnt=0;
+//         }
+//     }
+//     ans=(ans*(cnt+1))%MOD;
+//     cout<<ans-1<<endl;
+// }
+//this was the combinatorics approch which was derived from dp approach below
+void solve(){
+    string s; cin>>s;
+    ll n=s.length();
+    ll ans=0;
+    ll cursum=0;
+    for(char c:s){
+        if(c=='b'){
+            cursum=ans;
         }
-    }
-    int ans=0;
-    for(int i=1;i<=n;i++){
-        ans=(ans+dp[k][i])%MOD;
+        else if(c=='a'){
+            ans=(ans+cursum+1)%MOD;
+        }
     }
     cout<<ans<<endl;
 }
@@ -245,4 +268,3 @@ int32_t main() {
         //cout<<fixed<<setprecision(12)<<
     }
 }
-// this is push dp

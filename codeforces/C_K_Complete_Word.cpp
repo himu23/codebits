@@ -82,12 +82,58 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
+    int n,k; cin>>n>>k;
+    string s; cin>>s;
+    vector<vector<int>> tree(n);
     for(int i=0;i<n;i++){
-        cin>>a[i];
+        int a=n-1-i;
+        int b=i+k;
+        tree[a].pb(i);
+        tree[i].pb(a);
+        if(b<=n-1){
+            tree[b].pb(i);
+            tree[i].pb(b);
+        }
     }
-    
+    vector<bool> visi(n,false);
+    vector<vector<int>> compos;
+    for(int i=0;i<n;i++){
+        if(visi[i]) continue;
+        vector<int>temp;
+        temp.pb(i);
+        queue<int> q;
+        q.push(i);
+        visi[i]=true;
+        while(!q.empty()){
+            int cur=q.front();q.pop();
+            for(int j=0;j<tree[cur].size();j++){
+                if(!visi[tree[cur][j]]){
+                    visi[tree[cur][j]]=true;
+                    q.push(tree[cur][j]);
+                    temp.pb(tree[cur][j]);
+                }
+            }
+        }
+        compos.pb(temp);
+    }
+    // cout<<compos<<endl;
+    ll ans=0;
+    for(int i=0;i<compos.size();i++){
+        safe_umap<char,int> um;
+        for(int j=0;j<compos[i].size();j++){
+            um[s[compos[i][j]]]++;
+        }
+        // vector<int> temp;
+        int maxx=0;
+        for(auto par:um){
+            // temp.pb(par.se);
+            maxx=max(maxx,par.se);
+        }
+        // sort(temp.begin(),temp.end());
+        // ans+=(compos[i].size()-temp[temp.size()-1]);
+        ans+=(ll)(compos[i].size()-maxx);
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {

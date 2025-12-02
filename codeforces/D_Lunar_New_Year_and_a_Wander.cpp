@@ -65,8 +65,8 @@ using safe_uset = unordered_set<T, custom_hash>;
 ll binpow(ll a, ll b) {
     ll res = 1;
     while (b > 0) {
-        if (b & 1) res=(res*a)%MOD;
-        a =(a*a)%MOD;
+        if (b & 1) res *= a;
+        a *= a;
         b >>= 1;
     }
     return res;
@@ -82,19 +82,39 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    int n,m; cin>>n>>m;
+    vector<vector<int>> edg(n);
+    while(m--){
+        int a,b; cin>>a>>b;
+        a--,b--;
+        edg[a].pb(b);
+        edg[b].pb(a);
     }
-    
+    vector<int> ans;
+    set<int> s;
+    s.insert(0);
+    vector<bool> visi(n);
+    while(ans.size()!=n){
+        int cur=*s.begin();
+        ans.pb(cur);
+        visi[cur]=true;
+        s.erase(s.begin());
+        for(int i=0;i<edg[cur].size();i++){
+            if(!visi[edg[cur][i]]) s.insert(edg[cur][i]);
+        }
+    }
+    // cout<<ans<<endl;
+    for(int i=0;i<n;i++){
+        cout<<ans[i]+1<<" ";
+    }
+    cout<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

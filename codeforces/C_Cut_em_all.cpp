@@ -65,8 +65,8 @@ using safe_uset = unordered_set<T, custom_hash>;
 ll binpow(ll a, ll b) {
     ll res = 1;
     while (b > 0) {
-        if (b & 1) res=(res*a)%MOD;
-        a =(a*a)%MOD;
+        if (b & 1) res *= a;
+        a *= a;
         b >>= 1;
     }
     return res;
@@ -81,20 +81,52 @@ bool isinbounds(int x,int y,int rows,int cols){
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
+int dodp(int i, vector<bool> &visi, vector<int>& dp, vector<vector<int>>& temp){
+    if(visi[i]) return dp[i];
+    if(temp[i].size()==0){
+        dp[i]=1;
+        visi[i]=true;
+        return dp[i];
+    }
+    visi[i]=true;
+    dp[i]=1;
+    for(int x:temp[i]){
+        if(!visi[x]) dp[i]+=dodp(x,visi,dp,temp);
+    }
+    return dp[i];
+}
+
 void solve() {
     int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    vector<vector<int>> temp(n);
+    for(int i=0;i<n-1;i++){
+        int a,b; cin>>a>>b;
+        a--,b--;
+        temp[a].pb(b);
+        temp[b].pb(a);
     }
-    
+    if(n%2==1){
+        cout<<-1<<endl;
+        return;
+    }
+    vector<bool> visi(n,false);
+    vector<int> dp(n);
+    // cout<<dodp(0,visi,dp,temp);
+    int ans=0;
+    int haha=dodp(0,visi,dp,temp);
+    for(int i=0;i<n;i++){
+        if(dp[i]%2==0) ans++;
+    }
+    // cout<<dp<<endl;
+    cout<<ans-1<<endl;
+
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
