@@ -84,10 +84,45 @@ const int dy[4]={1,0,-1,0};
 void solve() {
     int n; cin>>n;
     vector<int> a(n);
+    set<int> s;
     for(int i=0;i<n;i++){
         cin>>a[i];
+        s.insert(a[i]);
     }
-    
+    // int l,r;
+    // if(n%2==0){
+    //     l=(n)/2;
+    //     r=(n+1)/2;
+    // }
+    // else{
+    //     l=(n+1)/2;
+    //     r=l;
+    // }
+    // l--,r--;
+    safe_umap<int,vector<int>> um;
+    for(int x: s) um[x].pb(-1);
+    for(int i=0;i<n;i++){
+        um[a[i]].pb(i);
+    }
+    for(int x: s) um[x].pb(n);
+    vector<int> ans(n+1,n+1);
+    for(int x: s){
+        int maxx=0;
+        for(int i=1;i<um[x].size();i++){
+            maxx=max(maxx,um[x][i]-um[x][i-1]);
+        }
+        ans[maxx]=min(ans[maxx],x);
+    }
+    // cout<<ans<<endl;
+    for(int i=1;i<=n;i++){
+        ans[i]=min(ans[i],ans[i-1]);
+    }
+    // cout<<ans<<endl;
+    for(int i=1;i<=n;i++){
+        if(ans[i]==n+1) cout<<-1<<" ";
+        else cout<<ans[i]<<" ";
+    }
+    cout<<endl;
 }
 
 int32_t main() {

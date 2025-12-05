@@ -83,39 +83,35 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    // vector<pair<int,int>> temp(n);
-    vector<int> x(n);
-    vector<int> y(n);
-    // set<int> sx;
-    // set<int> sy;
+    vector<int> a(n);
+    ll sum=0;
     for(int i=0;i<n;i++){
-        cin>>x[i]>>y[i];
-        // int a,b; cin>>a>>b;
-        // sx.insert(a),sy.insert(b);
+        cin>>a[i];
+        sum+=(ll)a[i];
     }
-    sort(x.begin(),x.end());
-    sort(y.begin(),y.end());
-    int cx=0,cy=0;
-    int x1,x2,y1,y2;
-    if(x.size()%2!=0){
-        x1=x[(x.size()+1)/2-1];
-        x2=x1;
+    vector<vector<int>> tree(n);
+    for(int i=0;i<n-1;i++){
+        int a,b; cin>>a>>b;
+        a--,b--;
+        tree[a].pb(b);
+        tree[b].pb(a);
     }
-    else{
-        x1=x[x.size()/2-1];
-        x2=x[x.size()/2];
+    vector<int> ans;
+    for(int i=0;i<n;i++){
+        int cur=tree[i].size();
+        cur--;
+        for(int j=0;j<cur;j++){
+            ans.pb(a[i]);
+        }
     }
-    cx=x2-x1+1;
-    if(y.size()%2!=0){
-        y1=y[(y.size()+1)/2-1];
-        y2=y1;
+    sort(ans.begin(),ans.end(),greater<int>());
+    cout<<sum<<" ";
+    // cout<<ans.size()<<endl;
+    for(int i=0;i<ans.size();i++){
+        sum+=(ll)ans[i];
+        cout<<sum<<" ";
     }
-    else{
-        y1=y[y.size()/2-1];
-        y2=y[y.size()/2];
-    }
-    cy=y2-y1+1;
-    cout<<(ll)cx*(ll)cy<<endl;;
+    cout<<endl;
 }
 
 int32_t main() {

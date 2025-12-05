@@ -83,39 +83,39 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    // vector<pair<int,int>> temp(n);
-    vector<int> x(n);
-    vector<int> y(n);
-    // set<int> sx;
-    // set<int> sy;
+    vector<int> a(n);
+    for(int i=0;i<n;i++) cin>>a[i];
+    string s; cin>>s;
+    int temp0=0,temp1=0;
     for(int i=0;i<n;i++){
-        cin>>x[i]>>y[i];
-        // int a,b; cin>>a>>b;
-        // sx.insert(a),sy.insert(b);
+        if(s[i]=='0') temp0^=a[i];
+        else if(s[i]=='1') temp1^=a[i];
     }
-    sort(x.begin(),x.end());
-    sort(y.begin(),y.end());
-    int cx=0,cy=0;
-    int x1,x2,y1,y2;
-    if(x.size()%2!=0){
-        x1=x[(x.size()+1)/2-1];
-        x2=x1;
+    // cout<<temp0<<" "<<temp1<<" ";
+    vector<int> pref(n);
+    int cur=0;
+    for(int i=0;i<n;i++){
+        cur^=a[i];
+        pref[i]=cur;
     }
-    else{
-        x1=x[x.size()/2-1];
-        x2=x[x.size()/2];
+    int q; cin>>q;
+    while(q--){
+        int tp; cin>>tp;
+        if(tp==1){
+            int l,r; cin>>l>>r;
+            l--,r--;
+            int curr;
+            if(l!=0) curr=pref[r]^pref[l-1];
+            else curr=pref[r];
+            temp0^=curr,temp1^=curr;
+        }
+        else if(tp==2){
+            int g; cin>>g;
+            if(g==0) cout<<temp0<<" ";
+            else cout<<temp1<<" ";
+        }
     }
-    cx=x2-x1+1;
-    if(y.size()%2!=0){
-        y1=y[(y.size()+1)/2-1];
-        y2=y1;
-    }
-    else{
-        y1=y[y.size()/2-1];
-        y2=y[y.size()/2];
-    }
-    cy=y2-y1+1;
-    cout<<(ll)cx*(ll)cy<<endl;;
+    cout<<endl;
 }
 
 int32_t main() {

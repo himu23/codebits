@@ -82,40 +82,45 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    // vector<pair<int,int>> temp(n);
-    vector<int> x(n);
-    vector<int> y(n);
-    // set<int> sx;
-    // set<int> sy;
-    for(int i=0;i<n;i++){
-        cin>>x[i]>>y[i];
-        // int a,b; cin>>a>>b;
-        // sx.insert(a),sy.insert(b);
+    ll n; cin>>n;
+    vector<ll> a(n);
+    ll cur;
+    // cin>>cur;
+    cin>>a[0];
+    cur=a[0];
+    for(ll i=1;i<n;i++){
+        cin>>a[i];
+        // ll b; cin>>b;
+        cur^=a[i];
     }
-    sort(x.begin(),x.end());
-    sort(y.begin(),y.end());
-    int cx=0,cy=0;
-    int x1,x2,y1,y2;
-    if(x.size()%2!=0){
-        x1=x[(x.size()+1)/2-1];
-        x2=x1;
+    if(cur==0) {cout<<"YES"<<endl; return;}
+    // vector<ll> pref(n);
+    // vector<ll> suff(n);
+    // pref[0]=a[0];
+    // suff[n-1]=a[n-1];
+    // for(ll i=1;i<n;i++){
+    //     pref[i]=pref[i-1]^a[i];
+    //     suff[n-i-1]=suff[n-i]^a[n-i-1];
+    // }
+    // // cout<<pref<<endl<<suff<<endl;
+    // for(ll i=0;i<n-1;i++){
+    //     if(pref[i]==suff[i+1]){
+    //         cout<<"YES"<<endl;
+    //         return;
+    //     }
+    // }
+    // cout<<"NO"<<endl;
+    int cur1=a[0];
+    int cnt=0;
+    for(int i=1;i<n;i++){
+        if(cur1==cur){
+            cnt++;
+            cur1=0;
+        }
+        cur1^=a[i];
     }
-    else{
-        x1=x[x.size()/2-1];
-        x2=x[x.size()/2];
-    }
-    cx=x2-x1+1;
-    if(y.size()%2!=0){
-        y1=y[(y.size()+1)/2-1];
-        y2=y1;
-    }
-    else{
-        y1=y[y.size()/2-1];
-        y2=y[y.size()/2];
-    }
-    cy=y2-y1+1;
-    cout<<(ll)cx*(ll)cy<<endl;;
+    if(cnt>=3) cout<<"YES"<<endl;
+    else cout<<"NO"<<endl;
 }
 
 int32_t main() {

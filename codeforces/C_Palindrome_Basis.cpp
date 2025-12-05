@@ -81,44 +81,44 @@ bool isinbounds(int x,int y,int rows,int cols){
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
+const int N=4e4+4;
+vector<int> palis;
+vector<int> dp(N,0);
+void precompute(){
+    for(int i=1;i<=N;i++){
+        string s=to_string(i);
+        string t=s;
+        reverse(s.begin(),s.end());
+        if(s==t) palis.pb(i);
+    }
+    dp[0]=1;
+    for(int p:palis){
+        for(int j=p;j<N;j++){
+            dp[j]=(dp[j]+dp[j-p])%MOD;
+        }
+    }
+}
+int dodp(int n){
+    if(n<0) return 0;
+    if(dp[n]!=-1) return dp[n];
+    int cur=0;
+    for(int i=0;;i++){
+        if(palis[i]>n) break;
+        cur+=dodp(n-palis[i]);
+    }
+    dp[n]=cur;
+    return dp[n];
+}
 void solve() {
     int n; cin>>n;
-    // vector<pair<int,int>> temp(n);
-    vector<int> x(n);
-    vector<int> y(n);
-    // set<int> sx;
-    // set<int> sy;
-    for(int i=0;i<n;i++){
-        cin>>x[i]>>y[i];
-        // int a,b; cin>>a>>b;
-        // sx.insert(a),sy.insert(b);
-    }
-    sort(x.begin(),x.end());
-    sort(y.begin(),y.end());
-    int cx=0,cy=0;
-    int x1,x2,y1,y2;
-    if(x.size()%2!=0){
-        x1=x[(x.size()+1)/2-1];
-        x2=x1;
-    }
-    else{
-        x1=x[x.size()/2-1];
-        x2=x[x.size()/2];
-    }
-    cx=x2-x1+1;
-    if(y.size()%2!=0){
-        y1=y[(y.size()+1)/2-1];
-        y2=y1;
-    }
-    else{
-        y1=y[y.size()/2-1];
-        y2=y[y.size()/2];
-    }
-    cy=y2-y1+1;
-    cout<<(ll)cx*(ll)cy<<endl;;
+    // cout<<dodp(n)<<endl;
+    cout<<dp[n]<<endl;
 }
 
 int32_t main() {
+    precompute();
+    dp[0]=1;
+    // dodp(N);
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
@@ -128,4 +128,6 @@ int32_t main() {
         solve();
         //cout<<fixed<<setprecision(12)<<
     }
+    // cout<<palis.size()<<endl;
+    // cout<<palis<<endl;
 }

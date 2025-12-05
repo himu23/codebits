@@ -83,39 +83,23 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    // vector<pair<int,int>> temp(n);
-    vector<int> x(n);
-    vector<int> y(n);
-    // set<int> sx;
-    // set<int> sy;
+    vector<int> a(n);
     for(int i=0;i<n;i++){
-        cin>>x[i]>>y[i];
-        // int a,b; cin>>a>>b;
-        // sx.insert(a),sy.insert(b);
+        cin>>a[i];
     }
-    sort(x.begin(),x.end());
-    sort(y.begin(),y.end());
-    int cx=0,cy=0;
-    int x1,x2,y1,y2;
-    if(x.size()%2!=0){
-        x1=x[(x.size()+1)/2-1];
-        x2=x1;
+    vector<vector<int>> dp(n+1,vector<int>(2,INF));
+    dp[0][0]=0;
+    for(int i=0;i<n;i++){
+        if(dp[i][0]!=INF){
+            dp[i+1][1]=min(dp[i+1][1],dp[i][0]+a[i]);
+            if(i+1<n) dp[i+2][1]=min(dp[i+2][1],dp[i][0]+a[i]+a[i+1]);
+        }
+        if(dp[i][1]!=INF){
+            dp[i+1][0]=min(dp[i+1][0],dp[i][1]);
+            if(i+1<n) dp[i+2][0]=min(dp[i+2][0],dp[i][1]);
+        }
     }
-    else{
-        x1=x[x.size()/2-1];
-        x2=x[x.size()/2];
-    }
-    cx=x2-x1+1;
-    if(y.size()%2!=0){
-        y1=y[(y.size()+1)/2-1];
-        y2=y1;
-    }
-    else{
-        y1=y[y.size()/2-1];
-        y2=y[y.size()/2];
-    }
-    cy=y2-y1+1;
-    cout<<(ll)cx*(ll)cy<<endl;;
+    cout<<min(dp[n][0],dp[n][1])<<endl;
 }
 
 int32_t main() {

@@ -82,40 +82,65 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    // vector<pair<int,int>> temp(n);
-    vector<int> x(n);
-    vector<int> y(n);
-    // set<int> sx;
-    // set<int> sy;
-    for(int i=0;i<n;i++){
-        cin>>x[i]>>y[i];
-        // int a,b; cin>>a>>b;
-        // sx.insert(a),sy.insert(b);
+    ll n,a,b; cin>>n>>a>>b;
+    vector<ll> x(n+1);
+    for(ll i=1;i<=n;i++){
+        cin>>x[i];
     }
-    sort(x.begin(),x.end());
-    sort(y.begin(),y.end());
-    int cx=0,cy=0;
-    int x1,x2,y1,y2;
-    if(x.size()%2!=0){
-        x1=x[(x.size()+1)/2-1];
-        x2=x1;
+    x[0]=0;
+    // vector<vector<ll>> dp(n,vector<ll>(n,INF));
+    // dp[0][0]=0;
+    // //dp[i][j]=to concur ith with final capital at j
+    // for(ll i=1;i<n;i++){
+    //     for(ll j=0;j<i;j++){
+    //         dp[i][j]=dp[]
+    //     }
+    // }
+    // vector<ll> dp1(n+1,INF);
+    // dp1[0]=0;
+    // for(ll i=1;i<=n;i++){
+    //     dp1[i]=b*(x[i]-x[0]);
+    // }
+    // // cout<<dp1<<endl;
+    // vector<ll> dp(n+1,INF);
+    // for(ll i=0;i<n;i++){
+    //     for(ll j=i+1;j<=n;j++){
+    //         dp[j]=min(dp[j],dp1[i]+a*(x[j]-x[i]));
+    //     }
+    // }
+    // ll ans=0;
+    // for(ll i=0;i<=n;i++){
+    //     ans+=dp[i];
+    // }
+    // cout<<ans<<endl;
+    vector<ll> temp;
+    for(ll i=1;i<=n;i++){
+        temp.pb(x[i]-x[i-1]);
     }
-    else{
-        x1=x[x.size()/2-1];
-        x2=x[x.size()/2];
+    // cout<<temp<<endl;
+    vector<ll> pref(n);
+    pref[0]=temp[0];
+    for(ll i=1;i<n;i++){
+        pref[i]=pref[i-1]+temp[i];
     }
-    cx=x2-x1+1;
-    if(y.size()%2!=0){
-        y1=y[(y.size()+1)/2-1];
-        y2=y1;
+    vector<ll> temp2(n);
+    for(ll i=0;i<n;i++){
+        temp2[i]=temp[i]*(n-i);
     }
-    else{
-        y1=y[y.size()/2-1];
-        y2=y[y.size()/2];
+    vector<ll> suff(n);
+    suff[n-1]=temp2[n-1];
+    for(ll i=1;i<n;i++){
+        suff[n-i-1]=suff[n-i]+temp2[n-i-1];
     }
-    cy=y2-y1+1;
-    cout<<(ll)cx*(ll)cy<<endl;;
+    ll ans=LLONG_MAX;
+    //can be done b binary search aswell but i o(n) seems acceptable
+    for(ll i=0;i<n;i++){
+        ll cur=b*suff[i];
+        ll cur1=0;
+        if(i!=0) cur1=(a+b)*pref[i-1];
+        ans=min(ans,cur1+cur);
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {
