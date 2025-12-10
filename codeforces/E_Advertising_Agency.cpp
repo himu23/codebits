@@ -80,44 +80,73 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 }
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
+//write precompute(); in int main()
 
+const ll MAXN=1005;
+vector<long long> fact(MAXN);
+vector<long long> invFact(MAXN);
+
+// Function to calculate (base^exp) % MOD
+long long power(long long base, long long exp) {
+    long long res = 1;
+    base %= MOD;
+    while (exp > 0) {
+        if (exp % 2 == 1) res = (res * base) % MOD;
+        base = (base * base) % MOD;
+        exp /= 2;
+    }
+    return res;
+}
+
+void precompute() {
+    fact[0] = 1;
+    invFact[0] = 1;
+    
+    // 1. Compute Factorials
+    for (ll i = 1; i < MAXN; i++) {
+        fact[i] = (fact[i - 1] * i) % MOD;
+    }
+
+    // 2. Compute Inverse Factorials
+    // Fermat's Little Theorem: inv(n!) = (n!)^(MOD-2)
+    invFact[MAXN - 1] = power(fact[MAXN - 1], MOD - 2);
+    
+    // Backward propagation for efficiency O(N) rather than O(N log MOD)
+    for (ll i = MAXN - 2; i >= 1; i--) {
+        invFact[i] = (invFact[i + 1] * (i + 1)) % MOD;
+    }
+}
+
+long long ncr(ll n, ll r) {
+    if (r < 0 || r > n) return 0;
+    return (((fact[n] * invFact[r]) % MOD) * invFact[n - r]) % MOD;
+}
 void solve() {
-    ll n,m; cin>>n>>m;
+    ll n,k; cin>>n>>k;
     vector<ll> a(n);
-    vector<ll> b(n);
     safe_umap<ll,ll> um;
     for(ll i=0;i<n;i++){
-        ll temp; cin>>temp;
-        b[i]=temp;
-        a[i]=temp%m;
-        if(um.find(a[i])!=um.end()){
-            cout<<0;return;
-        }
+        cin>>a[i];
         um[a[i]]++;
     }
-    // sort(a.begin(),a.end(),greater<ll>());
-    // cout<<a;
-    // ll ans=1;
-    // for(ll i=0;i<n;i++){
-    //     for(ll j=i+1;j<n;j++){
-    //         ans=(ans*((ll)(a[i]-a[j]+m)%m))%m;
-    //     }
-    // }
-    // cout<<ans<<endl;
-    ll ans=1LL;
+    sort(a.begin(),a.end(),greater<ll>());
+    ll cur=a[k-1];
+    ll temp=0;
     for(ll i=0;i<n;i++){
-        for(ll j=i+1;j<n;j++){
-            ans=(ans*(abs(b[i]-b[j])+m)%m)%m;
-        }
+        if(a[i]!=cur) temp++;
+        else break;
     }
-    cout<<ans%m<<endl;
+    ll temp2=k-temp;
+    //ans=um[cur]Ctemp2;
+    cout<<ncr(um[cur],temp2)<<endl;
 }
 
 int32_t main() {
+    precompute();
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

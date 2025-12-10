@@ -82,42 +82,21 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    ll n,m; cin>>n>>m;
-    vector<ll> a(n);
-    vector<ll> b(n);
-    safe_umap<ll,ll> um;
-    for(ll i=0;i<n;i++){
-        ll temp; cin>>temp;
-        b[i]=temp;
-        a[i]=temp%m;
-        if(um.find(a[i])!=um.end()){
-            cout<<0;return;
-        }
-        um[a[i]]++;
+    int n; cin>>n;
+    vector<int>a(n),b(n);
+    vector<int> money(n);
+    for(int i=0;i<n;i++){
+        cin>>a[i]>>b[i];
+        money[i]=i;
     }
-    // sort(a.begin(),a.end(),greater<ll>());
-    // cout<<a;
-    // ll ans=1;
-    // for(ll i=0;i<n;i++){
-    //     for(ll j=i+1;j<n;j++){
-    //         ans=(ans*((ll)(a[i]-a[j]+m)%m))%m;
-    //     }
-    // }
-    // cout<<ans<<endl;
-    ll ans=1LL;
-    for(ll i=0;i<n;i++){
-        for(ll j=i+1;j<n;j++){
-            ans=(ans*(abs(b[i]-b[j])+m)%m)%m;
-        }
-    }
-    cout<<ans%m<<endl;
+    
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

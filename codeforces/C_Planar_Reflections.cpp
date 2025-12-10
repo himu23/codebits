@@ -82,42 +82,33 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    ll n,m; cin>>n>>m;
-    vector<ll> a(n);
-    vector<ll> b(n);
-    safe_umap<ll,ll> um;
-    for(ll i=0;i<n;i++){
-        ll temp; cin>>temp;
-        b[i]=temp;
-        a[i]=temp%m;
-        if(um.find(a[i])!=um.end()){
-            cout<<0;return;
+    ll n,k; cin>>n>>k;
+    if(k==1){cout<<1<<endl;return;}
+    if(n==1){cout<<2<<endl;return;}
+    ll ans=1+n;
+    if(k==2){cout<<ans<<endl;return;}
+    n--;
+    vector<ll> dp(n,1);
+    k-=2;
+    for(ll i=k;i>0;i--){
+        for(ll j=0;j<n;j++){
+            ans=(ans+((j+1)*dp[j])%MOD)%MOD;
         }
-        um[a[i]]++;
-    }
-    // sort(a.begin(),a.end(),greater<ll>());
-    // cout<<a;
-    // ll ans=1;
-    // for(ll i=0;i<n;i++){
-    //     for(ll j=i+1;j<n;j++){
-    //         ans=(ans*((ll)(a[i]-a[j]+m)%m))%m;
-    //     }
-    // }
-    // cout<<ans<<endl;
-    ll ans=1LL;
-    for(ll i=0;i<n;i++){
-        for(ll j=i+1;j<n;j++){
-            ans=(ans*(abs(b[i]-b[j])+m)%m)%m;
+        vector<ll> tempvec=dp;
+        for(ll j=0;j<n;j++){
+            ll cur=0;
+            if(j!=0) cur=(cur+dp[j-1])%MOD;
+            dp[j]=(cur+tempvec[n-1-j])%MOD;
         }
     }
-    cout<<ans%m<<endl;
+    cout<<ans<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

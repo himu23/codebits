@@ -81,46 +81,70 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
-void solve() {
-    ll n,m; cin>>n>>m;
-    vector<ll> a(n);
-    vector<ll> b(n);
-    safe_umap<ll,ll> um;
-    for(ll i=0;i<n;i++){
-        ll temp; cin>>temp;
-        b[i]=temp;
-        a[i]=temp%m;
-        if(um.find(a[i])!=um.end()){
-            cout<<0;return;
+const int MAXN=1005;
+vector<int> d(MAXN+1,INF);
+void precompute(){
+    d[1]=0;
+    for(int i=1;i<=MAXN;i++){
+        for(int j=1;j<=i;j++){
+            if(i+i/j<=MAXN) d[i+i/j]=min(d[i+i/j],d[i]+1);
         }
-        um[a[i]]++;
     }
-    // sort(a.begin(),a.end(),greater<ll>());
-    // cout<<a;
-    // ll ans=1;
-    // for(ll i=0;i<n;i++){
-    //     for(ll j=i+1;j<n;j++){
-    //         ans=(ans*((ll)(a[i]-a[j]+m)%m))%m;
+}
+
+void solve() {
+    int n,k; cin>>n>>k;
+    vector<int> b(n);
+    for(int i=0;i<n;i++){
+        cin>>b[i];
+    }
+    vector<int> c(n);
+    for(int i=0;i<n;i++){
+        cin>>c[i];
+    }
+    // vector<int> d(n,0);
+    // for(int i=0;i<n;i++){
+    //     int cur=b[i];
+    //     while(cur>1){
+    //         if(cur%2!=0) cur--;
+    //         else cur/=2;
+    //         d[i]++;
     //     }
     // }
-    // cout<<ans<<endl;
-    ll ans=1LL;
-    for(ll i=0;i<n;i++){
-        for(ll j=i+1;j<n;j++){
-            ans=(ans*(abs(b[i]-b[j])+m)%m)%m;
+    //knapsack 0/1
+    k=min(k,n*12); //loved this trick
+    vector<int> dp(k+1,0);
+    for(int i=0;i<n;i++){
+        for(int j=k;j>=d[b[i]];j--){
+            dp[j]=max(dp[j],dp[j-d[b[i]]]+c[i]);
         }
     }
-    cout<<ans%m<<endl;
+    cout<<dp[k]<<endl;
 }
 
 int32_t main() {
+    precompute();
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
         //cout<<fixed<<setprecision(12)<<
     }
 }
+/*
+Effective Constraints" vs. "Given Constraints."
+The "Effective Constraint" Pattern
+Scenario A (Standard): $N$ is small, $W$ is small.Solution: Standard Knapsack.
+Scenario B (Your Problem): $N$ is small, $W$ is huge, but Item Weights are tiny.
+Trick: The sum of all weights is actually small ($12 \times N$). Even if the capacity $W$ is
+massive, you can never fill it beyond the sum of all items.
+Effective $W$: $\min(W, \sum \text{weights})$.
+Scenario C (The "Knapsack 2"): $N$ is small, $W$ is massive ($10^9$),
+and Item Weights are huge... BUT Item Values are small.
+Trick: You can't make a DP array of size $10^9$. Instead, you flip the DP state.
+New State: $dp[v] =$ minimum weight needed to get exactly value $v$.
+Complexity: $O(N \times \sum \text{Values})$.
+*/

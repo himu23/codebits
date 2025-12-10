@@ -82,35 +82,29 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    ll n,m; cin>>n>>m;
-    vector<ll> a(n);
-    vector<ll> b(n);
-    safe_umap<ll,ll> um;
-    for(ll i=0;i<n;i++){
-        ll temp; cin>>temp;
-        b[i]=temp;
-        a[i]=temp%m;
-        if(um.find(a[i])!=um.end()){
-            cout<<0;return;
-        }
-        um[a[i]]++;
-    }
-    // sort(a.begin(),a.end(),greater<ll>());
-    // cout<<a;
-    // ll ans=1;
-    // for(ll i=0;i<n;i++){
-    //     for(ll j=i+1;j<n;j++){
-    //         ans=(ans*((ll)(a[i]-a[j]+m)%m))%m;
-    //     }
-    // }
-    // cout<<ans<<endl;
-    ll ans=1LL;
-    for(ll i=0;i<n;i++){
-        for(ll j=i+1;j<n;j++){
-            ans=(ans*(abs(b[i]-b[j])+m)%m)%m;
+    int n; cin>>n;
+    //interactive
+    //(amodb>bmoda)⇔(a<b)
+    int idxofn=0;
+    vector<int> ans(n);
+    for(int i=1;i<n;i++){
+        int temp1,temp2;
+        cout<<"?"<<" "<<idxofn+1<<" "<<i+1<<endl;
+        cin>>temp1;
+        cout<<"?"<<" "<<i+1<<" "<<idxofn+1<<endl;
+        cin>>temp2;
+        if(temp1<temp2) ans[i]=temp2;
+        else {
+            ans[idxofn]=temp1;
+            idxofn=i;
         }
     }
-    cout<<ans%m<<endl;
+    ans[idxofn]=n;
+    cout<<"!"<<" ";
+    for(int i=0;i<n;i++){
+        cout<<ans[i]<<" ";
+    }
+    cout<<endl;
 }
 
 int32_t main() {

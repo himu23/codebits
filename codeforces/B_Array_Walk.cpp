@@ -82,42 +82,63 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    ll n,m; cin>>n>>m;
-    vector<ll> a(n);
-    vector<ll> b(n);
-    safe_umap<ll,ll> um;
-    for(ll i=0;i<n;i++){
-        ll temp; cin>>temp;
-        b[i]=temp;
-        a[i]=temp%m;
-        if(um.find(a[i])!=um.end()){
-            cout<<0;return;
-        }
-        um[a[i]]++;
+    int n,k,z; cin>>n>>k>>z;
+    vector<int> a(n);
+    for(int i=0;i<n;i++){
+        cin>>a[i];
     }
-    // sort(a.begin(),a.end(),greater<ll>());
-    // cout<<a;
-    // ll ans=1;
-    // for(ll i=0;i<n;i++){
-    //     for(ll j=i+1;j<n;j++){
-    //         ans=(ans*((ll)(a[i]-a[j]+m)%m))%m;
-    //     }
-    // }
-    // cout<<ans<<endl;
-    ll ans=1LL;
-    for(ll i=0;i<n;i++){
-        for(ll j=i+1;j<n;j++){
-            ans=(ans*(abs(b[i]-b[j])+m)%m)%m;
-        }
+    vector<int>pref(n);
+    int cur=0;
+    for(int i=0;i<n;i++){
+        cur+=a[i];
+        pref[i]=cur;
     }
-    cout<<ans%m<<endl;
+    vector<int> b(n);
+    b[0]=0;
+    for(int i=1;i<n;i++){
+        b[i]=a[i]+a[i-1];
+    }
+    // vector<vector<int>> prefpairs;
+    // prefpairs.pb({});
+    vector<int> temp9(n);
+    temp9[0]=0;
+    int temp8=0;
+    // vector<int> temp;
+    for(int i=1;i<n;i++){
+        // temp.pb(b[i]);
+        // prefpairs.pb(temp);
+        temp8=max(temp8,b[i]);
+        temp9[i]=temp8;
+    }
+    // prefpairs.pb(temp);
+    temp9.pb(temp8);
+    // cout<<pref<<endl;
+    // cout<<prefpairs<<endl;
+    ll ans=0;
+    for(int i=0;i<=z;i++){
+        ll curans=0;
+        int effright=k-2*i;
+        if(effright<0) break;
+        curans+=(ll)pref[effright];
+        // cout<<"haha"<<" ";
+        // vector<int> curvec=prefpairs[effright+1];
+        // if(curvec.size()>i) break;
+        // sort(curvec.begin(),curvec.end(),greater<int>());
+        // for(int j=0;j<i&& j<curvec.size();j++){
+        //     curans+=(ll)curvec[0];
+        // }
+        // if(curvec.size()!=0) curans+=(ll)(curvec[0]*i);
+        curans+=(ll)(temp9[effright+1]*i);
+        ans=max(ans,curans);
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

@@ -82,42 +82,42 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    ll n,m; cin>>n>>m;
-    vector<ll> a(n);
-    vector<ll> b(n);
-    safe_umap<ll,ll> um;
-    for(ll i=0;i<n;i++){
-        ll temp; cin>>temp;
-        b[i]=temp;
-        a[i]=temp%m;
-        if(um.find(a[i])!=um.end()){
-            cout<<0;return;
-        }
-        um[a[i]]++;
-    }
-    // sort(a.begin(),a.end(),greater<ll>());
-    // cout<<a;
-    // ll ans=1;
-    // for(ll i=0;i<n;i++){
-    //     for(ll j=i+1;j<n;j++){
-    //         ans=(ans*((ll)(a[i]-a[j]+m)%m))%m;
-    //     }
+    int n; cin>>n;
+    vector<int> a(n);
+    // vector<int> c0;
+    // vector<pair<int,int>> pref(n);
+    // int cminus=0,c2=0;
+    // for(int i=0;i<n;i++){
+    //     cin>>a[i];
+    //     // if(a[i]==0) c0.pb(i);
+    //     if(a[i]<0) cminus++;
+    //     if(a[i]==2 || a[i]==-2) c2++;
+    //     if(a[i]==0) cminus=0,c2=0;
+    //     pref[i]={cminus%2,c2};
     // }
-    // cout<<ans<<endl;
-    ll ans=1LL;
-    for(ll i=0;i<n;i++){
-        for(ll j=i+1;j<n;j++){
-            ans=(ans*(abs(b[i]-b[j])+m)%m)%m;
-        }
-    }
-    cout<<ans%m<<endl;
+    // cminus=0,c2=0;
+    // vector<pair<int,int>> suff(n);
+    // for(int i=n-1;i>=0;i--){
+    //     if(a[i]<0) cminus++;
+    //     if(a[i]==2 || a[i]==-2) c2++;
+    //     if(a[i]==0) cminus=0,c2=0;
+    //     suff[i]={cminus%2,c2};
+    // }
+    // cout<<pref<<endl<<suff<<endl;
+    // int l=0,r=0;
+    // int curl=n,curr=n-1;
+    // int maxx=1;
+
+    // cout<<curl<<" "<<n-1-curr<<endl;
+    for(int i=0;i<n;i++) cin>>a[i];
+    vector<vector<int>> temp
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

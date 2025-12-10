@@ -82,42 +82,46 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    ll n,m; cin>>n>>m;
-    vector<ll> a(n);
-    vector<ll> b(n);
-    safe_umap<ll,ll> um;
-    for(ll i=0;i<n;i++){
-        ll temp; cin>>temp;
-        b[i]=temp;
-        a[i]=temp%m;
-        if(um.find(a[i])!=um.end()){
-            cout<<0;return;
-        }
-        um[a[i]]++;
+    int n; cin>>n;
+    string s; cin>>s;
+    ll ans=0;
+    vector<int> a(n);
+    for(int i=0;i<n;i++){
+        a[i]=s[i]-'0';
+        // if(a[i]==1) ans++;
     }
-    // sort(a.begin(),a.end(),greater<ll>());
-    // cout<<a;
-    // ll ans=1;
-    // for(ll i=0;i<n;i++){
-    //     for(ll j=i+1;j<n;j++){
-    //         ans=(ans*((ll)(a[i]-a[j]+m)%m))%m;
+    // int cur=0;
+    // for(int i=0;i<n;i++){
+    //     if(a[i]==1) cur++;
+    //     else{
+    //         ans+=(ll)(cur*(cur+1)/2);
     //     }
     // }
-    // cout<<ans<<endl;
-    ll ans=1LL;
-    for(ll i=0;i<n;i++){
-        for(ll j=i+1;j<n;j++){
-            ans=(ans*(abs(b[i]-b[j])+m)%m)%m;
-        }
+    vector<int> pref(n+1);
+    pref[0]=0;
+    for(int i=1;i<=n;i++){
+        pref[i]=pref[i-1]+a[i-1];
     }
-    cout<<ans%m<<endl;
+    // cout<<pref<<endl;
+    // vector<int> temp(n);
+    safe_umap<int,int> um;
+    for(int i=0;i<=n;i++){
+        int temp=pref[i]-i;
+        um[temp]++;
+    }
+    // ll ans=0;
+    for(auto paa:um){
+        ans+=(ll)paa.se*((ll)paa.se-1)/2;
+        // ans+=(ll)cur;
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

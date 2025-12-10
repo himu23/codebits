@@ -21,13 +21,13 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define ar array
 #define ll long long
 #define ld long double
-#define sza(x) ((ll)x.size())
-#define all(a) (a).begin(), (a).end()
+#define sza(x) ((int)x.size())
+#define aint(a) (a).begin(), (a).end()
 #define pb push_back
 #define umap unordered_map
 #define fi first
 #define se second
-#define pai pair<ll,ll>
+#define pai pair<int,int>
 
 const ll MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
@@ -54,16 +54,16 @@ struct custom_hash {
     }
 };
 struct hash_pair{
-    size_t operator()(const std::pair<ll, ll>& p) const {
-        return std::hash<ll>()(p.first) ^ (std::hash<ll>()(p.second) << 1);
+    size_t operator()(const std::pair<int, int>& p) const {
+        return std::hash<int>()(p.first) ^ (std::hash<int>()(p.second) << 1);
     }
 };
 template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-ll binpow(ll a, ll b) {
-    ll res = 1;
+int binpow(int a, int b) {
+    int res = 1;
     while (b > 0) {
         if (b & 1) res=(res*a)%MOD;
         a =(a*a)%MOD;
@@ -71,53 +71,33 @@ ll binpow(ll a, ll b) {
     }
     return res;
 }
-void add_self(ll& a,ll b){
+void add_self(int& a,int b){
     a+=b;
     if(a>=MOD) a-=MOD;
 }
-bool isinbounds(ll x,ll y,ll rows,ll cols){
+bool isinbounds(int x,int y,int rows,int cols){
     return x>=0 && y>=0 && x<rows && y<cols;
 }
-const ll dx[4]={0,1,0,-1};
-const ll dy[4]={1,0,-1,0};
+const int dx[4]={0,1,0,-1};
+const int dy[4]={1,0,-1,0};
 
 void solve() {
-    ll n,m; cin>>n>>m;
-    vector<ll> a(n);
-    vector<ll> b(n);
-    safe_umap<ll,ll> um;
-    for(ll i=0;i<n;i++){
-        ll temp; cin>>temp;
-        b[i]=temp;
-        a[i]=temp%m;
-        if(um.find(a[i])!=um.end()){
-            cout<<0;return;
-        }
-        um[a[i]]++;
-    }
-    // sort(a.begin(),a.end(),greater<ll>());
-    // cout<<a;
-    // ll ans=1;
-    // for(ll i=0;i<n;i++){
-    //     for(ll j=i+1;j<n;j++){
-    //         ans=(ans*((ll)(a[i]-a[j]+m)%m))%m;
-    //     }
-    // }
-    // cout<<ans<<endl;
-    ll ans=1LL;
-    for(ll i=0;i<n;i++){
-        for(ll j=i+1;j<n;j++){
-            ans=(ans*(abs(b[i]-b[j])+m)%m)%m;
-        }
-    }
-    cout<<ans%m<<endl;
+    int n,m,l,r; cin>>n>>m>>l>>r;
+    int l1=0,r1=0;
+    int l2=l,r2=r;
+    l=abs(l),r=abs(r);
+    l1=max(0,l-(n-m));
+    r1=r-(n-m-(l-l1));
+    if(l2<0) l1*=-1;
+    if(r2<0) r1*=-1;
+    cout<<l1<<" "<<r1<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

@@ -19,10 +19,10 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #endif
 
 #define ar array
-#define ll long long
+#define int long long
 #define ld long double
 #define sza(x) ((int)x.size())
-#define all(a) (a).begin(), (a).end()
+#define aint(a) (a).begin(), (a).end()
 #define pb push_back
 #define umap unordered_map
 #define fi first
@@ -30,8 +30,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define pai pair<int,int>
 
 const int MAX_N = 1e6 + 5;
-const ll MOD = 1e9 + 7;
-const ll INF = 1e9;
+const int MOD = 1e9 + 7;
+const int INF = 1e9;
 const ld EPS = 1e-9;
 
 // Custom hash for unordered_map/set
@@ -62,8 +62,8 @@ template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-ll binpow(ll a, ll b) {
-    ll res = 1;
+int binpow(int a, int b) {
+    int res = 1;
     while (b > 0) {
         if (b & 1) res=(res*a)%MOD;
         a =(a*a)%MOD;
@@ -81,68 +81,104 @@ bool isinbounds(int x,int y,int rows,int cols){
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
+int findkids(int i,vector<bool> &visi, vector<vector<int>>& tree,vector<int>&kids){
+    visi[i]=true;
+    // if(tree[i].size()==1){
+    //     kids[i]=0;
+    //     return kids[i];
+    // }      
+    // IMP: dont write this in bfs its redundaut and will make the code fail when the tree struct is line
+    //as the dfs wont get started since the parent node also has one connection
+    int ans=0;
+    for(int j=0;j<tree[i].size();j++){
+        if(!visi[tree[i][j]]) ans+=findkids(tree[i][j],visi,tree,kids)+1;
+    }
+    kids[i]=ans;
+    return kids[i];
+}
+
+// int findtourkids(int i,vector<bool>&visi,vector<vector<int>> & tree, vector<int>& tourkids,vector<bool>& isto){
+//     visi[i]=true;
+//     int ans=0;
+//     for(int j=0;j<tree[i].size();j++){
+//         if(!visi[tree[i][j]]){
+//             ans+=findtourkids(tree[i][j],visi,tree,tourkids,isto);
+//             if(!isto[tree[i][j]]) ans++;
+//         }
+//     }
+//     tourkids[i]=ans;
+//     return ans;
+// }
+
 void solve() {
-    ll n; cin>>n;
-    vector<ll> a(n);
-    for(ll i=0;i<n;i++){
-        cin>>a[i];
+    int n,k; cin>>n>>k;
+    vector<vector<int>> tree(n);
+    for(int i=1;i<n;i++){
+        int a,b; cin>>a>>b;
+        a--,b--;
+        tree[a].pb(b);
+        tree[b].pb(a);
     }
-    vector<ll> b(n);
-    for(ll i=0;i<n;i++){
-        cin>>b[i];
+    if(n==2 && k==1){cout<<1<<endl; return;} 
+    vector<bool> visi1(n,false);
+    vector<int> parents(n);
+    parents[0]=0;
+    queue<int> q;
+    q.push(0);
+    visi1[0]=true;
+    while(!q.empty()){
+        int cur=q.front();q.pop();
+        int cur1=parents[cur];
+        for(int i=0;i<tree[cur].size();i++){
+            if(!visi1[tree[cur][i]]){
+                visi1[tree[cur][i]]=true;
+                q.push(tree[cur][i]);
+                parents[tree[cur][i]]=cur1+1;
+            }
+        }
     }
-    vector<ll> ans(n,0);
-    //simulation is easy but will give tle
-    vector<ll> pref(n);
-    pref[0]=b[0];
-    for(ll i=1;i<n;i++){
-        pref[i]=pref[i-1]+b[i];
+    // cout<<parents<<endl;
+    // vector<bool> isto(n,false);
+    vector<int> kids(n,-1);
+    vector<bool> visi(n,false);
+    int kidsof1=findkids(0,visi,tree,kids);
+    // cout<<kids<<endl;
+    vector<pair<int,int>> temp1(n);
+    for(int i=0;i<n;i++){
+        temp1[i]={parents[i]-kids[i],i};
     }
-    vector<ll> temp(n);
-    //bhadiya question hai
-    ll temp2=0;
-    for(ll i=0;i<n;i++){
-        temp[i]=a[i]+temp2;
-        temp2+=b[i];
+    vector<int> scores(n);
+    for(int i=0;i<n;i++){
+        scores[i]=parents[i]-kids[i];
     }
-    // cout<<pref<<endl<<temp<<endl;
-    vector<ll> add(n,0);
-    vector<ll> bs(n);
-    vector<ll> ra(n,0);
-    for(ll i=0;i<n;i++){
-        auto it=lower_bound(pref.begin(),pref.end(),temp[i]);
-        bs[i]=distance(pref.begin(),it);
-        if(bs[i]<n){
-            ll cur3;
-            if(bs[i]!=0) cur3=pref[bs[i]-1];
-            else cur3=0;
-            add[bs[i]]+=(temp[i]-cur3);
-        } //add[bs[i]]+=(temp[i]-pref[bs[i]-1]);
+    sort(temp1.begin(),temp1.end(),[&](const pair<int,int>&a,const pair<int,int>&b){
+        //if(a.fi==b.fi) return parents[a.se]<parents[b.se];
+        return scores[a.se]>scores[b.se];
+    });
+    // k=n-k;
+    // for(int i=0;i<k;i++){
+    //     isto[temp1[i].se]=true;
+    // }
+    // cout<<isto<<endl;
+    // vector<int> tourkids(n,0);
+    // for(int i=0;i<n;i++) visi[i]=false;
+    // int touristkidsof1=findtourkids(0,visi,tree,tourkids,isto);
+    int ans=0,ans1=0;
+    // k=n-k;
+    for(int i=0;i<k;i++){
+        ans+=scores[temp1[i].se];
+        // if(isto[i]) ans1+=tourkids[i];
     }
-    // cout<<bs<<endl;
-    for(ll i=0;i<n;i++){
-        ra[i]++;
-        if(bs[i]<n) ra[bs[i]]--;
-    }
-    ll cur1=0;
-    vector<ll> pra(n,0);
-    for(ll i=0;i<n;i++){
-        cur1+=ra[i];
-        pra[i]=cur1;
-    }
-    // cout<<pra<<endl;
-    for(ll i=0;i<n;i++){
-        ll cur4=pra[i]*b[i]+add[i];
-        cout<<cur4<<" ";
-    }
-    cout<<endl;
+    // cout<<parents<<endl;
+    // cout<<tourkids<<endl;
+    cout<<ans<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

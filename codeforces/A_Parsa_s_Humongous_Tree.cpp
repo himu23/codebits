@@ -1,12 +1,12 @@
 // //author: himu23
 // #include <bits/stdc++.h>
-// #include<ext/pb_ds/assoc_container.hpp>
-// #include<ext/pb_ds/tree_policy.hpp>
+// // #include<ext/pb_ds/assoc_container.hpp>
+// // #include<ext/pb_ds/tree_policy.hpp>
 
 // using namespace std;
-// using namespace __gnu_pbds;
-// template<typename T>
-// using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>; // find_by_order, order_of_key
+// // using namespace __gnu_pbds;
+// // template<typename T>
+// // using ordered_set = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>; // find_by_order, order_of_key
 
 // template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
 // template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}'; }
@@ -19,19 +19,19 @@
 // #endif
 
 // #define ar array
-// #define int long long
+// #define ll long long
 // #define ld long double
-// #define sza(x) ((int)x.size())
+// #define sza(x) ((ll)x.size())
 // #define all(a) (a).begin(), (a).end()
 // #define pb push_back
 // #define umap unordered_map
 // #define fi first
 // #define se second
-// #define pai pair<int,int>
+// #define pai pair<ll,ll>
 
-// const int MAX_N = 1e6 + 5;
-// const int MOD = 1e9 + 7;
-// const int INF = 1e9;
+// const ll MAX_N = 1e6 + 5;
+// const ll MOD = 1e9 + 7;
+// const ll INF = 1e9;
 // const ld EPS = 1e-9;
 
 // // Custom hash for unordered_map/set
@@ -54,16 +54,16 @@
 //     }
 // };
 // struct hash_pair{
-//     size_t operator()(const std::pair<int, int>& p) const {
-//         return std::hash<int>()(p.first) ^ (std::hash<int>()(p.second) << 1);
+//     size_t operator()(const std::pair<ll, ll>& p) const {
+//         return std::hash<ll>()(p.first) ^ (std::hash<ll>()(p.second) << 1);
 //     }
 // };
 // template<typename K, typename V>
 // using safe_umap = unordered_map<K, V, custom_hash>;
 // template<typename T>
 // using safe_uset = unordered_set<T, custom_hash>;
-// int binpow(int a, int b) {
-//     int res = 1;
+// ll binpow(ll a, ll b) {
+//     ll res = 1;
 //     while (b > 0) {
 //         if (b & 1) res=(res*a)%MOD;
 //         a =(a*a)%MOD;
@@ -71,44 +71,51 @@
 //     }
 //     return res;
 // }
-// void add_self(int& a,int b){
+// void add_self(ll& a,ll b){
 //     a+=b;
 //     if(a>=MOD) a-=MOD;
 // }
-// bool isinbounds(int x,int y,int rows,int cols){
+// bool isinbounds(ll x,ll y,ll rows,ll cols){
 //     return x>=0 && y>=0 && x<rows && y<cols;
 // }
-// const int dx[4]={0,1,0,-1};
-// const int dy[4]={1,0,-1,0};
-
-// // bool customcompare(const pair<int,int>& a,const pair<int,int>& b){
-// //     if(a.first!=b.first) return a.first<b.first;
-// //     return a.second>b.second;
-// // }
+// const ll dx[4]={0,1,0,-1};
+// const ll dy[4]={1,0,-1,0};
 
 // void solve() {
-//     int n; cin>>n;
-//     vector<pair<int,int>> pep(n);
-//     for(int i=0;i<n;i++){
-//         int a,b; cin>>a>>b;
-//         pep[i]={a,b};
+//     ll n; cin>>n;
+//     vector<pair<ll,ll>> lr(n);
+//     for(ll i=0;i<n;i++){
+//         ll l,r; cin>>l>>r;
+//         lr[i]={l,r};
 //     }
-//     int ans=0;
-//     sort(pep.begin(),pep.end());
-//     // for(int i=0;i<n;i++){
-//     //     for(int j=i+1;j<n;j++){
-//     //         if(pep[j].se<=pep[i].se) ans++;
-//     //     }
-//     // }
-//     //gives tle so use pbds
-//     ordered_set<int> os;
-//     for(int i=0;i<n;i++){
-//         int curb=pep[i].se;
-//         int smaller_than_curb=os.order_of_key(curb);
-//         int greater_than_curb=os.size()-smaller_than_curb;
-//         ans+=greater_than_curb;
-//         os.insert(curb);
+//     vector<vector<ll>> tree(n);
+//     for(ll i=1;i<n;i++){
+//         ll a,b; cin>>a>>b;
+//         a--,b--;
+//         tree[a].pb(b);
+//         tree[b].pb(a);
 //     }
+//     vector<pair<ll,ll>> dp(n);
+//     vector<bool> visi(n,false);
+//     queue<ll>q;
+//     q.push(0);
+//     dp[0]={0,0};
+//     visi[0]=true;
+//     // vector<int> ans(n);
+//     ll ans=0;
+//     while(!q.empty()){
+//         ll cur=q.front(); q.pop();
+//         for(ll i=0;i<tree[cur].size();i++){
+//             if(!visi[tree[cur][i]]){
+//                 q.push(tree[cur][i]);
+//                 visi[tree[cur][i]]=true;
+//                 dp[tree[cur][i]]={max(dp[cur].fi+abs(lr[cur].fi-lr[tree[cur][i]].fi),dp[cur].se+abs(lr[cur].se-lr[tree[cur][i]].fi)),max(dp[cur].fi+abs(lr[cur].fi-lr[tree[cur][i]].se),dp[cur].se+abs(lr[cur].se-lr[tree[cur][i]].se))};
+//                 // ans[tree[cur][i]]=max(dp[tree[cur][i]].fi,dp[tree[cur][i]].se);
+//                 ans+=max(dp[tree[cur][i]].fi,dp[tree[cur][i]].se)-max(dp[cur].fi,dp[cur].se);
+//             }
+//         }
+//     }
+//     // cout<<dp<<endl;
 //     cout<<ans<<endl;
 // }
 
@@ -124,11 +131,8 @@
 //     }
 // }
 
-
-// below is without using pdbs
-//uisng bit tree/ fenwick tree
-
-
+//bfs wont work
+//lets do dfs
 //author: himu23
 #include <bits/stdc++.h>
 // #include<ext/pb_ds/assoc_container.hpp>
@@ -150,19 +154,19 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #endif
 
 #define ar array
-#define int long long
+#define ll long long
 #define ld long double
-#define sza(x) ((int)x.size())
-#define aint(a) (a).begin(), (a).end()
+#define sza(x) ((ll)x.size())
+#define all(a) (a).begin(), (a).end()
 #define pb push_back
 #define umap unordered_map
 #define fi first
 #define se second
-#define pai pair<int,int>
+#define pai pair<ll,ll>
 
-const int MAX_N = 2e5 + 5;
-const int MOD = 1e9 + 7;
-const int INF = 1e9;
+const ll MAX_N = 1e6 + 5;
+const ll MOD = 1e9 + 7;
+const ll INF = 1e9;
 const ld EPS = 1e-9;
 
 // Custom hash for unordered_map/set
@@ -185,16 +189,16 @@ struct custom_hash {
     }
 };
 struct hash_pair{
-    size_t operator()(const std::pair<int, int>& p) const {
-        return std::hash<int>()(p.first) ^ (std::hash<int>()(p.second) << 1);
+    size_t operator()(const std::pair<ll, ll>& p) const {
+        return std::hash<ll>()(p.first) ^ (std::hash<ll>()(p.second) << 1);
     }
 };
 template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-int binpow(int a, int b) {
-    int res = 1;
+ll binpow(ll a, ll b) {
+    ll res = 1;
     while (b > 0) {
         if (b & 1) res=(res*a)%MOD;
         a =(a*a)%MOD;
@@ -202,52 +206,45 @@ int binpow(int a, int b) {
     }
     return res;
 }
-void add_self(int& a,int b){
+void add_self(ll& a,ll b){
     a+=b;
     if(a>=MOD) a-=MOD;
 }
-bool isinbounds(int x,int y,int rows,int cols){
+bool isinbounds(ll x,ll y,ll rows,ll cols){
     return x>=0 && y>=0 && x<rows && y<cols;
 }
-const int dx[4]={0,1,0,-1};
-const int dy[4]={1,0,-1,0};
-
-int bit[MAX_N];
-int n;
-void update(int idx,int val){
-    for(;idx<=n;idx+=idx & -idx) bit[idx]+=val;
+const ll dx[4]={0,1,0,-1};
+const ll dy[4]={1,0,-1,0};
+pair<ll,ll> dodp(ll i, vector<bool>& visi,vector<vector<ll>>&tree,vector<pair<ll,ll>>& dp,vector<pair<ll,ll>>&lr){
+    if(visi[i]) return dp[i];
+    visi[i]=true;
+    pair<ll,ll> ans={0,0};
+    for(ll j=0;j<tree[i].size();j++){
+        if(!visi[tree[i][j]]){
+            ans.fi+=max(dodp(tree[i][j],visi,tree,dp,lr).fi+abs(lr[tree[i][j]].fi-lr[i].fi),dodp(tree[i][j],visi,tree,dp,lr).se+abs(lr[tree[i][j]].se-lr[i].fi));
+            ans.se+=max(dodp(tree[i][j],visi,tree,dp,lr).fi+abs(lr[tree[i][j]].fi-lr[i].se),dodp(tree[i][j],visi,tree,dp,lr).se+abs(lr[tree[i][j]].se-lr[i].se));
+        }
+    }
+    dp[i]=ans;
+    return ans;
 }
-int query(int idx){
-    int sum=0;
-    for(;idx>0;idx-=idx&-idx) sum+=bit[idx];
-    return sum;
-}
-
 void solve() {
-    cin>>n;
-    vector<pair<int,int>> pep(n);
-    vector<int> bvals;
-    for(int i=0;i<n;i++){
-        cin>>pep[i].fi>>pep[i].se;
-        bvals.pb(pep[i].se);
+    ll n; cin>>n;
+    vector<pair<ll,ll>> lr(n);
+    for(ll i=0;i<n;i++){
+        ll l,r; cin>>l>>r;
+        lr[i]={l,r};
     }
-    //coordinate compression;
-    sort(bvals.begin(),bvals.end());
-    for(int i=0;i<n;i++){
-        int rank=lower_bound(bvals.begin(),bvals.end(),pep[i].se)-bvals.begin()+1;
-        pep[i].se=rank;
+    vector<vector<ll>> tree(n);
+    for(ll i=1;i<n;i++){
+        ll a,b; cin>>a>>b;
+        a--,b--;
+        tree[a].pb(b);
+        tree[b].pb(a);
     }
-    sort(pep.begin(),pep.end());
-    for(int i=0;i<=n;i++) bit[i]=0;
-    int ans=0;
-    for(int i=0;i<n;i++){
-        int curb=pep[i].se;
-        int smaller=query(curb);
-        int greater=i-smaller;
-        ans+=greater;
-        update(curb,1);
-    }
-    cout<<ans<<endl;
+    vector<pair<ll,ll>> dp(n);
+    vector<bool> visi(n,false);
+    cout<<max(dodp(0,visi,tree,dp,lr).fi,dodp(0,visi,tree,dp,lr).se)<<endl;
 }
 
 int32_t main() {

@@ -82,35 +82,41 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    ll n,m; cin>>n>>m;
-    vector<ll> a(n);
-    vector<ll> b(n);
-    safe_umap<ll,ll> um;
-    for(ll i=0;i<n;i++){
-        ll temp; cin>>temp;
-        b[i]=temp;
-        a[i]=temp%m;
-        if(um.find(a[i])!=um.end()){
-            cout<<0;return;
-        }
-        um[a[i]]++;
-    }
-    // sort(a.begin(),a.end(),greater<ll>());
-    // cout<<a;
-    // ll ans=1;
-    // for(ll i=0;i<n;i++){
-    //     for(ll j=i+1;j<n;j++){
-    //         ans=(ans*((ll)(a[i]-a[j]+m)%m))%m;
-    //     }
-    // }
-    // cout<<ans<<endl;
-    ll ans=1LL;
-    for(ll i=0;i<n;i++){
-        for(ll j=i+1;j<n;j++){
-            ans=(ans*(abs(b[i]-b[j])+m)%m)%m;
+    int n,m; cin>>n>>m;
+    string s; cin>>s;
+    vector<vector<char>> a(6,vector<char>(n));
+    for(int i=0;i<6;i++){
+        for(int j=0;j<n;j++){
+            int temp=(i+j)%6;
+            if(i>=3) temp=(i+2*j)%6;
+            a[i][j]=((temp)%3+'a');
         }
     }
-    cout<<ans%m<<endl;
+    // cout<<a<<endl;
+    vector<vector<int>> pref(6,vector<int>(n));
+    for(int i=0;i<6;i++){
+        vector<char> temp=a[i];
+        int cur=0;
+        for(int j=0;j<n;j++){
+            if(temp[j]!=s[j]) cur++;
+            pref[i][j]=cur;
+        }
+    }
+    while(m--){
+        int l,r; cin>>l>>r;
+        l--,r--;
+        int ans=INT_MAX;
+        // vector<vector<int>> dp() 
+        // for(int i=l+1;i<=r;i++){
+
+        // }
+        for(int i=0;i<6;i++){
+            int suml=0;
+            if(l!=0) suml=pref[i][l-1];
+            ans=min(ans,pref[i][r]-suml);
+        }
+        cout<<ans<<endl;
+    }
 }
 
 int32_t main() {
