@@ -82,23 +82,76 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    string s; cin>>s;
-    int p; cin>>p;
-    int n=s.length();
-    // int temp=n*(n+1)-2*p;
-    // // cout<<temp<<" ";
-    // temp=(temp+sqrt(1+4*temp))/2;
-    // // cout<<temp<<" ";
-    // int rem=p-(n*(n+1)-temp*(temp+1))/2;
-    // //find the char at rem index after removing (n-temp) chars
-    // temp=n-temp;
-    // cout<<temp<<" "<<rem<<endl;
-
-    //dont try to find which string the char belong to using maths and quadratic equations in o(1)
-    //as you will anyway have to construct that string by removing each valid char in o(n)
-
-    //you can always binary search on prefix sums as they are monotonic
-    
+    int n; cin>>n;
+    vector<int> a(n);
+    int maxx=INT_MIN,minn=INT_MAX;
+    int cm=0,cp=0;
+    for(int i=0;i<n;i++){
+        cin>>a[i];
+        maxx=max(maxx,a[i]);
+        minn=min(minn,a[i]);
+        if(a[i]<0) cm++;
+        if(a[i]>0) cp++;
+        // if(a[i]==0) c0++;
+    }
+    if((maxx<0 && minn<0)||(maxx>0 && minn>0) ||(n==1) || (maxx==0 &&minn==0)){cout<<"No"<<endl;return;}
+    // int summ=maxx-minn;
+    vector<int> ans;
+    bool flag=false;
+    if(cm>cp){
+        flag=true;
+        cm=cm+cp;
+        cp=cm-cp;
+        cm=cm-cp;//swap;
+        // maxx=maxx+minn;
+        // minn=maxx-minn;
+        // maxx=maxx-minn;
+        for(int i=0;i<n;i++) a[i]*=-1;
+    }
+    vector<int> tempp,tempm;
+    for(int i=0;i<n;i++){
+        if(a[i]<0) tempm.pb(a[i]);
+        else if(a[i]>0) tempp.pb(a[i]);
+    }
+    // sort(tempp.begin(),tempp.end());
+    // sort(tempm.begin(),tempm.end());
+    ll cursum=0;
+    int ip=0,im=0;
+    while(ip<tempp.size() || im<tempm.size()){
+        if(ip<tempp.size() && cursum<=0){
+            cursum+=(ll)tempp[ip];
+            ans.pb(tempp[ip]);
+            ip++;
+        }
+        else if(im<tempm.size() && cursum<=0){
+            cursum+=(ll)tempm[im];
+            ans.pb(tempm[im]);
+            im++;
+        }
+        else if(im<tempm.size() && cursum>0){
+            cursum+=(ll)tempm[im];
+            ans.pb(tempm[im]);
+            im++;
+        }
+        else if(ip<tempp.size() && cursum>0){
+            cursum+=(ll)tempp[ip];
+            ans.pb(tempp[ip]);
+            ip++;
+        }
+    }
+    // int tempsum=0;
+    // bool flag1=false;
+    // while(ip<tempp.size()){ans.pb(tempp[ip]);cursum+=tempp[ip];ip++;}
+    // if(cursum>maxx) flag1=true;
+    // // tempsum=0;
+    // while(im<tempm.size()){ans.pb(tempm[im]);cursum+=tempm[im];im++;}
+    // if(cursum<minn) flag1=true;
+    while(ans.size()<n) ans.pb(0);
+    // if(flag1){cout<<"No"<<endl;return;}
+    if(flag) for(int i=0;i<n;i++) ans[i]*=-1;
+    cout<<"Yes"<<endl;
+    for(int i=0;i<n;i++) cout<<ans[i]<<" ";
+    cout<<endl;
 }
 
 int32_t main() {

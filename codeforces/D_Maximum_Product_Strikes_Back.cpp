@@ -110,7 +110,82 @@ void solve() {
 
     // cout<<curl<<" "<<n-1-curr<<endl;
     for(int i=0;i<n;i++) cin>>a[i];
-    vector<vector<int>> temp
+    // vector<vector<int>> temp;
+    // vector<int> temp1,temp2;
+    vector<pair<int,int>> temp3;
+    int temp4=0;
+    for(int i=0;i<n;i++){
+        // if(a[i]!=0){
+        //     // temp1.pb(a[i]);
+        // }
+        // else{
+        //     // temp.pb(temp1);
+        //     // temp1=temp2;
+        //     temp3.pb({temp4,i-1});
+        //     temp4=i+1;
+        // }
+        // if(i==n-1){
+        //     // temp.pb(temp1);
+        //     // temp1=temp2;
+        //     temp3.pb({temp4,i-1});
+        //     temp4=i+1;
+        // }
+        if(a[i]==0){
+            if(i!=0) temp3.pb({temp4,i-1});
+            temp4=i+1;
+        }
+        else if(i==n-1) temp3.pb({temp4,i});
+    }
+    int maxx=0;
+    int ansl=n,ansr=n-1;
+    // cout<<temp3<<endl;
+    for(int i=0;i<temp3.size();i++){
+        // vector<int> curvec=temp[i];
+        int curl=temp3[i].fi;
+        int curr=temp3[i].se;
+        int curpro=0;
+        int cur2=0;
+        for(int j=curl;j<=curr;j++){
+            // curpro*=a[j];
+            if(a[j]<0) curpro++;
+            if(a[j]==2 || a[j]==-2) cur2++;
+        }
+        if(curpro%2==0){
+            if(cur2>maxx){
+                ansl=curl,ansr=curr;
+                maxx=cur2;
+            }
+            continue;
+        }
+        int temp9=0;
+        int templ=0;
+        for(int j=curl;j<=curr;j++){
+            templ++;
+            if(a[j]==2 || a[j]==-2) temp9++;
+            if(a[j]<0) break;
+        }
+        int temp8=0;
+        int tempr=0;
+        for(int j=curr;j>=curl;j--){
+            tempr++;
+            if(a[j]==2 || a[j]==-2) temp8++;
+            if(a[j]<0) break;
+        }
+        int temp7=min(temp9,temp8);
+        if(cur2-temp7>maxx){
+            maxx=cur2-temp7;
+            if(temp9>=temp8){
+                ansl=curl;
+                ansr=curr-tempr;
+            }
+            else{
+                ansl=curl+templ;
+                ansr=curr;
+            }
+        }
+    }
+    // cout<<binpow(2,maxx)<<endl;
+    cout<<ansl<<" "<<n-1-ansr<<endl;
 }
 
 int32_t main() {

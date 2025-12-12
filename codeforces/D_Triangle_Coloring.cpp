@@ -29,8 +29,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define se second
 #define pai pair<ll,ll>
 
-const ll MAX_N = 1e6 + 5;
-const ll MOD = 1e9 + 7;
+const ll MAX_N = 3e5+5;
+const ll MOD = 998244353;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
@@ -69,7 +69,7 @@ ll binpow(ll a, ll b) {
         a =(a*a)%MOD;
         b >>= 1;
     }
-    return res;
+    return res%MOD;
 }
 void add_self(ll& a,ll b){
     a+=b;
@@ -81,31 +81,69 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
-void solve() {
-    string s; cin>>s;
-    int p; cin>>p;
-    int n=s.length();
-    // int temp=n*(n+1)-2*p;
-    // // cout<<temp<<" ";
-    // temp=(temp+sqrt(1+4*temp))/2;
-    // // cout<<temp<<" ";
-    // int rem=p-(n*(n+1)-temp*(temp+1))/2;
-    // //find the char at rem index after removing (n-temp) chars
-    // temp=n-temp;
-    // cout<<temp<<" "<<rem<<endl;
+//write precompute(); in int main()
 
-    //dont try to find which string the char belong to using maths and quadratic equations in o(1)
-    //as you will anyway have to construct that string by removing each valid char in o(n)
+vector<long long> fact(MAX_N);
+vector<long long> invFact(MAX_N);
 
-    //you can always binary search on prefix sums as they are monotonic
+// Function to calculate (base^exp) % MOD
+long long power(long long base, long long exp) {
+    long long res = 1;
+    base %= MOD;
+    while (exp > 0) {
+        if (exp % 2 == 1) res = (res * base) % MOD;
+        base = (base * base) % MOD;
+        exp /= 2;
+    }
+    return res%MOD;
+}
+
+void precompute() {
+    fact[0] = 1;
+    invFact[0] = 1;
     
+    // 1. Compute Factorials
+    for (int i = 1; i < MAX_N; i++) {
+        fact[i] = (fact[i - 1] * i) % MOD;
+    }
+
+    // 2. Compute Inverse Factorials
+    // Fermat's Little Theorem: inv(n!) = (n!)^(MOD-2)
+    invFact[MAX_N - 1] = power(fact[MAX_N - 1], MOD - 2);
+    
+    // Backward propagation for efficiency O(N) rather than O(N log MOD)
+    for (int i = MAX_N - 2; i >= 1; i--) {
+        invFact[i] = (invFact[i + 1] * (i + 1)) % MOD;
+    }
+}
+
+long long ncr(int n, int r) {
+    if (r < 0 || r > n) return 0;
+    return (((fact[n] * invFact[r]) % MOD) * invFact[n - r]) % MOD;
+}
+void solve() {
+    ll n; cin>>n;
+    ll cnt=0,cna=0,cn2=0;
+    for(ll i=0;i<n/3;i++){
+        ll a,b,c; cin>>a>>b>>c;
+        int d=min(a,min(c,b));
+        cnt++;
+        if(a==b && b==c) cna++;
+        int temp=0;
+        if(a==d) temp++;
+        if(b==d) temp++;
+        if(c==d) temp++;
+        if(temp==2) cn2++;
+    }
+    cout<<(ncr(cnt,cnt/2)*(power(3,cna)*(power(2,cn2))%MOD)%MOD)%MOD<<endl;
 }
 
 int32_t main() {
+    precompute();
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

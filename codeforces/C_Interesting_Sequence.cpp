@@ -81,24 +81,59 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
+vector<ll> getbits(ll n) {
+    ll m;
+    if(n==0) return {};
+    if(n!=0) m=63-__builtin_clzll(n)+1;
+    vector<ll> ans(m, 0);
+    for (ll i = 0; i < m; i++) {
+        if ((n >> i) & 1) {
+            ans[i] = 1;
+        }
+    }
+    return ans; 
+}
 void solve() {
-    string s; cin>>s;
-    int p; cin>>p;
-    int n=s.length();
-    // int temp=n*(n+1)-2*p;
-    // // cout<<temp<<" ";
-    // temp=(temp+sqrt(1+4*temp))/2;
-    // // cout<<temp<<" ";
-    // int rem=p-(n*(n+1)-temp*(temp+1))/2;
-    // //find the char at rem index after removing (n-temp) chars
-    // temp=n-temp;
-    // cout<<temp<<" "<<rem<<endl;
-
-    //dont try to find which string the char belong to using maths and quadratic equations in o(1)
-    //as you will anyway have to construct that string by removing each valid char in o(n)
-
-    //you can always binary search on prefix sums as they are monotonic
-    
+    ll n,x; cin>>n>>x;
+    if((n&x)!=x){cout<<-1<<endl;return;}
+    if(n==x){cout<<n<<endl;return;}
+    vector<ll> temp=getbits(n);
+    vector<ll> temp1=getbits(x);
+    if(temp1.size()>temp.size()){cout<<-1<<endl;return;}
+    while(temp1.size()<temp.size()) temp1.pb(0);
+    // cout<<temp<<endl<<temp1<<endl;
+    //first num at which the ith bit is to be unset
+    ll maxx=-1;
+    for(ll i=0;i<temp.size();i++){
+        if(temp1[i]==1 && temp[i]==0){cout<<-1<<endl;return;}
+        if(temp[i]==1 && temp1[i]==0) maxx=i;
+    }
+    // maxx++;
+    for(ll i=0;i<=maxx;i++){
+        if(i<temp.size()) temp[i]=0;
+    }
+    ll cur=maxx+1;
+    while(true){
+        if(cur>=temp.size()){
+            temp.pb(1);
+            break;
+        }
+        if(temp[cur]==0){
+            temp[cur]=1;
+            break;
+        }
+        else{
+            temp[cur]=0;
+            cur++;
+        }
+    }
+    // cout<<temp1<<endl;
+    ll ans=0;
+    for(ll i=0;i<temp.size();i++){
+        if(temp[i]==1) ans+=(1LL<<i);
+    }
+    if((n&ans)==x) cout<<ans<<endl;
+    else cout<<-1<<endl;
 }
 
 int32_t main() {

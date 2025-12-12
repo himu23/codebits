@@ -82,23 +82,19 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    string s; cin>>s;
-    int p; cin>>p;
-    int n=s.length();
-    // int temp=n*(n+1)-2*p;
-    // // cout<<temp<<" ";
-    // temp=(temp+sqrt(1+4*temp))/2;
-    // // cout<<temp<<" ";
-    // int rem=p-(n*(n+1)-temp*(temp+1))/2;
-    // //find the char at rem index after removing (n-temp) chars
-    // temp=n-temp;
-    // cout<<temp<<" "<<rem<<endl;
+    int n,m; cin>>n>>m;
+    //bs for which point each segment becomes beautiful, ans is min of those
+    vector<pair<int,int>> temp(m);
+    for(int i=0;i<m;i++){
+        int a,b; cin>>a>>b;
+        a--,b--;
+        temp[i]={a,b};
+    }
+    int q; cin>>q;
+    vector<int> 
+    while(q--){
 
-    //dont try to find which string the char belong to using maths and quadratic equations in o(1)
-    //as you will anyway have to construct that string by removing each valid char in o(n)
-
-    //you can always binary search on prefix sums as they are monotonic
-    
+    }
 }
 
 int32_t main() {

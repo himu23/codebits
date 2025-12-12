@@ -82,23 +82,47 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    string s; cin>>s;
-    int p; cin>>p;
-    int n=s.length();
-    // int temp=n*(n+1)-2*p;
-    // // cout<<temp<<" ";
-    // temp=(temp+sqrt(1+4*temp))/2;
-    // // cout<<temp<<" ";
-    // int rem=p-(n*(n+1)-temp*(temp+1))/2;
-    // //find the char at rem index after removing (n-temp) chars
-    // temp=n-temp;
-    // cout<<temp<<" "<<rem<<endl;
-
-    //dont try to find which string the char belong to using maths and quadratic equations in o(1)
-    //as you will anyway have to construct that string by removing each valid char in o(n)
-
-    //you can always binary search on prefix sums as they are monotonic
-    
+    int n; cin>>n;
+    vector<set<int>> tree(n);
+    for(int i=0;i<n;i++){
+        int a; cin>>a;
+        a--;
+        tree[a].insert(i);
+        tree[i].insert(a);
+    }
+    vector<int> parent(n,-1);
+    //no of components that are circular 
+    vector<bool> compos;
+    vector<bool> visi(n,false);
+    for(int i=0;i<n;i++){
+        if(visi[i]) continue;
+        visi[i]=true;
+        bool flag=false;
+        queue<int> q;
+        q.push(i);
+        parent[i]=-1;
+        while(!q.empty()){
+            int cur=q.front();q.pop();
+            for(int neigh:tree[cur]){
+                if(!visi[neigh]){
+                    visi[neigh]=true;
+                    q.push(neigh);
+                    parent[neigh]=cur;
+                }
+                else if(neigh!=parent[cur]) flag=true;
+            }
+        }
+        compos.pb(flag);
+    }
+    int cnt=0;
+    bool flag=false;
+    for(int i=0;i<compos.size();i++){
+        if(compos[i]) cnt++;
+        if(!compos[i]) flag=true;
+    }
+    // cout<<compos<<endl;
+    if(flag) cnt++;
+    cout<<cnt<<" "<<compos.size()<<endl;
 }
 
 int32_t main() {

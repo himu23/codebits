@@ -16,7 +16,7 @@
     "valarray": "cpp",
     "numeric": "cpp"
   },
-  "editor.hover.enabled": false,
+  "editor.hover.enabled": "off",
   "editor.parameterHints.enabled": false,
   "editor.quickSuggestions":{
     "comments": false,
