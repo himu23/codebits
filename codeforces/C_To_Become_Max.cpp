@@ -82,13 +82,34 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    int n,k; cin>>n>>k;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
+    ll n,k; cin>>n>>k;
+    vector<ll> a(n);
+    ll maxx=0;
+    for(ll i=0;i<n;i++){
         cin>>a[i];
+        maxx=max(maxx,a[i]);
     }
-    int maxx=a[n-1];
-    
+    //monotonicity===bs
+    //bs on ans
+    ll l=maxx,r=maxx+k;
+    ll ans=maxx;
+    while(l<=r){
+        ll m=l+(r-l)/2;
+        bool flag=false;
+        for(ll i=0;i<n;i++){
+            ll cost=0;
+            ll curneed=m;
+            for(ll j=i;j<n;j++){
+                if(a[j]>=curneed){flag=true;break;}
+                cost+=(curneed-a[j]);
+                if(cost>k || j==n-1){break;}
+                curneed--;
+            }
+        }
+        if(flag){ans=m;l=m+1;}
+        else r=m-1;
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {

@@ -82,71 +82,14 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    int n,m; cin>>n>>m;
-    //bs for which point each segment becomes beautiful, ans is min of those
-    //actually bs on queries which statisfy atlest one segment
-    vector<pair<int,int>> temp(m);
-    for(int i=0;i<m;i++){
-        int a,b; cin>>a>>b;
-        a--,b--;
-        temp[i]={a,b};
+    int n; cin>>n;
+    if(n%2==0){
+        cout<<-1<<endl;
+        return;
     }
-    int q; cin>>q;
-    vector<int> qrs;
-    while(q--){
-        int a; cin>>a;
-        a--;
-        qrs.pb(a);
-    }
-    // vector<vector<int>> pref;
-    // vector<int> temp1;
-    // for(int x:qrs){
-    //     temp1.pb(x);
-    //     pref.pb(temp1);
-    // }
-    // int p=pref.size();
-    int p=qrs.size();
-    int l=0,r=p-1;
-    int ans=-2;
-    vector<int> pref;
-    while(l<=r){
-        int mid=l+(r-l)/2;
-        bool flag=false;
-        vector<int> curvec(n,0);
-        // vector<vector<int>> pref;
-        // vector<int> temp1;
-        // for(int x:qrs){
-        //     temp1.pb(x);
-        //     pref.pb(temp1);
-        // }
-        // vector<int> pref;
-        // for(int i=0;i<=mid;i++) pref.pb(qrs[i]);
-        // for(int i=0;i<pref.size();i++){
-        //     curvec[pref[i]]=1;
-        // }
-        for(int i=0;i<=mid;i++) curvec[qrs[i]]=1;
-        vector<int> preffixx(n);
-        int temp9=0;
-        for(int i=0;i<n;i++){
-            if(curvec[i]==1) temp9++;
-            preffixx[i]=temp9;
-        }
-        for(int i=0;i<m;i++){
-            int l1=temp[i].fi,r1=temp[i].se;
-            int len=r1-l1+1;
-            int c1=0;
-            if(l1!=0) c1=preffixx[l1-1];
-            c1=preffixx[r1]-c1;
-            len=len-c1;
-            if(c1>len){
-                flag=true;
-                break;
-            }
-        }
-        if(flag){r=mid-1;ans=mid;}
-        else l=mid+1;
-    }
-    cout<<ans+1<<endl;
+    cout<<n<<" ";
+    for(int i=1;i<n;i++) cout<<i<<" ";
+    cout<<endl;
 }
 
 int32_t main() {
