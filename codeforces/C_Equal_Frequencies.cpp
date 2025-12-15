@@ -84,7 +84,75 @@ const ll dy[4]={1,0,-1,0};
 void solve() {
     int n; cin>>n;
     string s; cin>>s;
-    
+    vector<char> a(n);
+    // set<int> schars;
+    vector<pair<int,int>> freq(26);
+    for(int i=0;i<26;i++) freq[i]={0,i};
+    vector<vector<int>> positions(26);
+    for(int i=0;i<n;i++) {
+        a[i]=s[i];
+        freq[s[i]-'a'].fi++;
+        freq[s[i]-'a'].se=s[i]-'a';
+        positions[s[i]-'a'].pb(i);
+        // schars.insert(s[i]-'a');
+    }
+    // int temp1=schars.size();
+    vector<int> b(n,-1),d(n,-1);
+    vector<vector<int>> allbs;
+    sort(freq.begin(),freq.end(),greater<>());
+    vector<int> factors;
+    for(int i=1;i*i<=n;i++){
+        if(n%i==0){
+            if(n/i!=i &&n/i<=26) factors.pb(n/i);
+            if(i<=26) factors.pb(i);
+        }
+    }
+    for(int i=0;i<factors.size();i++){
+        int k=factors[i];
+        // if(k>temp1) continue;
+        //no of distinct elements is k
+        //that is freq required of each element is n/k;
+        // vector<int> rempositions;
+        vector<int> remchars;
+        for(int j=0;j<k;j++){
+            int curfreq=freq[j].fi;
+            int curchar=freq[j].se;
+            int reqfreq=n/k;
+            for(int idx=0;idx<reqfreq;idx++){
+                if(idx<curfreq){
+                    b[positions[curchar][idx]]=curchar;
+                }
+                else remchars.pb(curchar);
+            }
+            // while(reqfreq--) remchars.pb(curchar);
+        }
+        // for(int j=0;j<remchars.size();j++){
+        //     b[rempositions[j]]=remchars[j];
+        // }
+        int temp=0;
+        for(int i=0;i<n;i++){
+            if(b[i]==-1){
+                b[i]=remchars[temp];temp++;
+            }
+        }
+        // cout<<remchars<<endl;
+        allbs.pb(b); b=d;
+    }
+    int tempans=0;
+    vector<int> ansb;
+    for(int i=0;i<allbs.size();i++){
+        int curtemp=0;
+        for(int j=0;j<n;j++){
+            if(a[j]-'a'==allbs[i][j]) curtemp++;
+        }
+        if(curtemp>=tempans){
+            tempans=curtemp;
+            ansb=allbs[i];
+        }
+    }
+    cout<<n-tempans<<endl;
+    for(int i=0;i<n;i++) cout<<char(ansb[i]+'a');
+    cout<<endl;
 }
 
 int32_t main() {

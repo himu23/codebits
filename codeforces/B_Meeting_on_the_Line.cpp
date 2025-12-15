@@ -81,7 +81,45 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
-void solve() {
+// void solve() {
+//     int n; cin>>n;
+//     vector<int> x(n);
+//     int minn=INT_MAX,maxx=INT_MIN;
+//     for(int i=0;i<n;i++){
+//         cin>>x[i];
+//         minn=min(minn,x[i]);
+//         maxx=max(maxx,x[i]);
+//     }
+//     vector<int> t(n);
+//     int maxt=0;
+//     for(int i=0;i<n;i++){
+//         cin>>t[i];
+//         maxt=max(maxt,t[i]+max(abs(x[i]-minn),abs(x[i]-maxx)));
+//     }
+//     //bs on minmax, minimum max time taken
+//     double l=0,r=INF;
+//     double mina=-1,maxa=-1;
+//     int temp=60;
+//     while(temp--){
+//         double m=l+(r-l)/2;
+//         double min_x=-INF,max_x=INF;
+//         bool flag=true;
+//         for(double i=0;i<n;i++){
+//             if(m-t[i]<0){flag=false;break;}
+//             min_x=max(min_x,x[i]-m+t[i]);
+//             max_x=min(max_x,x[i]+m-t[i]);
+//         }
+//         if(flag && min_x<=max_x){
+//             mina=min_x,maxa=max_x;
+//             r=m-1;
+//         }
+//         else l=m+1;
+//     }
+//     double anspos=(mina+maxa)/2.0;
+//     cout<<fixed<<setprecision(6)<<anspos<<endl;
+// }
+//above got ac;
+void solve(){
     int n; cin>>n;
     vector<int> x(n);
     for(int i=0;i<n;i++){
@@ -91,9 +129,22 @@ void solve() {
     for(int i=0;i<n;i++){
         cin>>t[i];
     }
-    //real number
-    //which hints for a non dp solution
-    
+    //coordinate transformation
+    //each person can be split to two ghosts right and left
+    //right ghost=xi-ti, left ghost=xi+ti
+    //so now the distance(inscluding time) of xo from xi
+    //is max of distance from the two ghosts i.e. max(abs(xi-ti-x0),abs(xi+ti-x0));
+    //time=ti+abs(xi-x0)==ti+max(xi-x0,x0-xi)==max(ti+xi-x0,ti-xi+x0)
+    //==max((ti+xi)-x0,x0-(xi-ti))==max(dist(x0,rigth ghost),dist(x0,left ghost))
+    //so the point to minimise the distances from the farthest points(all right and left ghosts of all points)
+    //is the mid point of rightmost right ghost and leftmost left ghost
+    int mina=INF,maxa=-INF;
+    for(int i=0;i<n;i++){
+        mina=min(mina,x[i]-t[i]);
+        maxa=max(maxa,x[i]+t[i]);
+    }
+    double ansa=((double)mina+(double)maxa)/2.0;
+    cout<<fixed<<setprecision(6)<<ansa<<endl;
 }
 
 int32_t main() {

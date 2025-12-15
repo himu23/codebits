@@ -88,6 +88,15 @@ void solve() {
         cin>>b[i];
     }
     //suffix and prefix dp combined
+    //or maybe jump dp
+    vector<bool> dp(n+1,0);
+    dp[0]=1;
+    for(int i=1;i<=n;i++){
+        if(dp[i-1] && i+b[i-1]<=n) dp[i+b[i-1]]=1;
+        if(i-b[i-1]-1>=0) dp[i]=dp[i]||dp[i-1-b[i-1]];
+    }
+    if(dp[n]) cout<<"YES"<<endl;
+    else cout<<"NO"<<endl;
 }
 
 int32_t main() {

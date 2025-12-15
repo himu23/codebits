@@ -81,114 +81,39 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
-vector<ll> getbits(long long n) {
-    vector<ll> ans(11, 0);
-    for (ll i = 0; i < 11; i++) {
-        if ((n >> i) & 1) {
-            ans[i] = 1;
-        }
-    }
-    return ans; 
-}
-
 void solve() {
-    ll n,k; cin>>n>>k;
-    string a,b; cin>>a>>b;
-    vector<ll> temp(n,1);
-    safe_umap<char,vector<ll>> um;
-    for(ll i=0;i<n;i++){
-        if(a[i]!=b[i]){um[a[i]].pb(i);temp[i]=0;}
-    }
-    //since its only 10 we can easily brute force
-    // vector<ll> ans;
-    // for(auto pairr:um){
-    //     ll curans=0;
-    //     vector<ll> cur=pairr.se;
-    //     vector<ll> curtemp=temp;
-    //     for(ll i=0;i<cur.size();i++){
-    //         curtemp[cur[i]]=1;
-    //     }
-    //     ll temp9=0;
-    //     for(ll i=0;i<curtemp.size();i++){
-    //         if(curtemp[i]==1) temp9++;
-    //         else{
-    //             curans++;
-    //             if(temp9!=1) curans+=(temp9*(temp9-1)/2+temp9-1);
-    //             temp9=0;
-    //         }
-    //     }
-    //     ans.pb(curans);
-    // }
-    // sort(ans.begin(),ans.end(),greater<ll>());
-    ll m=0;
-    vector<vector<ll>> vecc;
-    for(auto pairr:um){
-        m++;
-        vecc.pb(pairr.se);
-    }
-    if(m==0 || k==0){
-        ll k0len=0;
-        ll k0ans=0;
-        for(ll i=0;i<n;i++){
-            if(a[i]==b[i]) k0len++;
-            else{
-                // k0ans++;
-                // if(k0len!=1) k0ans+=(k0len*(k0len-1)/2+k0len-1);
-                k0ans+=k0len*(k0len+1)/2;
-                k0len=0;
-            }
+    int n; cin>>n;
+    vector<int> a(n);
+    int summ=0;
+    for(int i=0;i<n;i++){cin>>a[i];summ+=a[i];}
+    if(summ%2!=0){cout<<0<<endl;return;}
+    //check if a subset is of sum summ/2;
+    bitset<200005> dp;
+    dp[0]=1;
+    for(int x:a) dp|=(dp<<x);
+    if(!dp[summ/2]){cout<<0<<endl;return;}
+    int minzeros=32;
+    int rem=-1;
+    for(int i=0;i<n;i++){
+        if(__builtin_ctz(a[i])<minzeros){
+            minzeros=__builtin_ctz(a[i]);
+            rem=i+1;
         }
-        // k0ans++;
-        // if(k0len!=1) k0ans+=(k0len*(k0len-1)/2+k0len-1);
-        k0ans+=(k0len*(k0len+1)/2);
-        cout<<k0ans<<endl;return;
     }
-    vector<ll> basevec(n,0);
-    for(ll i=0;i<n;i++){
-        if(a[i]==b[i]) basevec[i]=1;
-    }
-    ll m1=(1<<m);
-    ll ans=0;
-    for(ll i=0;i<m1;i++){
-        if(__builtin_popcount(i)>k) continue;
-        vector<ll> k1vec=getbits(i);
-        // ll c1=0;
-        // for(ll j=0;j<k1vec.size();j++) if(k1vec[j]==1) c1++;
-        // if(c1>k) continue;
-        vector<ll> curvec=basevec;
-        for(ll j=0;j<k1vec.size();j++){
-            if(k1vec[j]==0) continue;
-            for(ll p=0;p<vecc[j].size();p++){
-                curvec[vecc[j][p]]=1;
-            }
-        }
-        ll k1len=0;
-        ll k1ans=0;
-        for(ll j=0;j<n;j++){
-            if(curvec[j]==1) k1len++;
-            else{
-                // k1ans++;
-                // if(k1len!=1) k1ans+=(k1len*(k1len-1)/2+k1len-1);
-                k1ans+=k1len*(k1len+1)/2;
-                k1len=0;
-            }
-        }
-        k1ans+=(k1len*(k1len+1)/2);
-        ans=max(ans,k1ans);
-    }
-    cout<<ans<<endl;
+    //clz=count leading zeros
+    //ctz=count trailing zeros
+    cout<<1<<endl;
+    cout<<rem<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
         //cout<<fixed<<setprecision(12)<<
     }
 }
-//this got ac but just under 2sec 
-//so lets try the optimal way

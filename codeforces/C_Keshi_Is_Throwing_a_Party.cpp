@@ -84,12 +84,30 @@ const ll dy[4]={1,0,-1,0};
 void solve() {
     int n; cin>>n;
     vector<int>a(n),b(n);
-    vector<int> money(n);
+    vector<int> x(n);
     for(int i=0;i<n;i++){
         cin>>a[i]>>b[i];
-        money[i]=i;
+        x[i]=i;
     }
-    
+    //monotonic
+    //if only one friend is invited he is always happy
+    //since "atmost" ai people should be richer than him
+    //and "atmost" bi people should be poorer than him
+    int l=0,r=n;
+    int ans=0;
+    while(l<=r){
+        int m=l+(r-l)/2;
+        int cnt=0;
+        for(int i=0;i<n;i++){
+            if(cnt<=b[i] && (m-cnt-1)<=a[i]) cnt++;
+        }
+        if(cnt>=m){
+            ans=m;
+            l=m+1;
+        }
+        else r=m-1;
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {
