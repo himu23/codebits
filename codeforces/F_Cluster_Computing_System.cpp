@@ -21,15 +21,15 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define ar array
 #define ll long long
 #define ld long double
-#define sza(x) ((int)x.size())
+#define sza(x) ((ll)x.size())
 #define all(a) (a).begin(), (a).end()
 #define pb push_back
 #define umap unordered_map
-#define f first
-#define s second
-#define pai pair<int,int>
+#define fi first
+#define se second
+#define pai pair<ll,ll>
 
-const int MAX_N = 1e6 + 5;
+const ll MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
@@ -54,8 +54,8 @@ struct custom_hash {
     }
 };
 struct hash_pair{
-    size_t operator()(const std::pair<int, int>& p) const {
-        return std::hash<int>()(p.first) ^ (std::hash<int>()(p.second) << 1);
+    size_t operator()(const std::pair<ll, ll>& p) const {
+        return std::hash<ll>()(p.first) ^ (std::hash<ll>()(p.second) << 1);
     }
 };
 template<typename K, typename V>
@@ -65,54 +65,57 @@ using safe_uset = unordered_set<T, custom_hash>;
 ll binpow(ll a, ll b) {
     ll res = 1;
     while (b > 0) {
-        if (b & 1) res *= a;
-        a *= a;
+        if (b & 1) res=(res*a)%MOD;
+        a =(a*a)%MOD;
         b >>= 1;
     }
     return res;
 }
-void add_self(int& a,int b){
+void add_self(ll& a,ll b){
     a+=b;
     if(a>=MOD) a-=MOD;
 }
-bool isinbounds(int x,int y,int rows,int cols){
+bool isinbounds(ll x,ll y,ll rows,ll cols){
     return x>=0 && y>=0 && x<rows && y<cols;
 }
-const int dx[4]={0,1,0,-1};
-const int dy[4]={1,0,-1,0};
+const ll dx[4]={0,1,0,-1};
+const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    ll n; cin>>n;
-    vector<ll> a(n);
-    for(ll i=0;i<n;i++){
+    int n; cin>>n;
+    vector<int> a(n);
+    for(int i=0;i<n;i++){
         cin>>a[i];
     }
-    vector<ll> c(n);
-    ll summ=0;
-    for(ll i=0;i<n;i++){
-        cin>>c[i];
-        summ+=c[i];
+    // int minn=gcd(a[1],a[0]);
+    // int l=0,r=1;
+    // for(int i=1;i<n;i++){
+    //     int temp=gcd(a[i],a[i-1]);
+    //     if(temp<minn){
+    //         minn=temp;
+    //         l=i-1,r=i;
+    //     }
+    // }
+    // ll ans=(ll)(n-1)*(ll)minn;
+    // cout<<ans<<endl;
+    vector<int> prefix(n),suffix(n);
+    prefix[0]=a[0],suffix[n-1-0]=a[n-1];
+    for(int i=1;i<n;i++){
+        prefix[i]=gcd(prefix[i-1],a[i]);
+        suffix[n-1-i]=gcd(suffix[n-i],a[n-1-i]);
     }
-    //lis with weights
-    //on2 since its 1600
-    vector<ll> dp(n,0);
     ll ans=0;
-    for(ll i=0;i<n;i++){
-        dp[i]=c[i];
-        for(ll j=0;j<i;j++){
-            if(a[i]>=a[j]) dp[i]=max(dp[i],c[i]+dp[j]);
-        }
-        ans=max(ans,dp[i]);
+    for(int i=1;i<n;i++){
+        ans+=min((ll)prefix[i],(ll)suffix[i]);
     }
-    
-    cout<<summ-ans<<endl;
+    cout<<ans<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

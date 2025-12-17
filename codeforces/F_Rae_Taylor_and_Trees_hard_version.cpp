@@ -21,15 +21,15 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define ar array
 #define ll long long
 #define ld long double
-#define sza(x) ((int)x.size())
+#define sza(x) ((ll)x.size())
 #define all(a) (a).begin(), (a).end()
 #define pb push_back
 #define umap unordered_map
-#define f first
-#define s second
-#define pai pair<int,int>
+#define fi first
+#define se second
+#define pai pair<ll,ll>
 
-const int MAX_N = 1e6 + 5;
+const ll MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
@@ -54,8 +54,8 @@ struct custom_hash {
     }
 };
 struct hash_pair{
-    size_t operator()(const std::pair<int, int>& p) const {
-        return std::hash<int>()(p.first) ^ (std::hash<int>()(p.second) << 1);
+    size_t operator()(const std::pair<ll, ll>& p) const {
+        return std::hash<ll>()(p.first) ^ (std::hash<ll>()(p.second) << 1);
     }
 };
 template<typename K, typename V>
@@ -65,47 +65,55 @@ using safe_uset = unordered_set<T, custom_hash>;
 ll binpow(ll a, ll b) {
     ll res = 1;
     while (b > 0) {
-        if (b & 1) res *= a;
-        a *= a;
+        if (b & 1) res=(res*a)%MOD;
+        a =(a*a)%MOD;
         b >>= 1;
     }
     return res;
 }
-void add_self(int& a,int b){
+void add_self(ll& a,ll b){
     a+=b;
     if(a>=MOD) a-=MOD;
 }
-bool isinbounds(int x,int y,int rows,int cols){
+bool isinbounds(ll x,ll y,ll rows,ll cols){
     return x>=0 && y>=0 && x<rows && y<cols;
 }
-const int dx[4]={0,1,0,-1};
-const int dy[4]={1,0,-1,0};
+const ll dx[4]={0,1,0,-1};
+const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    ll n; cin>>n;
-    vector<ll> a(n);
-    for(ll i=0;i<n;i++){
+    int n; cin>>n;
+    vector<int> a(n);
+    for(int i=0;i<n;i++){
         cin>>a[i];
     }
-    vector<ll> c(n);
-    ll summ=0;
-    for(ll i=0;i<n;i++){
-        cin>>c[i];
-        summ+=c[i];
+    vector<int> pref(n); pref[0]=a[0];
+    // vector<int> pref1(n); pref1[0]=a[0];
+    vector<int> suff(n);suff[n-1]=a[n-1];
+    for(int i=1;i<n;i++){
+        pref[i]=min(pref[i-1],a[i]);
+        // pref1[i]=max(pref1[i-1],a[i]);
+        suff[n-1-i]=max(suff[n-i],a[n-1-i]);
     }
-    //lis with weights
-    //on2 since its 1600
-    vector<ll> dp(n,0);
-    ll ans=0;
-    for(ll i=0;i<n;i++){
-        dp[i]=c[i];
-        for(ll j=0;j<i;j++){
-            if(a[i]>=a[j]) dp[i]=max(dp[i],c[i]+dp[j]);
-        }
-        ans=max(ans,dp[i]);
+    for(int i=1;i<n;i++){
+        if(pref[i-1]>suff[i]){cout<<"No"<<endl;return;}
     }
-    
-    cout<<summ-ans<<endl;
+    cout<<"Yes"<<endl;
+    // cout<<pref<<endl<<suff<<endl<<a<<endl;
+    vector<pair<int,int>> ans;
+    vector<pair<int,int>> temp;
+    vector<int> suff1;
+    for(int i=0;i<n;i++){
+        if(suff[i]!=a[i]) ans.pb({a[i],suff[i]});
+        if(suff[i]==a[i]) if(i!=n-1) temp.pb({suff[i],i+1});
+        if(suff[i]==a[i]) suff1.pb(a[i]);
+    }
+    for(int i=0;i<temp.size();i++){
+        ans.pb({suff1[i+1],pref[temp[i].se-1]});
+    }
+    for(int i=0;i<ans.size();i++){
+        cout<<ans[i].fi<<" "<<ans[i].se<<endl;
+    }
 }
 
 int32_t main() {
