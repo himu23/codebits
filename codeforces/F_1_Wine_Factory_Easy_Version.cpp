@@ -21,16 +21,17 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define ar array
 #define ll long long
 #define ld long double
-#define sza(x) ((int)x.size())
+#define sza(x) ((ll)x.size())
 #define all(a) (a).begin(), (a).end()
 #define pb push_back
 #define umap unordered_map
-#define f first
-#define s second
-#define pai pair<int,int>
+#define fi first
+#define se second
+#define pai pair<ll,ll>
 
-const int MAX_N = 1e6 + 5;
+const ll MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
+// const ll MOD = 998244353;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
@@ -54,8 +55,8 @@ struct custom_hash {
     }
 };
 struct hash_pair{
-    size_t operator()(const std::pair<int, int>& p) const {
-        return std::hash<int>()(p.first) ^ (std::hash<int>()(p.second) << 1);
+    size_t operator()(const std::pair<ll, ll>& p) const {
+        return std::hash<ll>()(p.first) ^ (std::hash<ll>()(p.second) << 1);
     }
 };
 template<typename K, typename V>
@@ -65,97 +66,85 @@ using safe_uset = unordered_set<T, custom_hash>;
 ll binpow(ll a, ll b) {
     ll res = 1;
     while (b > 0) {
-        if (b & 1) res *= a;
-        a *= a;
+        if (b & 1) res=(res*a)%MOD;
+        a =(a*a)%MOD;
         b >>= 1;
     }
     return res;
 }
-void add_self(int& a,int b){
+void add_self(ll& a,ll b){
     a+=b;
     if(a>=MOD) a-=MOD;
 }
-bool isinbounds(int x,int y,int rows,int cols){
+bool isinbounds(ll x,ll y,ll rows,ll cols){
     return x>=0 && y>=0 && x<rows && y<cols;
 }
-const int dx[4]={0,1,0,-1};
-const int dy[4]={1,0,-1,0};
-
-struct fenwick {
-    ll n;
-    vector<long long> bit;
-
-    fenwick(ll n) : n(n), bit(n + 1, 0) {}
-
-    // add val to index i (1-based)
-    void update(ll i, long long val) {
-        for (; i <= n; i += i & -i)
-            // bit[i] += val;
-            bit[i]=max(bit[i],val);
+const ll dx[4]={0,1,0,-1};
+const ll dy[4]={1,0,-1,0};
+struct Node{
+    ll sum;
+    ll max_sum;
+};
+Node merge(Node l,Node r){
+    Node res;
+    res.sum=l.sum+r.sum;
+    res.max_sum=max(r.max_sum,r.sum+l.max_sum);
+    return res;
+}
+struct SegTree{
+    int n;
+    vector<Node> tree;
+    SegTree(int size){
+        n=size;
+        tree.resize(4*n+1);
     }
-
-    // sum from 1 to i (inclusive)
-    long long query(ll i) const {
-        long long s = 0;
-        for (; i > 0; i -= i & -i)
-            // s += bit[i];
-            s=max(s,bit[i]);
-        return s;
+    void build(vector<ll>& initial_data,int v, int tl,int tr){
+        if(tl==tr){
+            tree[v]={initial_data[tl],initial_data[tl]};
+        }
+        else{
+            int tm=(tl+tr)/2;
+            build(initial_data,2*v,tl,tm);
+            build(initial_data,2*v+1,tm+1,tr);
+            tree[v]=merge(tree[2*v],tree[2*v+1]);
+        }
     }
-
-    // sum from l to r (inclusive)
-    long long rangeQuery(ll l, ll r) const {
-        return query(r) - query(l - 1);
+    void update(int v,int tl, int tr, int pos, ll new_val){
+        if(tl==tr){
+            tree[v]={new_val,new_val};
+        }
+        else{
+            
+        }
     }
 };
-
-
 void solve() {
-    ll n; cin>>n;
-    vector<ll> a(n);
-    for(ll i=0;i<n;i++){
+    int n,q; cin>>n>>q;
+    vector<int> a(n);
+    int summ=0;
+    for(int i=0;i<n;i++){
         cin>>a[i];
+        summ+=a[i];
     }
-    vector<ll> c(n);
-    ll summ=0;
-    for(ll i=0;i<n;i++){
-        cin>>c[i];
-        summ+=c[i];
+    vector<int> b(n);
+    for(int i=0;i<n;i++){
+        cin>>b[i];
     }
-    //lis with weights
-    //on2 since its 1600
-    // vector<ll> dp(n,0);
-    // ll ans=0;
-    // for(ll i=0;i<n;i++){
-    //     dp[i]=c[i];
-    //     for(ll j=0;j<i;j++){
-    //         if(a[i]>=a[j]) dp[i]=max(dp[i],c[i]+dp[j]);
-    //     }
-    //     ans=max(ans,dp[i]);
-    // }
-    // cout<<summ-ans<<endl;
-    //onlogn
-    //coordinate compession
-    vector<ll> comp=a;
-    sort(comp.begin(),comp.end());
-    comp.erase(unique(comp.begin(),comp.end()),comp.end());
-    fenwick fw(comp.size());
-    ll ans=0;
-    for(ll i=0;i<n;i++){
-        ll idx=lower_bound(comp.begin(),comp.end(),a[i])-comp.begin()+1;
-        ll best=fw.query(idx);
-        ll cur=best+c[i];
-        fw.update(idx,cur);
-        ans=max(ans,cur);
+    vector<int> c(n+1);
+    for(int i=1;i<=n;i++){
+        cin>>c[i];//connects i-1 to i
     }
-    cout<<summ-ans<<endl;
+    while(q--){
+        int p,x,y,z; cin>>p>>x>>y>>z;
+        
+    }
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

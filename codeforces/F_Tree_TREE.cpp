@@ -81,11 +81,35 @@ bool isinbounds(int x,int y,int rows,int cols){
 const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
+void dfs(ll i, ll p, vector<vector<ll>>& tree, vector<ll>& sizee){
+    sizee[i]=1;
+    for(ll v:tree[i]){
+        if(v!=p){
+            dfs(v,i,tree,sizee);
+            sizee[i]+=sizee[v];
+        }
+    }
+}
 void solve() {
-    int n; cin>>n;
+    ll n,k; cin>>n>>k;
+    vector<vector<ll>> tree(n);
+    for(ll i=1;i<n;i++){
+        ll a,b; cin>>a>>b;
+        a--,b--;
+        tree[a].pb(b);
+        tree[b].pb(a);
+    }
+    //by definition a node is an ancestor of itself
+    ll ans=0;
+    vector<ll> sizee(n,1);
+    dfs(0,-1,tree,sizee);
+    for(ll i=0;i<n;i++){
+        if(n-sizee[i]>=k) ans+=sizee[i];
+        if(sizee[i]>=k) ans+=n-sizee[i];
+    }
+    cout<<ans+n<<endl;
     
 }
-
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);

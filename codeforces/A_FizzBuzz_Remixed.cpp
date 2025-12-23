@@ -82,8 +82,13 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    
+    ll n; cin>>n;
+    ll m=n/15;
+    ll ans=m*3;
+    if(n%15==0) ans++;
+    else if(n%15==1) ans+=2;
+    else if(n%15>=2) ans+=3;
+    cout<<ans<<endl;
 }
 
 int32_t main() {

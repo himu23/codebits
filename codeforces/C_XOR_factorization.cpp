@@ -21,16 +21,17 @@
 // #define ar array
 // #define ll long long
 // #define ld long double
-// #define sza(x) ((int)x.size())
+// #define sza(x) ((ll)x.size())
 // #define all(a) (a).begin(), (a).end()
 // #define pb push_back
 // #define umap unordered_map
-// #define f first
-// #define s second
-// #define pai pair<int,int>
+// #define fi first
+// #define se second
+// #define pai pair<ll,ll>
 
-// const int MAX_N = 1e6 + 5;
+// const ll MAX_N = 1e6 + 5;
 // const ll MOD = 1e9 + 7;
+// // const ll MOD = 998244353;
 // const ll INF = 1e9;
 // const ld EPS = 1e-9;
 
@@ -54,8 +55,8 @@
 //     }
 // };
 // struct hash_pair{
-//     size_t operator()(const std::pair<int, int>& p) const {
-//         return std::hash<int>()(p.first) ^ (std::hash<int>()(p.second) << 1);
+//     size_t operator()(const std::pair<ll, ll>& p) const {
+//         return std::hash<ll>()(p.first) ^ (std::hash<ll>()(p.second) << 1);
 //     }
 // };
 // template<typename K, typename V>
@@ -65,63 +66,70 @@
 // ll binpow(ll a, ll b) {
 //     ll res = 1;
 //     while (b > 0) {
-//         if (b & 1) res *= a;
-//         a *= a;
+//         if (b & 1) res=(res*a)%MOD;
+//         a =(a*a)%MOD;
 //         b >>= 1;
 //     }
 //     return res;
 // }
-// void add_self(int& a,int b){
+// void add_self(ll& a,ll b){
 //     a+=b;
 //     if(a>=MOD) a-=MOD;
 // }
-// bool isinbounds(int x,int y,int rows,int cols){
+// bool isinbounds(ll x,ll y,ll rows,ll cols){
 //     return x>=0 && y>=0 && x<rows && y<cols;
 // }
-// const int dx[4]={0,1,0,-1};
-// const int dy[4]={1,0,-1,0};
+// const ll dx[4]={0,1,0,-1};
+// const ll dy[4]={1,0,-1,0};
 
+// vector<int> getbits(long long n) {
+//     vector<int> ans(40, 0);
+//     for (int i=0;i<40;i++){
+//         if((n>>i)&1){
+//             ans[i]=1;
+//         }
+//     }
+//     return ans; 
+// }
 // void solve() {
-//     int n,k,x; cin>>n>>k>>x;
-//     vector<int> a(n);
-//     for(int i=0;i<n;i++){
-//         cin>>a[i];
+//     ll n,k; cin>>n>>k;
+//     if(k%2!=0){
+//         for(ll i=0;i<k;i++) cout<<n<<(i==k-1 ? "":" ");
+//         cout<<'\n'; return;
 //     }
-//     sort(a.begin(),a.end());
-//     int minn=x;
-//     int maxx=0;
-//     for(int i=0;i<n;i++){
-//         minn=min(minn,a[i]);
-//         maxx=max(maxx,a[i]);
+//     for(ll i=0;i<k-2;i++) cout<<n<<" ";
+//     if(__builtin_popcountll(n)==1){
+//         cout<<n<<" "<<0<<'\n';
+//         return;
+//     } 
+//     // cout<<getbits(n)<<endl;  
+//     ll temp1=63-__builtin_clzll(n);
+//     // ll temp1=-1;
+//     // for(int i=62;i>=0;i--){
+//     //     if((n>>i)&1){temp1=i;break;}
+//     // }
+//     // ll temp=n^(1LL<<temp1);
+//     // // ll a=(1<<(temp+1))-1;
+//     // // ll b=a^n;
+//     // if(temp==0){
+//     //     cout<<n<<" "<<0<<endl;
+//     //     return;
+//     // }
+//     // ll temp2=63-__builtin_clzll(temp);
+//     ll temp2=-1;
+//     for(int i=temp1-1;i>=0;i--){
+//         if((n>>i)&1){temp2=i;break;}
 //     }
-//     // vector<int> midd;
-//     set<pair<int,int>> temp;
-//     temp.insert({a[0],0});
-//     temp.insert({x-a[n-1],x});
-//     for(int i=1;i<n;i++){
-//         // midd.insert((a[i]+a[i-1])/2);
-//         int dist=a[i]-a[i-1];
-//         if(dist%2==0){
-//             temp.insert({dist/2,a[i-1]+dist/2});
-//         }
-//         else{
-//             temp.insert({dist/2,a[i-1]+dist/2});
-//             temp.insert({dist/2,a[i]-dist/2});
-//         }
+//     if(temp2==-1){
+//         cout<<n<<" "<<0<<'\n';
+//         return;
 //     }
-//     // sort(temp.begin(),temp.end(),[](auto &a, auto &b){
-//     //     if(a.first==b.first) return a.second>b.second;
-//     //     return a.first>b.first;
-//     // });
-//     vector<int> ans;
-//     while(k--){
-//         auto last=*temp.rbegin();
-//         int val=last.second;
-//         int val2=last.first;
-//         val2--;
-        
-//     }
-
+//     ll a=n;
+//     a^=(1LL<<temp2);
+//     // cout<<a<<" ";
+//     a|=((1LL<<temp2)-1);
+//     ll b=(a^n);
+//     cout<<a<<" "<<b<<'\n';
 // }
 
 // int32_t main() {
@@ -168,6 +176,7 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 
 const ll MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
+// const ll MOD = 998244353;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
@@ -219,53 +228,16 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    int n,k,x; cin>>n>>k>>x;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    int n,k; cin>>n>>k;
+    if(k%2!=0){
+        for(int i=0;i<k;i++) cout<<n<<" ";
+        cout<<endl; return;
     }
-    int maxx=a[0];
-    for(int i=0;i<n;i++){
-        maxx=max(maxx,max(abs(a[i]-0),abs(a[i]-x)));
-    }
-    a.pb(0),a.pb(x);
-    sort(a.begin(),a.end());
-    set<int> ans;
-    int ans1=0;
-    int l=0,r=maxx;
-    while(l<=r){
-        int m=l+(r-l)/2;
-        int cur=0;
-        vector<int> curvec;
-        for(int i=1;i<a.size();i++){
-            int val1=0,val2=x;
-            if(i!=1) val1=(a[i-1]+m);
-            if(i!=a.size()-1) val2=a[i]-m;
-            int temp=val2-val1+1;
-            if(temp>0){cur+=temp;}
-        }
-        if(cur>=k){
-            ans1=max(ans1,m);
-            l=m+1;
-        }
-        else r=m-1;
-    }
-    // cout<<ans1<<endl;
-    int temp=0;
-    for(int i=1;i<a.size();i++){
-        int val1=0,val2=x;
-        if(i!=1) val1=(a[i-1]+ans1);
-        if(i!=a.size()-1) val2=a[i]-ans1;
-        for(int j=val1;j<=val2;j++)ans.insert(j);
-    }
-    for(int i:ans){
-        if(temp<k){
-            cout<<i<<" ";
-            temp++;
-        }
-    }
-    cout<<endl;
-
+    //think greedy bitwise, if the bit is set in n, there should be odd occurences of it
+    //since k is even ; so it is set in k-1 nums and unset in 1
+    //if bit is unset even occurences which means it occures in all k;
+    //such that all nums<=n
+    
 }
 
 int32_t main() {

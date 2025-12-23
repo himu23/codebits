@@ -21,16 +21,17 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define ar array
 #define ll long long
 #define ld long double
-#define sza(x) ((int)x.size())
+#define sza(x) ((ll)x.size())
 #define all(a) (a).begin(), (a).end()
 #define pb push_back
 #define umap unordered_map
-#define f first
-#define s second
-#define pai pair<int,int>
+#define fi first
+#define se second
+#define pai pair<ll,ll>
 
-const int MAX_N = 1e6 + 5;
-const ll MOD = 1e9 + 7;
+const ll MAX_N = 1e6 + 5;
+// const ll MOD = 1e9 + 7;
+const ll MOD = 998244353;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
@@ -54,108 +55,80 @@ struct custom_hash {
     }
 };
 struct hash_pair{
-    size_t operator()(const std::pair<int, int>& p) const {
-        return std::hash<int>()(p.first) ^ (std::hash<int>()(p.second) << 1);
+    size_t operator()(const std::pair<ll, ll>& p) const {
+        return std::hash<ll>()(p.first) ^ (std::hash<ll>()(p.second) << 1);
     }
 };
 template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
+
+
+bool isinbounds(ll x,ll y,ll rows,ll cols){
+    return x>=0 && y>=0 && x<rows && y<cols;
+}
+const ll dx[4]={0,1,0,-1};
+const ll dy[4]={1,0,-1,0};
+
 ll binpow(ll a, ll b) {
     ll res = 1;
+    a%=MOD;
     while (b > 0) {
-        if (b & 1) res *= a;
-        a *= a;
+        if (b & 1) res=(res*a)%MOD;
+        a =(a*a)%MOD;
         b >>= 1;
     }
     return res;
 }
-void add_self(int& a,int b){
-    a+=b;
-    if(a>=MOD) a-=MOD;
+ll modinverse(ll n){
+    return binpow(n,MOD-2);
 }
-bool isinbounds(int x,int y,int rows,int cols){
-    return x>=0 && y>=0 && x<rows && y<cols;
-}
-const int dx[4]={0,1,0,-1};
-const int dy[4]={1,0,-1,0};
-
-struct fenwick {
-    ll n;
-    vector<long long> bit;
-
-    fenwick(ll n) : n(n), bit(n + 1, 0) {}
-
-    // add val to index i (1-based)
-    void update(ll i, long long val) {
-        for (; i <= n; i += i & -i)
-            // bit[i] += val;
-            bit[i]=max(bit[i],val);
-    }
-
-    // sum from 1 to i (inclusive)
-    long long query(ll i) const {
-        long long s = 0;
-        for (; i > 0; i -= i & -i)
-            // s += bit[i];
-            s=max(s,bit[i]);
-        return s;
-    }
-
-    // sum from l to r (inclusive)
-    long long rangeQuery(ll l, ll r) const {
-        return query(r) - query(l - 1);
-    }
-};
-
 
 void solve() {
-    ll n; cin>>n;
-    vector<ll> a(n);
-    for(ll i=0;i<n;i++){
-        cin>>a[i];
+    ll m,n; cin>>m>>n;
+    vector<vector<pair<ll,ll>>> tree(n+1);
+    ll baseprob=1;
+    vector<ll> dp(n+1,0);
+    // safe_umap<ll,safe_umap<ll,ll>> um;
+    while(m--){
+        ll a,b,x,y; cin>>a>>b>>x>>y;
+        a--;
+        baseprob=(baseprob*((((y-x)%MOD)*modinverse(y))%MOD))%MOD;
+        //dont write one liners for mudular math
+        // ll temp1=(y-x)%MOD;
+        // ll temp2=modinverse(y);
+        // ll temp3=(temp1*temp2)%MOD;
+        // baseprob=(baseprob*temp3)%MOD;
+        ll weight=(x*modinverse(y-x))%MOD;
+        tree[a].pb({b,weight});
     }
-    vector<ll> c(n);
-    ll summ=0;
-    for(ll i=0;i<n;i++){
-        cin>>c[i];
-        summ+=c[i];
-    }
-    //lis with weights
-    //on2 since its 1600
-    // vector<ll> dp(n,0);
-    // ll ans=0;
-    // for(ll i=0;i<n;i++){
-    //     dp[i]=c[i];
-    //     for(ll j=0;j<i;j++){
-    //         if(a[i]>=a[j]) dp[i]=max(dp[i],c[i]+dp[j]);
+    dp[0]=baseprob;
+    // queue<ll> q; q.push(0);
+    // vector<bool> visi(n+1,false); visi[0]=true;
+    // while(!q.empty()){
+    //     ll cur=q.front();q.pop();
+    //     for(ll i=0;i<tree[cur].size();i++){
+    //         if(visi[tree[cur][i]]) continue;
+    //         dp[tree[cur][i]]=(dp[tree[cur][i]]+(dp[cur]*(baseprob*um[cur][tree[cur][i]])%MOD)%MOD)%MOD;
+    //         q.push(tree[cur][i]);
+    //         visi[tree[cur][i]]=true;
     //     }
-    //     ans=max(ans,dp[i]);
     // }
-    // cout<<summ-ans<<endl;
-    //onlogn
-    //coordinate compession
-    vector<ll> comp=a;
-    sort(comp.begin(),comp.end());
-    comp.erase(unique(comp.begin(),comp.end()),comp.end());
-    fenwick fw(comp.size());
-    ll ans=0;
-    for(ll i=0;i<n;i++){
-        ll idx=lower_bound(comp.begin(),comp.end(),a[i])-comp.begin()+1;
-        ll best=fw.query(idx);
-        ll cur=best+c[i];
-        fw.update(idx,cur);
-        ans=max(ans,cur);
+    for(int i=0;i<n;i++){
+        if(dp[i]==0) continue;
+        for(int j=0;j<tree[i].size();j++){
+            dp[tree[i][j].fi]=(dp[tree[i][j].fi]+(dp[i]*tree[i][j].se)%MOD)%MOD;
+        }
     }
-    cout<<summ-ans<<endl;
+    cout<<dp[n]<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

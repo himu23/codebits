@@ -83,10 +83,10 @@ const int dy[4]={1,0,-1,0};
 
 void solve() {
     int a,x,y; cin>>a>>x>>y;
-    if(a==(x+y)/2 || a==(x+y+1)/2){
-        cout<<"NO"<<endl;
+    if(a<min(x,y) || a>max(x,y)){
+        cout<<"YES"<<endl;
     }
-    else cout<<"YES"<<endl;
+    else cout<<"NO"<<endl;
 }
 
 
