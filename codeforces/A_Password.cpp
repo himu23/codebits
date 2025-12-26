@@ -32,7 +32,7 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 const ll MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
 // const ll MOD = 998244353;
-const ll INF = 1e18;
+const ll INF = 1e9;
 const ld EPS = 1e-9;
 
 // Custom hash for unordered_map/set
@@ -82,114 +82,119 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
-struct Node{
-    ll dp[2][2];
+// --- Segment Tree Template (Default: Sum) ---
+template<class T>
+struct SegTree {
+    ll n;
+    T ID; 
+    vector<T> tree;
+
+    // ID REFERENCE (Identity Element - Pass this to constructor):
+    // SUM: 0
+    // MIN: 1e18 (or INF)
+    // MAX: -1e18
+    // GCD: 0
+    // XOR: 0
+
+    // --- CHANGE THIS FUNCTION based on the problem ---
+    T merge(T a, T b) {
+        return a + b;           // Default: SUM
+        // return min(a, b);    // Option: MIN
+        // return max(a, b);    // Option: MAX
+        // return __gcd(a, b);  // Option: GCD
+        // return a ^ b;        // Option: XOR
+    }
+
+    SegTree(ll _n, T _ID) : n(_n), ID(_ID) {
+        tree.resize(4 * n + 1, ID);
+    }
+
+    void update(ll node, ll start, ll end, ll idx, T val) {
+        if (start == end) {
+            // --- CHANGE UPDATE LOGIC IF NEEDED ---
+            tree[node] = val;       // Default: Point Assignment (A[i] = val)
+            // tree[node] += val;   // Option: Point Addition (A[i] += val)
+            return;
+        }
+        ll mid = (start + end) / 2;
+        if (idx <= mid) update(2 * node, start, mid, idx, val);
+        else update(2 * node + 1, mid + 1, end, idx, val);
+        tree[node] = merge(tree[2 * node], tree[2 * node + 1]);
+    }
+
+    T query(ll node, ll start, ll end, ll l, ll r) {
+        if (r < start || end < l) return ID;
+        if (l <= start && end <= r) return tree[node];
+        ll mid = (start + end) / 2;
+        return merge(query(2 * node, start, mid, l, r), 
+                     query(2 * node + 1, mid + 1, end, l, r));
+    }
+
+    void update(ll idx, T val) { update(1, 0, n - 1, idx, val); }
+    T query(ll l, ll r) { return query(1, 0, n - 1, l, r); }
 };
-vector<ll> pipes;
-Node merge(const Node& l, const Node& r, ll mid_pipe_cost){
-    Node res;
-    for(int i=0;i<2;i++){
-        for(int j=0;j<2;j++){
-            res.dp[i][j]=INF;
-        }
-    }
-    for(int s=0;s<2;s++){
-        for(int e=0;e<2;e++){
-            res.dp[s][e]=min(res.dp[s][e],l.dp[s][0]+r.dp[0][e]);
-            res.dp[s][e]=min(res.dp[s][e],l.dp[s][1]+r.dp[1][e]);
-            res.dp[s][e]=min(res.dp[s][e],l.dp[s][0]+r.dp[1][e]);
-            res.dp[s][e]=min(res.dp[s][e],l.dp[s][1]+r.dp[0][e]+mid_pipe_cost);
-        }
-    }
-    return res;
-}
-struct SegTree{
-    int n;
-    vector<Node> tree;
-    SegTree(int size){
-        n=size;
-        tree.resize(4*n+1);
-    }
-    void build(const vector<ll>& a, const vector<ll>& b, int v,int tl,int tr){
-        if(tl==tr){
-            tree[v].dp[0][0]=a[tl];
-            tree[v].dp[1][1]=b[tl];
-            tree[v].dp[0][1]=INF;
-            tree[v].dp[1][0]=INF;
-        }
-        else{
-            int tm=(tl+tr)/2;
-            build(a,b,2*v,tl,tm);
-            build(a,b,2*v+1,tm+1,tr);
-            tree[v]=merge(tree[2*v],tree[2*v+1],pipes[tm]);
-        }
-    }
-    void update(int v,int tl,int tr,int pos,ll x,ll y,ll z){
-        if(tl==tr){
-            tree[v].dp[0][0]=x;
-            tree[v].dp[1][1]=y;
-        }
-        else{
-            int tm=(tl+tr)/2;
-            if(pos<=tm){
-                update(2*v,tl,tm,pos,x,y,z);
-            }
-            else{
-                update(2*v+1,tm+1,tr,pos,x,y,z);
-            }
-            tree[v]=merge(tree[2*v],tree[2*v+1],pipes[tm]);
-        }
-    }
-};
+
+/*
 void solve() {
-    ll n,q; cin>>n>>q;
-    vector<ll> a(n+1);
-    // ll summ=0;
-    for(ll i=1;i<=n;i++){
+    int n; cin >> n;
+    vector<ll> a(n);
+    for(auto &x : a) cin >> x;
+
+    // --- 1. INITIALIZATION ---
+    
+    // FOR SUM (Default): ID is 0
+    SegTree<ll> st(n, 0); 
+    //    SegTree<ll> st(n, 1e18);  // MIN: ID = Infinity
+    //    SegTree<ll> st(n, -1e18); // MAX: ID = -Infinity
+    //    SegTree<ll> st(n, 0);     // GCD: ID = 0
+    //    SegTree<ll> st(n, 0);     // XOR: ID = 0
+    
+
+    // --- 2. BUILD THE TREE ---
+    for(int i = 0; i < n; i++) {
+        st.update(i, a[i]);
+    }
+
+    // --- 3. QUERIES & UPDATES ---
+    
+    int q; cin >> q;
+    while(q--) {
+        int type; cin >> type;
+        if(type == 1) { 
+            // Update: change value at index k to u
+            int k, u; cin >> k >> u;
+            k--; // Convert 1-based to 0-based
+            
+            st.update(k, u); 
+        } 
+        else {
+            // Query: Range [l, r]
+            int l, r; cin >> l >> r;
+            l--; r--; // Convert 1-based to 0-based
+
+            // FOR SUM:
+            cout << st.query(l, r) << "\n";// Works for MIN/MAX/GCD/XOR too
+        }
+    }
+}
+*/
+void solve() {
+    int n; cin>>n;
+    vector<int> a(n);
+    for(int i=0;i<n;i++){
         cin>>a[i];
-        // summ+=a[i];
     }
-    vector<ll> b(n+1);
-    for(ll i=1;i<=n;i++){
-        cin>>b[i];
-    }
-    pipes.assign(n+1,0);
-    for(int i=1;i<n;i++){
-        cin>>pipes[i];
-    }
-    // vector<ll> c(n);
-    // for(ll i=0;i<n-1;i++){
-    //     cin>>c[i];//connects i-1 to i
-    // }
-    // vector<ll> vals(n+1);
-    // for(ll i=0;i<n;i++){
-    //     vals[i+1]=a[i]-b[i];
-    // }
-    //min-cut(shortest path) graph
-    SegTree st(n);
-    st.build(a,b,1,1,n);
-    while(q--){
-        int p;
-        ll x,y,z;
-        cin>>p>>x>>y>>z;
-        a[p]=x,b[p]=y;
-        if(p<n) pipes[p]=z;
-        st.update(1,1,n,p,x,y,z);
-        ll ans=min({
-            st.tree[1].dp[0][0],
-            st.tree[1].dp[0][1],
-            st.tree[1].dp[1][0],
-            st.tree[1].dp[1][1]
-        });
-        cout<<ans<<endl;
-    }
+    n-=10;
+    n*=-1;
+    cout<<n*(n-1)/2*6<<endl;
+
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

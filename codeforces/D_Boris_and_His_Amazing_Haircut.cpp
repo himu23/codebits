@@ -93,9 +93,10 @@ void solve() {
         cin>>b[i];
     }
     int m; cin>>m;
-    vector<int> x(m);//size of razor
+    safe_umap<int,int> raz;
     for(int i=0;i<m;i++){
-        cin>>x[i];
+        int x; cin>>x;
+        raz[x]++;
     }
     //if for some i bi>ai then no
     for(int i=0;i<n;i++){
@@ -105,12 +106,30 @@ void solve() {
         }
     }
     //other than the above case original hair lenght is unless ai==bi
-    vector<pair<int,int>> temp;
-    for(int i=0;i<n;i++){
-        temp.pb({b[i],i});
-    }
-    sort(temp.begin(),temp.end());
+    // vector<pair<int,int>> temp;
+    // for(int i=0;i<n;i++){
+    //     temp.pb({b[i],i});
+    // }
+    // sort(temp.begin(),temp.end());
     // cout<<temp<<endl;
+    //first element to the left greater than target ai
+    //stack
+    vector<int> st;
+    for(int i=0;i<n;i++){
+        while(!st.empty() && st.back()<b[i]) st.pop_back();
+        if(!st.empty() && st.back()==b[i]) continue;
+        if(a[i]>b[i]){
+            if(raz[b[i]]>0){
+                raz[b[i]]--;
+                st.push_back(b[i]);
+            }
+            else{
+                cout<<"NO"<<endl;
+                return;
+            }
+        }
+    }
+    cout<<"YES"<<endl;
 }
 
 int32_t main() {

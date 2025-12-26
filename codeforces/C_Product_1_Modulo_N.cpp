@@ -32,7 +32,7 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 const ll MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
 // const ll MOD = 998244353;
-const ll INF = 1e18;
+const ll INF = 1e9;
 const ld EPS = 1e-9;
 
 // Custom hash for unordered_map/set
@@ -82,107 +82,26 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
-struct Node{
-    ll dp[2][2];
-};
-vector<ll> pipes;
-Node merge(const Node& l, const Node& r, ll mid_pipe_cost){
-    Node res;
-    for(int i=0;i<2;i++){
-        for(int j=0;j<2;j++){
-            res.dp[i][j]=INF;
-        }
-    }
-    for(int s=0;s<2;s++){
-        for(int e=0;e<2;e++){
-            res.dp[s][e]=min(res.dp[s][e],l.dp[s][0]+r.dp[0][e]);
-            res.dp[s][e]=min(res.dp[s][e],l.dp[s][1]+r.dp[1][e]);
-            res.dp[s][e]=min(res.dp[s][e],l.dp[s][0]+r.dp[1][e]);
-            res.dp[s][e]=min(res.dp[s][e],l.dp[s][1]+r.dp[0][e]+mid_pipe_cost);
-        }
-    }
-    return res;
-}
-struct SegTree{
-    int n;
-    vector<Node> tree;
-    SegTree(int size){
-        n=size;
-        tree.resize(4*n+1);
-    }
-    void build(const vector<ll>& a, const vector<ll>& b, int v,int tl,int tr){
-        if(tl==tr){
-            tree[v].dp[0][0]=a[tl];
-            tree[v].dp[1][1]=b[tl];
-            tree[v].dp[0][1]=INF;
-            tree[v].dp[1][0]=INF;
-        }
-        else{
-            int tm=(tl+tr)/2;
-            build(a,b,2*v,tl,tm);
-            build(a,b,2*v+1,tm+1,tr);
-            tree[v]=merge(tree[2*v],tree[2*v+1],pipes[tm]);
-        }
-    }
-    void update(int v,int tl,int tr,int pos,ll x,ll y,ll z){
-        if(tl==tr){
-            tree[v].dp[0][0]=x;
-            tree[v].dp[1][1]=y;
-        }
-        else{
-            int tm=(tl+tr)/2;
-            if(pos<=tm){
-                update(2*v,tl,tm,pos,x,y,z);
-            }
-            else{
-                update(2*v+1,tm+1,tr,pos,x,y,z);
-            }
-            tree[v]=merge(tree[2*v],tree[2*v+1],pipes[tm]);
-        }
-    }
-};
 void solve() {
-    ll n,q; cin>>n>>q;
-    vector<ll> a(n+1);
-    // ll summ=0;
-    for(ll i=1;i<=n;i++){
-        cin>>a[i];
-        // summ+=a[i];
+    ll n; cin>>n;
+    ll prod=1;
+    vector<ll> temp;
+    for(ll i=1;i<n;i++){
+        if(gcd(n,i)==1) {temp.pb(i);prod=(prod*i)%n;}
     }
-    vector<ll> b(n+1);
-    for(ll i=1;i<=n;i++){
-        cin>>b[i];
+    if(prod%n==1){
+        cout<<temp.size()<<endl;
+        for(ll i=0;i<temp.size();i++){
+            cout<<temp[i]<<" ";
+        }
+        cout<<endl; return;
     }
-    pipes.assign(n+1,0);
-    for(int i=1;i<n;i++){
-        cin>>pipes[i];
+    ll temp2=prod%n;
+    cout<<temp.size()-1<<endl;
+    for(ll i=0;i<temp.size();i++){
+        if(temp[i]!=temp2) cout<<temp[i]<<" ";
     }
-    // vector<ll> c(n);
-    // for(ll i=0;i<n-1;i++){
-    //     cin>>c[i];//connects i-1 to i
-    // }
-    // vector<ll> vals(n+1);
-    // for(ll i=0;i<n;i++){
-    //     vals[i+1]=a[i]-b[i];
-    // }
-    //min-cut(shortest path) graph
-    SegTree st(n);
-    st.build(a,b,1,1,n);
-    while(q--){
-        int p;
-        ll x,y,z;
-        cin>>p>>x>>y>>z;
-        a[p]=x,b[p]=y;
-        if(p<n) pipes[p]=z;
-        st.update(1,1,n,p,x,y,z);
-        ll ans=min({
-            st.tree[1].dp[0][0],
-            st.tree[1].dp[0][1],
-            st.tree[1].dp[1][0],
-            st.tree[1].dp[1][1]
-        });
-        cout<<ans<<endl;
-    }
+    cout<<endl;
 }
 
 int32_t main() {

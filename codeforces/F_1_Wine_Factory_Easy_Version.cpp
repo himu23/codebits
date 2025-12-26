@@ -92,51 +92,70 @@ Node merge(Node l,Node r){
     return res;
 }
 struct SegTree{
-    int n;
+    ll n;
     vector<Node> tree;
-    SegTree(int size){
+    SegTree(ll size){
         n=size;
         tree.resize(4*n+1);
     }
-    void build(vector<ll>& initial_data,int v, int tl,int tr){
+    void build(vector<ll>& initial_data,ll v, ll tl,ll tr){
         if(tl==tr){
             tree[v]={initial_data[tl],initial_data[tl]};
         }
         else{
-            int tm=(tl+tr)/2;
+            ll tm=(tl+tr)/2;
             build(initial_data,2*v,tl,tm);
             build(initial_data,2*v+1,tm+1,tr);
             tree[v]=merge(tree[2*v],tree[2*v+1]);
         }
     }
-    void update(int v,int tl, int tr, int pos, ll new_val){
+    void update(ll v,ll tl, ll tr, ll pos, ll new_val){
         if(tl==tr){
             tree[v]={new_val,new_val};
         }
         else{
-            
+            ll tm=(tl+tr)/2;
+            if(pos<=tm){
+                update(2*v,tl,tm,pos,new_val);
+            }
+            else{
+                update(2*v+1,tm+1,tr,pos,new_val);
+            }
+            tree[v]=merge(tree[2*v],tree[2*v+1]);
         }
     }
 };
 void solve() {
-    int n,q; cin>>n>>q;
-    vector<int> a(n);
-    int summ=0;
-    for(int i=0;i<n;i++){
+    ll n,q; cin>>n>>q;
+    vector<ll> a(n);
+    ll summ=0;
+    for(ll i=0;i<n;i++){
         cin>>a[i];
         summ+=a[i];
     }
-    vector<int> b(n);
-    for(int i=0;i<n;i++){
+    vector<ll> b(n);
+    for(ll i=0;i<n;i++){
         cin>>b[i];
     }
-    vector<int> c(n+1);
-    for(int i=1;i<=n;i++){
+    vector<ll> c(n);
+    for(ll i=0;i<n-1;i++){
         cin>>c[i];//connects i-1 to i
     }
+    vector<ll> vals(n+1);
+    for(ll i=0;i<n;i++){
+        vals[i+1]=a[i]-b[i];
+    }
+    SegTree st(n);
+    st.build(vals,1,1,n);
     while(q--){
-        int p,x,y,z; cin>>p>>x>>y>>z;
-        
+        ll p,x,y,z; cin>>p>>x>>y>>z;
+        p--;
+        summ-=a[p];
+        a[p]=x,b[p]=y;
+        summ+=a[p];
+        ll new_val=x-y;
+        st.update(1,1,n,p+1,new_val);
+        cout<<summ-max(0LL,st.tree[1].max_sum)<<endl;
     }
 }
 

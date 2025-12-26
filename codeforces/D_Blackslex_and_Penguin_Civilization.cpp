@@ -32,7 +32,7 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 const ll MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
 // const ll MOD = 998244353;
-const ll INF = 1e18;
+const ll INF = 1e9;
 const ld EPS = 1e-9;
 
 // Custom hash for unordered_map/set
@@ -81,115 +81,90 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 }
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
-
-struct Node{
-    ll dp[2][2];
-};
-vector<ll> pipes;
-Node merge(const Node& l, const Node& r, ll mid_pipe_cost){
-    Node res;
-    for(int i=0;i<2;i++){
-        for(int j=0;j<2;j++){
-            res.dp[i][j]=INF;
+vector<int> getbits(long long n) {
+    vector<int> ans(40, 0);
+    for (int i=0;i<40;i++){
+        if((n>>i)&1){
+            ans[i]=1;
         }
     }
-    for(int s=0;s<2;s++){
-        for(int e=0;e<2;e++){
-            res.dp[s][e]=min(res.dp[s][e],l.dp[s][0]+r.dp[0][e]);
-            res.dp[s][e]=min(res.dp[s][e],l.dp[s][1]+r.dp[1][e]);
-            res.dp[s][e]=min(res.dp[s][e],l.dp[s][0]+r.dp[1][e]);
-            res.dp[s][e]=min(res.dp[s][e],l.dp[s][1]+r.dp[0][e]+mid_pipe_cost);
-        }
-    }
-    return res;
+    return ans; 
 }
-struct SegTree{
-    int n;
-    vector<Node> tree;
-    SegTree(int size){
-        n=size;
-        tree.resize(4*n+1);
+
+vector<vector<ll>> odds(17);
+vector<ll> fillodds(ll n){
+    if(n==1){
+        odds[n]={1};
+        return odds[n];
     }
-    void build(const vector<ll>& a, const vector<ll>& b, int v,int tl,int tr){
-        if(tl==tr){
-            tree[v].dp[0][0]=a[tl];
-            tree[v].dp[1][1]=b[tl];
-            tree[v].dp[0][1]=INF;
-            tree[v].dp[1][0]=INF;
+    vector<ll> prevodds=odds[n-1];
+    vector<ll> curodds;
+    for(ll i=0;i<prevodds.size();i++){
+        ll temp1=prevodds[i];
+        ll temp2=temp1+(1<<(n-1));
+        if(i==0){
+            curodds.pb(temp2);
+            curodds.pb(temp1);
         }
         else{
-            int tm=(tl+tr)/2;
-            build(a,b,2*v,tl,tm);
-            build(a,b,2*v+1,tm+1,tr);
-            tree[v]=merge(tree[2*v],tree[2*v+1],pipes[tm]);
+            curodds.pb(temp1);
+            curodds.pb(temp2);
         }
     }
-    void update(int v,int tl,int tr,int pos,ll x,ll y,ll z){
-        if(tl==tr){
-            tree[v].dp[0][0]=x;
-            tree[v].dp[1][1]=y;
-        }
-        else{
-            int tm=(tl+tr)/2;
-            if(pos<=tm){
-                update(2*v,tl,tm,pos,x,y,z);
-            }
-            else{
-                update(2*v+1,tm+1,tr,pos,x,y,z);
-            }
-            tree[v]=merge(tree[2*v],tree[2*v+1],pipes[tm]);
-        }
+    odds[n]=curodds;
+    return curodds;
+}
+void precompute(){
+    for(ll i=1;i<=16;i++){
+        fillodds(i);
     }
-};
+}
 void solve() {
-    ll n,q; cin>>n>>q;
-    vector<ll> a(n+1);
-    // ll summ=0;
-    for(ll i=1;i<=n;i++){
-        cin>>a[i];
-        // summ+=a[i];
-    }
-    vector<ll> b(n+1);
-    for(ll i=1;i<=n;i++){
-        cin>>b[i];
-    }
-    pipes.assign(n+1,0);
-    for(int i=1;i<n;i++){
-        cin>>pipes[i];
-    }
-    // vector<ll> c(n);
-    // for(ll i=0;i<n-1;i++){
-    //     cin>>c[i];//connects i-1 to i
+    ll n; cin>>n;
+    vector<ll> oddss=odds[n];
+    // vector<ll> temp;
+    // for(ll i=0;i<binpow(2,n);i++){
+    //     if(i%2!=0) temp.pb(i);
     // }
-    // vector<ll> vals(n+1);
-    // for(ll i=0;i<n;i++){
-    //     vals[i+1]=a[i]-b[i];
-    // }
-    //min-cut(shortest path) graph
-    SegTree st(n);
-    st.build(a,b,1,1,n);
-    while(q--){
-        int p;
-        ll x,y,z;
-        cin>>p>>x>>y>>z;
-        a[p]=x,b[p]=y;
-        if(p<n) pipes[p]=z;
-        st.update(1,1,n,p,x,y,z);
-        ll ans=min({
-            st.tree[1].dp[0][0],
-            st.tree[1].dp[0][1],
-            st.tree[1].dp[1][0],
-            st.tree[1].dp[1][1]
-        });
-        cout<<ans<<endl;
+    vector<int> odds2;
+    int cur=(1<<n)-1;
+    int i=0;
+    while(i<oddss.size()){
+        int temp1=oddss[i];
+        int temp2=__builtin_popcount(cur&temp1);
+        int j=i;
+        vector<int> block;
+        while(j<oddss.size()){
+            int p=__builtin_popcount(cur&oddss[j]);
+            if(p==temp2){
+                block.pb(oddss[j]);
+                j++;
+            }
+            else break;
+        }
+        sort(block.begin(),block.end());
+        for(int k=0;k<block.size();k++){
+            odds2.pb(block[k]);
+            cur&=block[k];
+        }
+        i=j;
     }
+    for(ll i=0;i<(1LL<<n);i++){
+        if(i%2==0) odds2.pb(i);
+    }
+    // cout<<temp<<endl;
+    for(ll i=0;i<(1LL<<n);i++){
+        cout<<odds2[i]<<" ";
+    }
+    cout<<endl;
 }
 
 int32_t main() {
+    precompute();
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
