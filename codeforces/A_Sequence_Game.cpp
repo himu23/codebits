@@ -84,52 +84,16 @@ const ll dy[4]={1,0,-1,0};
 
 void solve() {
     int n; cin>>n;
-    vector<int> a(n);//original
+    vector<int> a(n);
+    int minn=INT_MAX,maxx=INT_MIN;
     for(int i=0;i<n;i++){
         cin>>a[i];
+        minn=min(minn,a[i]);
+        maxx=max(maxx,a[i]);
     }
-    vector<int> b(n);//final
-    for(int i=0;i<n;i++){
-        cin>>b[i];
-    }
-    int m; cin>>m;
-    safe_umap<int,int> raz;
-    for(int i=0;i<m;i++){
-        int x; cin>>x;
-        raz[x]++;
-    }
-    //if for some i bi>ai then no
-    for(int i=0;i<n;i++){
-        if(b[i]>a[i]){
-            cout<<"NO"<<endl;
-            return;
-        }
-    }
-    //other than the above case original hair lenght is unless ai==bi
-    // vector<pair<int,int>> temp;
-    // for(int i=0;i<n;i++){
-    //     temp.pb({b[i],i});
-    // }
-    // sort(temp.begin(),temp.end());
-    // cout<<temp<<endl;
-    //first element to the left greater than target ai
-    //stack
-    vector<int> stack;
-    for(int i=0;i<n;i++){
-        while(!stack.empty() && stack.back()<b[i]) stack.pop_back();
-        if(!stack.empty() && stack.back()==b[i]) continue;
-        if(a[i]==b[i]) continue;
-        //perform a cut
-        if(raz[b[i]]>0){
-            raz[b[i]]--;
-            stack.push_back(b[i]);
-        }
-        else{
-            cout<<"NO"<<endl;
-            return;
-        }
-    }
-    cout<<"YES"<<endl;
+    int x; cin>>x;
+    if(x<minn || x>maxx) cout<<"NO"<<endl;
+    else cout<<"YES"<<endl;
 }
 
 int32_t main() {

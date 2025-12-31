@@ -81,62 +81,70 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 }
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
-
+struct State{
+    int x,y,dir,cnt;
+};
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);//original
+    int n,m; cin>>n>>m;
+    vector<vector<char>> grid(n,vector<char>(m));
+    int lx,ly,rx,ry;
     for(int i=0;i<n;i++){
-        cin>>a[i];
+        string s; cin>>s;
+        for(int j=0;j<m;j++){
+            grid[i][j]=s[j];
+            if(s[j]=='S') lx=i,ly=j;
+            if(s[j]=='T') rx=i,ry=j;
+        }
     }
-    vector<int> b(n);//final
-    for(int i=0;i<n;i++){
-        cin>>b[i];
+    // vector<vector<bool>> visi(n,vector<bool>(m,false));
+    // vector<vector<vector<vector<int>>>> dis(
+    //     n,vector<vector<vector<int>>>(
+    //         m,vector<vector<int>>(
+    //             4,vector<int>(
+    //                 3
+    //             )
+    //         )
+    //     )
+    // );
+    int dis[n][m][4][4];
+    memset(dis,-1,sizeof(dis));
+    queue<State> q;
+    for(int d=0;d<4;d++){
+        int nx=lx+dx[d];
+        int ny=ly+dy[d];
+        if(isinbounds(nx,ny,n,m) && grid[nx][ny]!='#'){
+            dis[nx][ny][d][1]=1;
+            q.push({nx,ny,d,1});
+        }
     }
-    int m; cin>>m;
-    safe_umap<int,int> raz;
-    for(int i=0;i<m;i++){
-        int x; cin>>x;
-        raz[x]++;
-    }
-    //if for some i bi>ai then no
-    for(int i=0;i<n;i++){
-        if(b[i]>a[i]){
-            cout<<"NO"<<endl;
+    while(!q.empty()){
+        State cur =q.front();q.pop();
+        if(cur.x==rx && cur.y==ry){
+            cout<<dis[rx][ry][cur.dir][cur.cnt];
             return;
         }
-    }
-    //other than the above case original hair lenght is unless ai==bi
-    // vector<pair<int,int>> temp;
-    // for(int i=0;i<n;i++){
-    //     temp.pb({b[i],i});
-    // }
-    // sort(temp.begin(),temp.end());
-    // cout<<temp<<endl;
-    //first element to the left greater than target ai
-    //stack
-    vector<int> stack;
-    for(int i=0;i<n;i++){
-        while(!stack.empty() && stack.back()<b[i]) stack.pop_back();
-        if(!stack.empty() && stack.back()==b[i]) continue;
-        if(a[i]==b[i]) continue;
-        //perform a cut
-        if(raz[b[i]]>0){
-            raz[b[i]]--;
-            stack.push_back(b[i]);
-        }
-        else{
-            cout<<"NO"<<endl;
-            return;
+        for(int d=0;d<4;d++){
+            int nx=cur.x+dx[d];
+            int ny=cur.y+dy[d];
+            int ncnt=1;
+            if(d==cur.dir) ncnt+=cur.cnt;
+            if(isinbounds(nx,ny,n,m) && grid[nx][ny]!='#' && ncnt<=3){
+                if(dis[nx][ny][d][ncnt]==-1){
+                    dis[nx][ny][d][ncnt]=dis[cur.x][cur.y][cur.dir][cur.cnt]+1;
+                    q.push({nx,ny,d,ncnt});
+                }
+            }
         }
     }
-    cout<<"YES"<<endl;
+    // cout<<dis[rx][ry]<<endl;
+    cout<<-1<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

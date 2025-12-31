@@ -83,53 +83,18 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);//original
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    string s; cin>>s;
+    vector<int> temp;
+    int ans=0;
+    if(s[0]=='u') {ans++;s[0]='s';}
+    if(s[s.length()-1]=='u') {ans++;s[s.length()-1]='s';}
+    for(int i=0;i<s.length();i++){
+        if(s[i]=='s') temp.pb(i);
     }
-    vector<int> b(n);//final
-    for(int i=0;i<n;i++){
-        cin>>b[i];
+    for(int i=0;i<temp.size()-1;i++){
+        ans+=(temp[i+1]-temp[i]-1)/2;
     }
-    int m; cin>>m;
-    safe_umap<int,int> raz;
-    for(int i=0;i<m;i++){
-        int x; cin>>x;
-        raz[x]++;
-    }
-    //if for some i bi>ai then no
-    for(int i=0;i<n;i++){
-        if(b[i]>a[i]){
-            cout<<"NO"<<endl;
-            return;
-        }
-    }
-    //other than the above case original hair lenght is unless ai==bi
-    // vector<pair<int,int>> temp;
-    // for(int i=0;i<n;i++){
-    //     temp.pb({b[i],i});
-    // }
-    // sort(temp.begin(),temp.end());
-    // cout<<temp<<endl;
-    //first element to the left greater than target ai
-    //stack
-    vector<int> stack;
-    for(int i=0;i<n;i++){
-        while(!stack.empty() && stack.back()<b[i]) stack.pop_back();
-        if(!stack.empty() && stack.back()==b[i]) continue;
-        if(a[i]==b[i]) continue;
-        //perform a cut
-        if(raz[b[i]]>0){
-            raz[b[i]]--;
-            stack.push_back(b[i]);
-        }
-        else{
-            cout<<"NO"<<endl;
-            return;
-        }
-    }
-    cout<<"YES"<<endl;
+    cout<<ans<<endl;
 }
 
 int32_t main() {

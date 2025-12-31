@@ -83,18 +83,30 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
+    ll n; cin>>n;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
         cin>>a[i];
     }
-    vector<int> dp(n,0);
-    for(int i=2;i<n;i++){
-        dp[i]=max(dp[i-2]+i,dp[i-1]+i)+1;
-    }
-    int ans=0;
+    // vector<ll> dp(n,0);
+    // dp[n-1]=1;
+    // for(ll i=n-2;i>=0;i--){
+    //     if(a[i]>a[i+1]) dp[i]=dp[i+1]+(n-i);
+    //     else dp[i]=dp[i+1]+1;
+    // }
+    // ll ans=0;
+    // for(ll i=0;i<dp.size();i++){
+    //     ans+=dp[i];
+    // }
+    // cout<<ans<<endl;
+    ll ans=0;
     for(int i=0;i<n;i++){
-        ans+=dp[i];
+        ans+=(i+1)*(n-i);
+    }
+    for(int i=0;i<n-1;i++){
+        if(a[i]<a[i+1]){
+            ans-=(i+1)*(n-i-1);
+        }
     }
     cout<<ans<<endl;
 }

@@ -29,9 +29,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define se second
 #define pai pair<ll,ll>
 
-const ll MAX_N = 1e6 + 5;
-const ll MOD = 1e9 + 7;
-// const ll MOD = 998244353;
+// const ll MOD = 1e9 + 7;
+const ll MOD = 998244353;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
@@ -82,57 +81,62 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
+// const ll MAXN = 1e6 + 5;
+const ll MAX_N=55;
+
+vector<ll> fact(MAX_N);
+vector<ll> invfact(MAX_N);
+
+void precompute() {
+    fact[0]=1;
+    invfact[0]=1;
+    for (ll i=1;i<MAX_N;i++) {
+        fact[i]=(fact[i-1]*i)%MOD;
+    }
+    invfact[MAX_N-1]=binpow(fact[MAX_N-1],MOD-2);
+    for(ll i=MAX_N-2;i>=1;i--){
+        invfact[i]=(invfact[i+1]*(i+1))%MOD;
+    }
+}
+
+ll ncr(ll n,ll r) {
+    if(r<0||r>n) return 0;
+    return(((fact[n]*invfact[r])%MOD)*invfact[n-r])%MOD;
+}
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);//original
-    for(int i=0;i<n;i++){
+    ll n; cin>>n;
+    vector<ll> a(n+1);
+    ll summ=0;
+    for(ll i=0;i<=n;i++){
         cin>>a[i];
+        summ+=a[i];
     }
-    vector<int> b(n);//final
-    for(int i=0;i<n;i++){
-        cin>>b[i];
-    }
-    int m; cin>>m;
-    safe_umap<int,int> raz;
-    for(int i=0;i<m;i++){
-        int x; cin>>x;
-        raz[x]++;
-    }
-    //if for some i bi>ai then no
-    for(int i=0;i<n;i++){
-        if(b[i]>a[i]){
-            cout<<"NO"<<endl;
+    // vector<vector<ll>> dp(n);
+    // dp[0]=1;
+    ll q=summ/n;
+    ll r=summ%n;
+    ll temp=0,temp1=0;
+    for(ll i=1;i<=n;i++){
+        if(a[i]>q+1){
+            cout<<0<<endl;
             return;
         }
+        else if(a[i]==q+1) temp++;
+        else temp1++;
     }
-    //other than the above case original hair lenght is unless ai==bi
-    // vector<pair<int,int>> temp;
-    // for(int i=0;i<n;i++){
-    //     temp.pb({b[i],i});
-    // }
-    // sort(temp.begin(),temp.end());
-    // cout<<temp<<endl;
-    //first element to the left greater than target ai
-    //stack
-    vector<int> stack;
-    for(int i=0;i<n;i++){
-        while(!stack.empty() && stack.back()<b[i]) stack.pop_back();
-        if(!stack.empty() && stack.back()==b[i]) continue;
-        if(a[i]==b[i]) continue;
-        //perform a cut
-        if(raz[b[i]]>0){
-            raz[b[i]]--;
-            stack.push_back(b[i]);
-        }
-        else{
-            cout<<"NO"<<endl;
-            return;
-        }
+    if(temp>r){
+        cout<<0<<endl;
+        return;
     }
-    cout<<"YES"<<endl;
+    ll ans=fact[r];
+    // cout<<fact[r]/fact[r-temp]*fact[n-temp]<<endl;
+    ans=(ans*invfact[r-temp])%MOD;
+    ans=(ans*fact[n-temp])%MOD;
+    cout<<ans<<endl;
 }
 
 int32_t main() {
+    precompute();
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;

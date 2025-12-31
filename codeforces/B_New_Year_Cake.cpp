@@ -29,7 +29,6 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define se second
 #define pai pair<ll,ll>
 
-const ll MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
 // const ll MOD = 998244353;
 const ll INF = 1e9;
@@ -82,54 +81,26 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
+const ll MAXN = 1e6 + 5;
+
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);//original
-    for(int i=0;i<n;i++){
-        cin>>a[i];
-    }
-    vector<int> b(n);//final
-    for(int i=0;i<n;i++){
-        cin>>b[i];
-    }
-    int m; cin>>m;
-    safe_umap<int,int> raz;
-    for(int i=0;i<m;i++){
-        int x; cin>>x;
-        raz[x]++;
-    }
-    //if for some i bi>ai then no
-    for(int i=0;i<n;i++){
-        if(b[i]>a[i]){
-            cout<<"NO"<<endl;
-            return;
+    ll a,b; cin>>a>>b;
+    ll ans=0;
+    while(true){
+        ans++;
+        ll sumo=0,sume=0;
+        ll cur=1;
+        for(ll i=1;i<=ans;i++){
+            if(i%2!=0) sumo+=cur;
+            else sume+=cur;
+            cur*=2;
+        }
+        if(!((sumo<=a && sume<=b)||(sumo<=b && sume<=a))){
+            ans--;
+            break;
         }
     }
-    //other than the above case original hair lenght is unless ai==bi
-    // vector<pair<int,int>> temp;
-    // for(int i=0;i<n;i++){
-    //     temp.pb({b[i],i});
-    // }
-    // sort(temp.begin(),temp.end());
-    // cout<<temp<<endl;
-    //first element to the left greater than target ai
-    //stack
-    vector<int> stack;
-    for(int i=0;i<n;i++){
-        while(!stack.empty() && stack.back()<b[i]) stack.pop_back();
-        if(!stack.empty() && stack.back()==b[i]) continue;
-        if(a[i]==b[i]) continue;
-        //perform a cut
-        if(raz[b[i]]>0){
-            raz[b[i]]--;
-            stack.push_back(b[i]);
-        }
-        else{
-            cout<<"NO"<<endl;
-            return;
-        }
-    }
-    cout<<"YES"<<endl;
+    cout<<ans<<endl;
 }
 
 int32_t main() {

@@ -83,16 +83,84 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    string s; cin>>s;
-    
+    ll n; cin>>n;
+    string t; cin>>t;
+    int c0=0;
+    for(int i=0;i<n;i++){
+        if(t[i]=='0') c0++;
+    }
+    if(c0==n){
+        cout<<0<<endl;
+        return;
+    }
+    string s="";
+    int m=0;
+    bool flag=false;
+    for(int i=0;i<n;i++){
+        if(t[i]=='0' && flag) {s+=t[i];m++;}
+        else if(t[i]=='1'){
+            s+=t[i];
+            flag=true;
+            m++;
+        }
+    }
+    n=m;
+    ll cnt=0;
+    for(ll i=0;i<s.length();i++){
+        if(s[i]=='1') cnt++;
+        else break;
+    }
+    if(cnt==n){
+        cout<<s<<endl;
+        return;
+    }
+    // ll num=0;
+    // for(ll i=n-1;i>=0;i--){
+    //     if(s[i]=='1'){
+    //         num+=(1LL<<(n-1-i));
+    //     }
+    // }
+    // ll ans=num;
+    // for(ll i=1;i<=cnt;i++){
+    //     ans=max(ans,num|(num>>i));
+    // }
+    // // cout<<ans<<endl;
+    // vector<ll> ansnum(n,0);
+    // for(ll i=n-1;i>=0;i--){
+    //     if((ans>>(n-1-i))&1LL) ansnum[i]=1;
+    // }
+    // for(ll i=0;i<n;i++){
+    //     cout<<ansnum[i];
+    // }
+    // cout<<endl;
+    //shift to large
+    // vector<string> ans;
+    string ans=s;
+    for(int i=1;i<=cnt;i++){
+        string cur="";
+        for(int j=0;j<i;j++){
+            cur+="0";
+        }
+        for(int j=0;j<n-i;j++){
+            cur+=s[j];
+        }
+        string res="";
+        for(int j=0;j<n;j++){
+            if(s[j]=='1' || cur[j]=='1') res+="1";
+            else res+="0";
+        }
+        ans=max(ans,res);
+    }
+    // sort(ans.begin(),ans.end());
+    // cout<<ans[ans.size()-1]<<endl;
+    cout<<ans<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

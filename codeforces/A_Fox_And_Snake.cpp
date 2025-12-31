@@ -29,13 +29,11 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define se second
 #define pai pair<ll,ll>
 
-const ll MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
 // const ll MOD = 998244353;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
-// Custom hash for unordered_map/set
 struct custom_hash {
     static uint64_t splitmix64(uint64_t x) {
         x += 0x9e3779b97f4a7c15;
@@ -82,61 +80,26 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
+const ll MAXN = 1e6 + 5;
+
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);//original
+    int n,m; cin>>n>>m;
     for(int i=0;i<n;i++){
-        cin>>a[i];
-    }
-    vector<int> b(n);//final
-    for(int i=0;i<n;i++){
-        cin>>b[i];
-    }
-    int m; cin>>m;
-    safe_umap<int,int> raz;
-    for(int i=0;i<m;i++){
-        int x; cin>>x;
-        raz[x]++;
-    }
-    //if for some i bi>ai then no
-    for(int i=0;i<n;i++){
-        if(b[i]>a[i]){
-            cout<<"NO"<<endl;
-            return;
+        for(int j=0;j<m;j++){
+            if(i%2==0) cout<<'#';
+            else if(((i-1)/2)%2==0 && j==m-1) cout<<'#';
+            else if(((i-1)/2)%2!=0 && j==0) cout<<'#';
+            else cout<<'.';
         }
+        cout<<endl;
     }
-    //other than the above case original hair lenght is unless ai==bi
-    // vector<pair<int,int>> temp;
-    // for(int i=0;i<n;i++){
-    //     temp.pb({b[i],i});
-    // }
-    // sort(temp.begin(),temp.end());
-    // cout<<temp<<endl;
-    //first element to the left greater than target ai
-    //stack
-    vector<int> stack;
-    for(int i=0;i<n;i++){
-        while(!stack.empty() && stack.back()<b[i]) stack.pop_back();
-        if(!stack.empty() && stack.back()==b[i]) continue;
-        if(a[i]==b[i]) continue;
-        //perform a cut
-        if(raz[b[i]]>0){
-            raz[b[i]]--;
-            stack.push_back(b[i]);
-        }
-        else{
-            cout<<"NO"<<endl;
-            return;
-        }
-    }
-    cout<<"YES"<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

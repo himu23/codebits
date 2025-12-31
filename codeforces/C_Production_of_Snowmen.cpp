@@ -29,7 +29,6 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define se second
 #define pai pair<ll,ll>
 
-const ll MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
 // const ll MOD = 998244353;
 const ll INF = 1e9;
@@ -82,54 +81,44 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
+const ll MAXN = 1e6 + 5;
+
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);//original
-    for(int i=0;i<n;i++){
+    ll n; cin>>n;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
         cin>>a[i];
     }
-    vector<int> b(n);//final
-    for(int i=0;i<n;i++){
+    vector<ll> b(n);
+    for(ll i=0;i<n;i++){
         cin>>b[i];
     }
-    int m; cin>>m;
-    safe_umap<int,int> raz;
-    for(int i=0;i<m;i++){
-        int x; cin>>x;
-        raz[x]++;
+    vector<ll> c(n);
+    for(ll i=0;i<n;i++){
+        cin>>c[i];
     }
-    //if for some i bi>ai then no
-    for(int i=0;i<n;i++){
-        if(b[i]>a[i]){
-            cout<<"NO"<<endl;
-            return;
+    ll temp1=0,temp2=0;
+    for(ll i=0;i<n;i++){
+        bool flag=true;
+        for(ll j=0;j<n;j++){
+            if(a[j]>=b[(j+i)%n]){
+                flag=false;
+                break;
+            }
         }
+        if(flag) temp1++;
     }
-    //other than the above case original hair lenght is unless ai==bi
-    // vector<pair<int,int>> temp;
-    // for(int i=0;i<n;i++){
-    //     temp.pb({b[i],i});
-    // }
-    // sort(temp.begin(),temp.end());
-    // cout<<temp<<endl;
-    //first element to the left greater than target ai
-    //stack
-    vector<int> stack;
-    for(int i=0;i<n;i++){
-        while(!stack.empty() && stack.back()<b[i]) stack.pop_back();
-        if(!stack.empty() && stack.back()==b[i]) continue;
-        if(a[i]==b[i]) continue;
-        //perform a cut
-        if(raz[b[i]]>0){
-            raz[b[i]]--;
-            stack.push_back(b[i]);
+    for(ll i=0;i<n;i++){
+        bool flag=true;
+        for(ll j=0;j<n;j++){
+            if(b[j]>=c[(j+i)%n]){
+                flag=false;
+                break;
+            }
         }
-        else{
-            cout<<"NO"<<endl;
-            return;
-        }
+        if(flag) temp2++;
     }
-    cout<<"YES"<<endl;
+    cout<<temp1*temp2*n<<endl;
 }
 
 int32_t main() {

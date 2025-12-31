@@ -83,53 +83,91 @@ const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);//original
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    ll n,m; cin>>n>>m;
+    vector<pair<ll,ll>> a(n);
+    // safe_umap<ll,ll> um;
+    for(ll i=0;i<n;i++){
+        cin>>a[i].fi;
+        // um[a[i]]=i+1;
+        a[i].se=i+1;
     }
-    vector<int> b(n);//final
-    for(int i=0;i<n;i++){
-        cin>>b[i];
+    if(2*m>n && m>1){
+        cout<<-1<<endl;
+        return;
     }
-    int m; cin>>m;
-    safe_umap<int,int> raz;
-    for(int i=0;i<m;i++){
-        int x; cin>>x;
-        raz[x]++;
-    }
-    //if for some i bi>ai then no
-    for(int i=0;i<n;i++){
-        if(b[i]>a[i]){
-            cout<<"NO"<<endl;
-            return;
-        }
-    }
-    //other than the above case original hair lenght is unless ai==bi
-    // vector<pair<int,int>> temp;
-    // for(int i=0;i<n;i++){
-    //     temp.pb({b[i],i});
+    sort(a.begin(),a.end());
+    // if(m==0){
+    //     cout<<"hahhaa"<<endl;
+    //     return;
     // }
-    // sort(temp.begin(),temp.end());
-    // cout<<temp<<endl;
-    //first element to the left greater than target ai
-    //stack
-    vector<int> stack;
-    for(int i=0;i<n;i++){
-        while(!stack.empty() && stack.back()<b[i]) stack.pop_back();
-        if(!stack.empty() && stack.back()==b[i]) continue;
-        if(a[i]==b[i]) continue;
-        //perform a cut
-        if(raz[b[i]]>0){
-            raz[b[i]]--;
-            stack.push_back(b[i]);
+    if(m==1){
+        // sort(a.begin(),a.end());
+        cout<<n-1<<endl;
+        for(ll i=0;i<n-1;i++){
+            cout<<a[i].se<<" "<<a[i+1].se<<endl;
         }
-        else{
-            cout<<"NO"<<endl;
+        return;
+    }
+    if(m!=0){
+        // sort(a.begin(),a.end(),greater<ll>());
+        cout<<n-m<<endl;
+        for(ll i=0;i<n-2*m;i++){
+            cout<<a[i].se<<" "<<a[i+1].se<<endl;
+        }
+        for(ll i=0;i<m;i++){
+            cout<<a[n-m+i].se<<" "<<a[n-2*m+i].se<<endl;
+        }
+        return;
+    }
+    // sort(a.begin(),a.end());
+    vector<ll> cuts;
+    ll l=0;
+    vector<pair<ll,ll>> anss;
+    while(l<n){
+        ll r=l;
+        ll cursum=0;
+        bool found=false;
+        while(r<n){
+            cursum+=a[r].fi;
+            // if(cursum>=2*a[r])
+            if(r-l+1>=3 && cursum>=2*a[r].fi){
+                // if(n-1-r<3){
+                //     r=n-1;
+                //     break;
+                // }
+                // break;
+                if(n-1-r<3){
+                while(r<n-1){
+                    r++;
+                    cursum+=a[r].fi;
+                }}
+                found=true;
+                break;
+            }
+            r++;
+        }
+        if(r>=n){
+            cout<<-1<<endl;
             return;
         }
+        ll grpsum=0;
+        for(ll k=l;k<=r;k++) grpsum+=a[k].fi;
+        if(grpsum<2*a[r].fi){
+            cout<<-1<<endl;
+            return;
+        }
+        ll carr=r;
+        ll carr0=r-1;
+        for(ll k=l;k<=r-2;k++){
+            anss.pb({a[k].se,a[carr].se});
+        }
+        anss.pb({a[carr].se,a[carr0].se});
+        l=r+1;
     }
-    cout<<"YES"<<endl;
+    cout<<anss.size()<<endl;
+    for(ll i=0;i<anss.size();i++){
+        cout<<anss[i].fi<<" "<<anss[i].se<<endl;
+    }
 }
 
 int32_t main() {

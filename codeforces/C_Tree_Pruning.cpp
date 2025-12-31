@@ -29,7 +29,6 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define se second
 #define pai pair<ll,ll>
 
-const ll MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
 // const ll MOD = 998244353;
 const ll INF = 1e9;
@@ -82,54 +81,59 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
+const ll MAXN = 5e5+5;
+vector<int> tree[MAXN];
+// bool visi[MAXN];
+int diff[MAXN];
+int dfs(int u,int p, int d){
+    int maxd=d;
+    for(int v:tree[u]){
+        if(v!=p){
+            int cm=dfs(v,u,d+1);
+            maxd=max(maxd,cm);
+        }
+    }
+    diff[d]++;
+    diff[maxd+1]--;
+    return maxd;
+}
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);//original
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    int n;cin>>n;
+    for(int i=0;i<=n+1;i++){
+        tree[i].clear();
+        // visi[i]=false;
+        diff[i]=0;
     }
-    vector<int> b(n);//final
-    for(int i=0;i<n;i++){
-        cin>>b[i];
+    // vector<vector<int>> tree(n);
+    for(int i=1;i<n;i++){
+        int a,b; cin>>a>>b;
+        a--,b--;
+        tree[a].pb(b);
+        tree[b].pb(a);
     }
-    int m; cin>>m;
-    safe_umap<int,int> raz;
-    for(int i=0;i<m;i++){
-        int x; cin>>x;
-        raz[x]++;
-    }
-    //if for some i bi>ai then no
-    for(int i=0;i<n;i++){
-        if(b[i]>a[i]){
-            cout<<"NO"<<endl;
-            return;
-        }
-    }
-    //other than the above case original hair lenght is unless ai==bi
-    // vector<pair<int,int>> temp;
-    // for(int i=0;i<n;i++){
-    //     temp.pb({b[i],i});
+    // vector<int> dis(n);dis[0]=0;
+    // queue<int> q;q.push(0);
+    // vector<bool> visi(n,false);
+    // visi[0]=true;
+    // while(!q.empty()){
+    //     int cur=q.front();q.pop();
+    //     int curpref=0;
+    //     for(int i=0;i<tree[cur].size();i++){
+    //         if(!visi[tree[cur][i]]){
+    //             visi[tree[cur][i]]=true;
+    //             dis[tree[cur][i]]=dis[cur]+1;
+    //             q.push(tree[cur][i]);
+    //         }
+    //     }
     // }
-    // sort(temp.begin(),temp.end());
-    // cout<<temp<<endl;
-    //first element to the left greater than target ai
-    //stack
-    vector<int> stack;
+    dfs(0,-1,0);
+    int maxkept=0;
+    int cur=0;
     for(int i=0;i<n;i++){
-        while(!stack.empty() && stack.back()<b[i]) stack.pop_back();
-        if(!stack.empty() && stack.back()==b[i]) continue;
-        if(a[i]==b[i]) continue;
-        //perform a cut
-        if(raz[b[i]]>0){
-            raz[b[i]]--;
-            stack.push_back(b[i]);
-        }
-        else{
-            cout<<"NO"<<endl;
-            return;
-        }
+        cur+=diff[i];
+        maxkept=max(maxkept,cur);
     }
-    cout<<"YES"<<endl;
+    cout<<n-maxkept<<endl;
 }
 
 int32_t main() {
