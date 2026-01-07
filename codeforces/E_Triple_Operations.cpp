@@ -34,7 +34,6 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
-// Custom hash for unordered_map/set
 struct custom_hash {
     static uint64_t splitmix64(uint64_t x) {
         x += 0x9e3779b97f4a7c15;
@@ -81,22 +80,53 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
-const ll MAXN = 1e6 + 5;
+// const ll MAXN = 1e6 + 5;
+int log3(int n){
+    return (int)(log(n)/log(3)+1e-9);
+}
+// void solve() {
+//     int l,r; cin>>l>>r;
+//     int ans=0;
+//     ans+=2*(log3(l)+1);
+//     for(int i=l+1;i<=r;i++){
+//         ans+=log3(i)+1;
+//     }
+//     cout<<ans<<endl;
+// }
+//tle
+// void solve(){
+//     int l,r; cin>>l>>r;
+//     vector<int> temp;
+//     int cur=1;
+//     temp.pb(0);
+//     while(binpow(3,cur)<=r){
+//         if(binpow(3,cur)<=l) temp[0]=cur;
+//         if(binpow(3,cur)>l) temp.pb(cur);
+//         cur++;
+//     }
+//     // cout<<temp<<endl;
+//     int ans=2*(log3(l)+1);
+//     l++;
+//     // cout<<binpow(3,11)<<endl;
 
-void solve() {
-    int n; cin>>n;
-    vector<vector<int>> tree(n);
-    for(int i=1;i<n;i++){
-        int a,b;cin>>a>>b;
-        a--,b--;
-        tree[a].pb(b);
-        tree[b].pb(a);
+// }
+const ll MAXN=2e5+5;
+vector<ll> pref(MAXN);
+void precompute(){
+    pref[0]=0;
+    for(ll i=1;i<MAXN;i++){
+        pref[i]=pref[i-1]+(log3(i)+1);
     }
-    string s; cin>>s;
-    
+}
+void solve(){
+    ll l,r; cin>>l>>r;
+    ll ans=2*(log3(l)+1);
+    ans+=(pref[r]-pref[l]);
+    cout<<ans<<endl;
 }
 
 int32_t main() {
+    precompute();
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;

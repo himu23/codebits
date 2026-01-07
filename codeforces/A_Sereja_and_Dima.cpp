@@ -34,7 +34,6 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
-// Custom hash for unordered_map/set
 struct custom_hash {
     static uint64_t splitmix64(uint64_t x) {
         x += 0x9e3779b97f4a7c15;
@@ -85,22 +84,44 @@ const ll MAXN = 1e6 + 5;
 
 void solve() {
     int n; cin>>n;
-    vector<vector<int>> tree(n);
-    for(int i=1;i<n;i++){
-        int a,b;cin>>a>>b;
-        a--,b--;
-        tree[a].pb(b);
-        tree[b].pb(a);
+    vector<int> a(n);
+    for(int i=0;i<n;i++){
+        cin>>a[i];
     }
-    string s; cin>>s;
-    
+    int l=0,r=n-1;
+    int ans1=0,ans2=0;
+    int cnt=0;
+    while(cnt<n){
+        if(a[l]>a[r]){
+            ans1+=a[l];
+            l++;
+            cnt++;
+        }
+        else{
+            ans1+=a[r];
+            r--;
+            cnt++;
+        }
+        if(cnt==n) break;
+        if(a[l]>a[r]){
+            ans2+=a[l];
+            l++;
+            cnt++;
+        }
+        else{
+            ans2+=a[r];
+            r--;
+            cnt++;
+        }
+    }
+    cout<<ans1<<" "<<ans2<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

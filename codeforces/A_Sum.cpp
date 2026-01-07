@@ -34,7 +34,6 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
-// Custom hash for unordered_map/set
 struct custom_hash {
     static uint64_t splitmix64(uint64_t x) {
         x += 0x9e3779b97f4a7c15;
@@ -84,16 +83,14 @@ const ll dy[4]={1,0,-1,0};
 const ll MAXN = 1e6 + 5;
 
 void solve() {
-    int n; cin>>n;
-    vector<vector<int>> tree(n);
-    for(int i=1;i<n;i++){
-        int a,b;cin>>a>>b;
-        a--,b--;
-        tree[a].pb(b);
-        tree[b].pb(a);
-    }
-    string s; cin>>s;
-    
+    int a,b,c; cin>>a>>b>>c;
+    int maxx=a;
+    if(maxx<b) maxx=b;
+    if(maxx<c) maxx=c;
+    if(maxx==a) if(b+c==a){cout<<"YES"<<endl;return;}
+    if(maxx==b) if(a+c==b){cout<<"YES"<<endl;return;}
+    if(maxx==c) if(b+a==c){cout<<"YES"<<endl;return;}
+    cout<<"NO"<<endl;
 }
 
 int32_t main() {

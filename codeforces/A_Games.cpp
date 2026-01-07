@@ -84,14 +84,27 @@ const ll MAXN = 1e6 + 5;
 
 void solve() {
     int n; cin>>n;
-    
+    int ans=0;
+    vector<pair<int,int>> temp;
+    for(int i=0;i<n;i++){
+        int a,b; cin>>a>>b;
+        temp.pb({a,b});
+    }
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            if(i==j) continue;
+            if(temp[i].fi==temp[j].se) ans++;
+            if(temp[i].se==temp[j].fi) ans++;
+        }
+    }
+    cout<<ans/2<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

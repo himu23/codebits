@@ -34,7 +34,6 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
-// Custom hash for unordered_map/set
 struct custom_hash {
     static uint64_t splitmix64(uint64_t x) {
         x += 0x9e3779b97f4a7c15;
@@ -81,22 +80,44 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
 
-const ll MAXN = 1e6 + 5;
+const ll MAX_N = 2e5 + 5;
+vector<long long> fact(MAX_N);
+vector<long long> invFact(MAX_N);
 
-void solve() {
-    int n; cin>>n;
-    vector<vector<int>> tree(n);
-    for(int i=1;i<n;i++){
-        int a,b;cin>>a>>b;
-        a--,b--;
-        tree[a].pb(b);
-        tree[b].pb(a);
+void precompute() {
+    fact[0] = 1;
+    invFact[0] = 1;
+    for (int i = 1; i < MAX_N; i++) {
+        fact[i] = (fact[i - 1] * i) % MOD;
     }
-    string s; cin>>s;
-    
+    invFact[MAX_N - 1] = binpow(fact[MAX_N - 1], MOD - 2);
+    for (int i = MAX_N - 2; i >= 1; i--) {
+        invFact[i] = (invFact[i + 1] * (i + 1)) % MOD;
+    }
+}
+long long ncr(int n, int r) {
+    if (r < 0 || r > n) return 0;
+    return (((fact[n] * invFact[r]) % MOD) * invFact[n - r]) % MOD;
+}
+void solve() {
+    ll n,k; cin>>n>>k;
+    vector<ll> a(n);
+    ll cnt=0;
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
+        if(a[i]==1) cnt++;
+    }
+    ll temp=k;
+    k=(k+1)/2;
+    ll ans=0;
+    for(ll i=k;i<=temp;i++){
+        ans=(ans+ncr(cnt,i)*ncr(n-cnt,temp-i))%MOD;
+    }
+    cout<<ans%MOD<<endl;
 }
 
 int32_t main() {
+    precompute();
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;

@@ -84,12 +84,21 @@ const ll dy[4]={1,0,-1,0};
 
 void solve() {
     string s; cin>>s;
-    int cy=0;
+    // int cy=0;
+    // for(int i=0;i<s.length();i++){
+    //     if(s[i]=='Y') cy++;
+    // }
+    // if(cy>1) cout<<"NO"<<endl;
+    // else cout<<"YES"<<endl;
+    string t="YES";
+    bool flag=true;
     for(int i=0;i<s.length();i++){
-        if(s[i]=='Y') cy++;
+        s[i]=toupper(s[i]);
+        if(s[i]!=t[i]) flag=false;
+
     }
-    if(cy>1) cout<<"NO"<<endl;
-    else cout<<"YES"<<endl;
+    if(flag) cout<<"YES"<<endl;
+    else cout<<"NO"<<endl;
 }
 
 int32_t main() {
