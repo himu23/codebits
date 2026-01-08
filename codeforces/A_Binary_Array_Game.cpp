@@ -86,62 +86,15 @@ const ll MAXN = 1e6 + 5;
 void solve() {
     int n; cin>>n;
     vector<int> a(n);
-    set<int> ms1;
-    // bool flag=false;
+    int c0=0,c1=0;
     for(int i=0;i<n;i++){
         cin>>a[i];
-        // if(ms1.find(a[i])!=ms1.end()) flag=true;
-        ms1.insert(a[i]);
+        if(a[i]==1) c1++;
+        else c0++;
     }
-    vector<int> b(n);
-    set<int> ms2;
-    for(int i=0;i<n;i++){
-        cin>>b[i];
-        // if(ms2.find(b[i])!=ms2.end()) flag=true;
-        ms2.insert(b[i]);
-    }
-    if(ms1!=ms2){cout<<"NO"<<endl;return;}
-    // if(flag) {cout<<"YES"<<endl;return;}
-    //get parity of inversions
-    //cycle decomposition
-    int cya=0,cyb=0;
-    vector<int> na(n),nb(n);
-    na=a,nb=b;
-    sort(na.begin(),na.end());
-    sort(nb.begin(),nb.end());
-    safe_umap<int,int> uma,umb;
-    //there are better methods for coordinate compression but this works for now
-    for(int i=0;i<n;i++){
-        uma[na[i]]=i;
-        umb[nb[i]]=i;
-    }
-    for(int i=0;i<n;i++){
-        a[i]=uma[a[i]];
-        b[i]=umb[b[i]];
-    }
-    // cout<<a<<endl<<b<<endl;
-    int para=0,parb=0;
-    vector<int> visia(n,false),visib(n,false);
-    for(int i=0;i<n;i++){
-        if(visia[i]) continue;
-        cya++;
-        int cur=i;
-        while(!visia[cur]){
-            visia[cur]=true;
-            cur=a[cur];
-        }
-    }
-    for(int i=0;i<n;i++){
-        if(visib[i]) continue;
-        cyb++;
-        int cur=i;
-        while(!visib[cur]){
-            visib[cur]=true;
-            cur=b[cur];
-        }
-    }
-    if((n-cya)%2==(n-cyb)%2) cout<<"YES"<<endl;
-    else cout<<"NO"<<endl;
+    if(c1>=c0) cout<<"Alice"<<endl;
+    else cout<<"Bob"<<endl;
+
 }
 
 int32_t main() {

@@ -83,65 +83,58 @@ const ll dy[4]={1,0,-1,0};
 
 const ll MAXN = 1e6 + 5;
 
-void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    set<int> ms1;
-    // bool flag=false;
-    for(int i=0;i<n;i++){
-        cin>>a[i];
-        // if(ms1.find(a[i])!=ms1.end()) flag=true;
-        ms1.insert(a[i]);
-    }
-    vector<int> b(n);
-    set<int> ms2;
-    for(int i=0;i<n;i++){
-        cin>>b[i];
-        // if(ms2.find(b[i])!=ms2.end()) flag=true;
-        ms2.insert(b[i]);
-    }
-    if(ms1!=ms2){cout<<"NO"<<endl;return;}
-    // if(flag) {cout<<"YES"<<endl;return;}
-    //get parity of inversions
-    //cycle decomposition
-    int cya=0,cyb=0;
-    vector<int> na(n),nb(n);
-    na=a,nb=b;
-    sort(na.begin(),na.end());
-    sort(nb.begin(),nb.end());
-    safe_umap<int,int> uma,umb;
-    //there are better methods for coordinate compression but this works for now
-    for(int i=0;i<n;i++){
-        uma[na[i]]=i;
-        umb[nb[i]]=i;
-    }
-    for(int i=0;i<n;i++){
-        a[i]=uma[a[i]];
-        b[i]=umb[b[i]];
-    }
-    // cout<<a<<endl<<b<<endl;
-    int para=0,parb=0;
-    vector<int> visia(n,false),visib(n,false);
-    for(int i=0;i<n;i++){
-        if(visia[i]) continue;
-        cya++;
-        int cur=i;
-        while(!visia[cur]){
-            visia[cur]=true;
-            cur=a[cur];
+// void solve() {
+//     int n,k; cin>>n>>k;
+//     vector<vector<int>> gra(n);
+//     vector<bool> visi(n,false);
+//     vector<int> parent(n,-1);
+//     while(k--){
+//         vector<int> temp(n);
+//         for(int i=0;i<n;i++){
+//             int a; cin>>a;
+//             a--;temp[i]=a;
+//         }
+//         for(int i=1;i<n-1;i++){
+//             // if(visi[temp[i+1]]) continue;
+//             gra[temp[i]].pb(temp[i+1]);
+//             visi[temp[i+1]]=true;
+//             parent[temp[i+1]]=temp[i];
+//         }
+//     }
+//     for(int i=0;i<n;i++){
+//         if(visi[i]) continue;
+//         queue<int> q;
+//         q.push(i);
+//         visi[i]=true;
+//         while(!q.empty()){
+//             int cur=q.front();q.pop();
+//             for(int j=0;j<gra[cur].size();j++){
+//                 if(gra[cur][j]==parent[cur] || visi[gra[cur][j]]){cout<<"NO"<<endl;return;}
+//                 if(!visi[gra[cur][j]]){
+//                     visi[gra[cur][j]]=true;
+//                     q.push(gra[cur][j]);
+//                 }
+//             }
+//         }
+//     }
+//     cout<<"YES"<<endl;
+// }
+void solve(){
+    int n,k; cin>>n>>k;
+    vector<vector<int>> adj(n);
+    vector<int> inde(n);
+    while(k--){
+        vector<int> temp(n);
+        for(int i=0;i<n;i++){
+            int a; cin>>a;
+            a--; temp[i]=a;
+        }
+        for(int i=1;i<n-1;i++){
+            adj[temp[i]].pb(temp[i+1]);
+            inde[temp[i+1]]++;
         }
     }
-    for(int i=0;i<n;i++){
-        if(visib[i]) continue;
-        cyb++;
-        int cur=i;
-        while(!visib[cur]){
-            visib[cur]=true;
-            cur=b[cur];
-        }
-    }
-    if((n-cya)%2==(n-cyb)%2) cout<<"YES"<<endl;
-    else cout<<"NO"<<endl;
+    
 }
 
 int32_t main() {

@@ -93,7 +93,24 @@ void solve() {
         tree[b].pb(a);
     }
     string s; cin>>s;
-    
+    int c0=0,c1=0,cq=0,cmq=0;
+    for(int i=0;i<n;i++){
+        if(tree[i].size()==1 && i!=0){
+            if(s[i]=='0') c0++;
+            else if(s[i]=='1') c1++;
+            else cq++;
+        }
+        else if(i!=0) if(s[i]=='?') cmq++;
+    }
+    if(s[0]=='1') cout<<c0+(cq+1)/2<<endl;
+    else if(s[0]=='0') cout<<c1+(cq+1)/2<<endl;
+    else{
+        int ans=max(c0,c1);
+        // cout<<ans+(cq+1)/2<<endl;
+        if(c0==c1 && cmq%2==1) ans+=(cq+1)/2;
+        else ans+=cq/2;
+        cout<<ans<<endl;
+    }
 }
 
 int32_t main() {

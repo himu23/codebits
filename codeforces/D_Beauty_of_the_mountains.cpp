@@ -84,63 +84,49 @@ const ll dy[4]={1,0,-1,0};
 const ll MAXN = 1e6 + 5;
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    set<int> ms1;
-    // bool flag=false;
-    for(int i=0;i<n;i++){
-        cin>>a[i];
-        // if(ms1.find(a[i])!=ms1.end()) flag=true;
-        ms1.insert(a[i]);
-    }
-    vector<int> b(n);
-    set<int> ms2;
-    for(int i=0;i<n;i++){
-        cin>>b[i];
-        // if(ms2.find(b[i])!=ms2.end()) flag=true;
-        ms2.insert(b[i]);
-    }
-    if(ms1!=ms2){cout<<"NO"<<endl;return;}
-    // if(flag) {cout<<"YES"<<endl;return;}
-    //get parity of inversions
-    //cycle decomposition
-    int cya=0,cyb=0;
-    vector<int> na(n),nb(n);
-    na=a,nb=b;
-    sort(na.begin(),na.end());
-    sort(nb.begin(),nb.end());
-    safe_umap<int,int> uma,umb;
-    //there are better methods for coordinate compression but this works for now
-    for(int i=0;i<n;i++){
-        uma[na[i]]=i;
-        umb[nb[i]]=i;
-    }
-    for(int i=0;i<n;i++){
-        a[i]=uma[a[i]];
-        b[i]=umb[b[i]];
-    }
-    // cout<<a<<endl<<b<<endl;
-    int para=0,parb=0;
-    vector<int> visia(n,false),visib(n,false);
-    for(int i=0;i<n;i++){
-        if(visia[i]) continue;
-        cya++;
-        int cur=i;
-        while(!visia[cur]){
-            visia[cur]=true;
-            cur=a[cur];
+    ll n,m,k; cin>>n>>m>>k;
+    vector<vector<ll>> a(n,vector<ll>(m));
+    for(ll i=0;i<n;i++){
+        for(ll j=0;j<m;j++){
+            cin>>a[i][j];
         }
     }
-    for(int i=0;i<n;i++){
-        if(visib[i]) continue;
-        cyb++;
-        int cur=i;
-        while(!visib[cur]){
-            visib[cur]=true;
-            cur=b[cur];
+    vector<vector<bool>> isone(n,vector<bool>(m));
+    for(ll i=0;i<n;i++){
+        string s; cin>>s;
+        for(ll j=0;j<m;j++){
+            if(s[j]=='0') isone[i][j]=false;
+            else isone[i][j]=true;
         }
     }
-    if((n-cya)%2==(n-cyb)%2) cout<<"YES"<<endl;
+    ll c0=0,c1=0;
+    vector<vector<ll>> pref(n+1,vector<ll>(m+1,0));
+    //2d prefix sum
+    for(ll i=0;i<n;i++){
+        for(ll j=0;j<m;j++){
+            if(isone[i][j]) c1+=a[i][j];
+            else c0+=a[i][j];
+            pref[i+1][j+1]=pref[i][j+1]+pref[i+1][j]-pref[i][j]+isone[i][j];
+        }
+    }
+    ll diff=abs(c0-c1);
+    if(diff==0){
+        cout<<"YES"<<endl;
+        return;
+    }
+    ll g=0;
+    for(ll i=0;i<=n-k;i++){
+        for(ll j=0;j<=m-k;j++){
+            ll x0=i,y0=j;
+            ll x1=i+k,y1=j+k;
+            ll cnt1=pref[x1][y1]-pref[x1][y0]-pref[x0][y1]+pref[x0][y0];
+            //2d prefix
+            ll cnt0=k*k-cnt1;
+            g=gcd(g,abs(cnt0-cnt1));
+        }
+    }
+    //bezoult's identity
+    if(g!=0 && diff%g==0)cout<<"YES"<<endl;
     else cout<<"NO"<<endl;
 }
 
