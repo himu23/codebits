@@ -80,81 +80,66 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 }
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
+ll modinverse(ll n){
+    return binpow(n,MOD-2);
+}
 
 const ll MAXN = 1e6 + 5;
-
-// void solve() {
-//     int n,k; cin>>n>>k;
-//     vector<vector<int>> gra(n);
-//     vector<bool> visi(n,false);
-//     vector<int> parent(n,-1);
-//     while(k--){
-//         vector<int> temp(n);
-//         for(int i=0;i<n;i++){
-//             int a; cin>>a;
-//             a--;temp[i]=a;
-//         }
-//         for(int i=1;i<n-1;i++){
-//             // if(visi[temp[i+1]]) continue;
-//             gra[temp[i]].pb(temp[i+1]);
-//             visi[temp[i+1]]=true;
-//             parent[temp[i+1]]=temp[i];
-//         }
-//     }
-//     for(int i=0;i<n;i++){
-//         if(visi[i]) continue;
-//         queue<int> q;
-//         q.push(i);
-//         visi[i]=true;
-//         while(!q.empty()){
-//             int cur=q.front();q.pop();
-//             for(int j=0;j<gra[cur].size();j++){
-//                 if(gra[cur][j]==parent[cur] || visi[gra[cur][j]]){cout<<"NO"<<endl;return;}
-//                 if(!visi[gra[cur][j]]){
-//                     visi[gra[cur][j]]=true;
-//                     q.push(gra[cur][j]);
-//                 }
-//             }
-//         }
-//     }
-//     cout<<"YES"<<endl;
-// }
-void solve(){
-    int n,k; cin>>n>>k;
-    vector<vector<int>> adj(n);
-    vector<int> inde(n);
-    while(k--){
-        vector<int> temp(n);
-        for(int i=0;i<n;i++){
-            int a; cin>>a;
-            a--; temp[i]=a;
-        }
-        for(int i=1;i<n-1;i++){
-            adj[temp[i]].pb(temp[i+1]);
-            inde[temp[i+1]]++;
+// Sparse Table for GCD / Min / Max
+struct SparseTable {
+    vector<vector<int>> st;
+    vector<int> bin_log;
+    int K;
+    int oper(int x, int y) {
+        return max(x, y); //max(x, y) or min(x, y)
+    }
+    SparseTable(const vector<int>& a) {
+        int n = a.size();
+        bin_log.resize(n + 1);
+        bin_log[1] = 0;
+        for (int i = 2; i <= n; i++)
+            bin_log[i] = bin_log[i / 2] + 1;
+        K = bin_log[n] + 1;
+        st.assign(n, vector<int>(K));
+        for (int i = 0; i < n; i++)
+            st[i][0] = a[i];
+        for (int j = 1; j < K; j++) {
+            for (int i = 0; i + (1 << j) <= n; i++) {
+                st[i][j] = oper(st[i][j - 1], st[i + (1 << (j - 1))][j - 1]);
+            }
         }
     }
-    queue<int> q;
-    for(int i=0;i<n;i++){
-        if(inde[i]==0) q.push(i);
+    int query(int L, int R) {
+        int j = bin_log[R - L + 1];
+        return oper(st[L][j], st[R - (1 << j) + 1][j]);
     }
-    int ans=0;
-    while(!q.empty()){
-        int cur=q.front();ans++;q.pop();
-        for(int i=0;i<adj[cur].size();i++){
-            inde[adj[cur][i]]--;
-            if(inde[adj[cur][i]]==0) q.push(adj[cur][i]);
-        }
+};
+void solve() {
+    int n,m; cin>>n>>m;
+    vector<int> a(m);
+    for(int i=0;i<m;i++){
+        cin>>a[i];
     }
-    if(ans<n) cout<<"NO"<<endl;
-    else cout<<"YES"<<endl;
+    SparseTable st(a);
+    int q;cin>>q;
+    while(q--){
+        int x1,y1,x2,y2,k; cin>>x1>>y1>>x2>>y2>>k;
+        if(abs(x1-x2)%k!=0){cout<<"NO"<<endl;continue;}
+        if(abs(y1-y2)%k!=0){cout<<"NO"<<endl;continue;}
+        int temp=x1+((n-x1)/k)*k;
+        y1--,y2--;
+        int temp1=st.query(min(y1,y2),max(y1,y2)); //
+        if(temp1>=temp){cout<<"NO"<<endl;continue;} //==
+        if(abs(temp-x2)%k!=0){cout<<"NO"<<endl;continue;}
+        cout<<"YES"<<endl;
+    }
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

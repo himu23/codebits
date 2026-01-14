@@ -83,71 +83,38 @@ const ll dy[4]={1,0,-1,0};
 
 const ll MAXN = 1e6 + 5;
 
-// void solve() {
-//     int n,k; cin>>n>>k;
-//     vector<vector<int>> gra(n);
-//     vector<bool> visi(n,false);
-//     vector<int> parent(n,-1);
-//     while(k--){
-//         vector<int> temp(n);
-//         for(int i=0;i<n;i++){
-//             int a; cin>>a;
-//             a--;temp[i]=a;
-//         }
-//         for(int i=1;i<n-1;i++){
-//             // if(visi[temp[i+1]]) continue;
-//             gra[temp[i]].pb(temp[i+1]);
-//             visi[temp[i+1]]=true;
-//             parent[temp[i+1]]=temp[i];
-//         }
-//     }
-//     for(int i=0;i<n;i++){
-//         if(visi[i]) continue;
-//         queue<int> q;
-//         q.push(i);
-//         visi[i]=true;
-//         while(!q.empty()){
-//             int cur=q.front();q.pop();
-//             for(int j=0;j<gra[cur].size();j++){
-//                 if(gra[cur][j]==parent[cur] || visi[gra[cur][j]]){cout<<"NO"<<endl;return;}
-//                 if(!visi[gra[cur][j]]){
-//                     visi[gra[cur][j]]=true;
-//                     q.push(gra[cur][j]);
-//                 }
-//             }
-//         }
-//     }
-//     cout<<"YES"<<endl;
-// }
-void solve(){
-    int n,k; cin>>n>>k;
-    vector<vector<int>> adj(n);
-    vector<int> inde(n);
-    while(k--){
-        vector<int> temp(n);
-        for(int i=0;i<n;i++){
-            int a; cin>>a;
-            a--; temp[i]=a;
-        }
-        for(int i=1;i<n-1;i++){
-            adj[temp[i]].pb(temp[i+1]);
-            inde[temp[i+1]]++;
-        }
+void solve() {
+    int n,m; cin>>n>>m;
+    // vector<vector<int>> adj(n);
+    vector<int> temp(n);
+    while(m--){
+        int a,b; cin>>a>>b;
+        a--,b--;
+        // adj[a].pb(b);
+        // adj[b].pb(a);
+        temp[a]++,temp[b]++;
     }
-    queue<int> q;
+    // cout<<temp<<endl;
+    int c1=0;
+    // vector<int> temp1;
+    safe_umap<int,int> um;
     for(int i=0;i<n;i++){
-        if(inde[i]==0) q.push(i);
+        if(temp[i]==1) c1++;
+        // else temp1.pb(temp[i]);
+        else um[temp[i]]++;
     }
-    int ans=0;
-    while(!q.empty()){
-        int cur=q.front();ans++;q.pop();
-        for(int i=0;i<adj[cur].size();i++){
-            inde[adj[cur][i]]--;
-            if(inde[adj[cur][i]]==0) q.push(adj[cur][i]);
-        }
+    // cout<<c1<<endl<<temp1<<endl;
+    if(um.size()==1){
+        auto it=um.begin();
+        cout<<it->first<<" "<<it->first-1<<endl;
+        return;
     }
-    if(ans<n) cout<<"NO"<<endl;
-    else cout<<"YES"<<endl;
+    int ans1,ans0;
+    for(auto x:um){
+        if(x.se==1) ans1=x.fi;
+        else ans0=x.fi;
+    }
+    cout<<ans1<<" "<<ans0-1<<endl;
 }
 
 int32_t main() {

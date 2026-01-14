@@ -83,71 +83,39 @@ const ll dy[4]={1,0,-1,0};
 
 const ll MAXN = 1e6 + 5;
 
-// void solve() {
-//     int n,k; cin>>n>>k;
-//     vector<vector<int>> gra(n);
-//     vector<bool> visi(n,false);
-//     vector<int> parent(n,-1);
-//     while(k--){
-//         vector<int> temp(n);
-//         for(int i=0;i<n;i++){
-//             int a; cin>>a;
-//             a--;temp[i]=a;
-//         }
-//         for(int i=1;i<n-1;i++){
-//             // if(visi[temp[i+1]]) continue;
-//             gra[temp[i]].pb(temp[i+1]);
-//             visi[temp[i+1]]=true;
-//             parent[temp[i+1]]=temp[i];
-//         }
-//     }
-//     for(int i=0;i<n;i++){
-//         if(visi[i]) continue;
-//         queue<int> q;
-//         q.push(i);
-//         visi[i]=true;
-//         while(!q.empty()){
-//             int cur=q.front();q.pop();
-//             for(int j=0;j<gra[cur].size();j++){
-//                 if(gra[cur][j]==parent[cur] || visi[gra[cur][j]]){cout<<"NO"<<endl;return;}
-//                 if(!visi[gra[cur][j]]){
-//                     visi[gra[cur][j]]=true;
-//                     q.push(gra[cur][j]);
-//                 }
-//             }
-//         }
-//     }
-//     cout<<"YES"<<endl;
-// }
-void solve(){
-    int n,k; cin>>n>>k;
-    vector<vector<int>> adj(n);
-    vector<int> inde(n);
-    while(k--){
-        vector<int> temp(n);
-        for(int i=0;i<n;i++){
-            int a; cin>>a;
-            a--; temp[i]=a;
-        }
-        for(int i=1;i<n-1;i++){
-            adj[temp[i]].pb(temp[i+1]);
-            inde[temp[i+1]]++;
-        }
-    }
-    queue<int> q;
+void solve() {
+    int n,m; cin>>n>>m;
+    vector<int> a(n);
     for(int i=0;i<n;i++){
-        if(inde[i]==0) q.push(i);
+        cin>>a[i];
     }
-    int ans=0;
-    while(!q.empty()){
-        int cur=q.front();ans++;q.pop();
-        for(int i=0;i<adj[cur].size();i++){
-            inde[adj[cur][i]]--;
-            if(inde[adj[cur][i]]==0) q.push(adj[cur][i]);
+    vector<int> b(m);
+    for(int i=0;i<m;i++){
+        cin>>b[i];
+    }
+    sort(b.begin(),b.end(),greater<int>());
+    vector<int> ans;
+    int i=0,j=0;
+    while(i<n && j<m){
+        if(b[j]>a[i]){
+            ans.pb(b[j]);
+            j++;
+        }
+        else{
+            ans.pb(a[i]);
+            i++;
         }
     }
-    if(ans<n) cout<<"NO"<<endl;
-    else cout<<"YES"<<endl;
+    while(i<n){
+        ans.pb(a[i]);
+        i++;
+    }
+    while(j<m){
+        ans.pb(b[j]);
+        j++;
+    }
+    for(int idx=0;idx<ans.size();idx++) cout<<ans[idx]<<" ";
+    cout<<endl;
 }
 
 int32_t main() {

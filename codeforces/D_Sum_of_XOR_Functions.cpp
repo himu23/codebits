@@ -82,13 +82,53 @@ const int dx[4]={0,1,0,-1};
 const int dy[4]={1,0,-1,0};
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
+    ll n; cin>>n;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
         cin>>a[i];
     }
-    
-    
+    ll ans=0;
+    for(ll i=0;i<=30;i++){
+        vector<ll> temp1(n);
+        for(ll j=0;j<n;j++){
+            if(a[j]&(1<<i)) temp1[j]=1;
+            else temp1[j]=0;
+        }
+        vector<ll> temp(n);
+        temp[0]=temp1[0];
+        for(ll j=1;j<n;j++){
+            temp[j]=temp[j-1]^temp1[j];
+        }
+        vector<ll> c1(n),c0(n);
+        vector<ll> s1(n),s0(n);
+        ll tc1=0,tc0=0,ts1=0,ts0=0;
+        for(ll j=0;j<n;j++){
+            if(temp[j]==1){
+                tc1++;ts1+=j;
+            }
+            else{
+                tc0++;ts0+=j;
+            }
+            c1[j]=tc1,c0[j]=tc0,s1[j]=ts1,s0[j]=ts0;
+        }
+        ll sum=0;
+        for(ll j=0;j<n;j++){
+            if(temp[j]==0){
+                // if(j==0) continue;
+                sum=(sum+(j*c1[j])%MOD-s1[j]+MOD)%MOD;
+            }
+            else{
+                // if(j==0){
+                //     sum=(sum+j+1)%MOD;
+                //     continue;
+                // }
+                sum=(sum+(j*c0[j])%MOD-s0[j]+MOD)%MOD;
+                sum=(sum+j+1)%MOD;
+            }
+        }
+        ans=(ans+(sum*binpow(2,i))%MOD+MOD)%MOD;
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {

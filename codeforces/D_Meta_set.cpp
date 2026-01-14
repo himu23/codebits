@@ -80,81 +80,50 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 }
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
+ll modinverse(ll n){
+    return binpow(n,MOD-2);
+}
 
 const ll MAXN = 1e6 + 5;
 
-// void solve() {
-//     int n,k; cin>>n>>k;
-//     vector<vector<int>> gra(n);
-//     vector<bool> visi(n,false);
-//     vector<int> parent(n,-1);
-//     while(k--){
-//         vector<int> temp(n);
-//         for(int i=0;i<n;i++){
-//             int a; cin>>a;
-//             a--;temp[i]=a;
-//         }
-//         for(int i=1;i<n-1;i++){
-//             // if(visi[temp[i+1]]) continue;
-//             gra[temp[i]].pb(temp[i+1]);
-//             visi[temp[i+1]]=true;
-//             parent[temp[i+1]]=temp[i];
-//         }
-//     }
-//     for(int i=0;i<n;i++){
-//         if(visi[i]) continue;
-//         queue<int> q;
-//         q.push(i);
-//         visi[i]=true;
-//         while(!q.empty()){
-//             int cur=q.front();q.pop();
-//             for(int j=0;j<gra[cur].size();j++){
-//                 if(gra[cur][j]==parent[cur] || visi[gra[cur][j]]){cout<<"NO"<<endl;return;}
-//                 if(!visi[gra[cur][j]]){
-//                     visi[gra[cur][j]]=true;
-//                     q.push(gra[cur][j]);
-//                 }
-//             }
-//         }
-//     }
-//     cout<<"YES"<<endl;
-// }
-void solve(){
+void solve() {
     int n,k; cin>>n>>k;
-    vector<vector<int>> adj(n);
-    vector<int> inde(n);
-    while(k--){
-        vector<int> temp(n);
-        for(int i=0;i<n;i++){
-            int a; cin>>a;
-            a--; temp[i]=a;
-        }
-        for(int i=1;i<n-1;i++){
-            adj[temp[i]].pb(temp[i+1]);
-            inde[temp[i+1]]++;
-        }
-    }
-    queue<int> q;
+    vector<vector<int>> a(n,vector<int>(k));
+    map<vector<int>,int> cnt;
     for(int i=0;i<n;i++){
-        if(inde[i]==0) q.push(i);
+        for(int j=0;j<k;j++){
+            cin>>a[i][j];
+        }
+        cnt[a[i]]=0;
     }
-    int ans=0;
-    while(!q.empty()){
-        int cur=q.front();ans++;q.pop();
-        for(int i=0;i<adj[cur].size();i++){
-            inde[adj[cur][i]]--;
-            if(inde[adj[cur][i]]==0) q.push(adj[cur][i]);
+    // safe_umap<vector<int>,int> cnt;
+    for(int i=0;i<n;i++){
+        for(int j=i+1;j<n;j++){
+            vector<int> cur(k);
+            for(int idx=0;idx<k;idx++){
+                if(a[i][idx]==a[j][idx]) cur[idx]=a[i][idx];
+                else cur[idx]=3-a[i][idx]-a[j][idx];
+            }
+            // cnt[cur]++;
+            if(cnt.count(cur)){
+                cnt[cur]++;
+            }
         }
     }
-    if(ans<n) cout<<"NO"<<endl;
-    else cout<<"YES"<<endl;
+    ll ans=0;
+    for(int i=0;i<n;i++){
+        if(cnt[a[i]]>=2){
+            ans+=(ll)((cnt[a[i]])*(cnt[a[i]]-1)/2);
+        }
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

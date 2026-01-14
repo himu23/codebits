@@ -80,74 +80,29 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 }
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
+ll modinverse(ll n){
+    return binpow(n,MOD-2);
+}
 
 const ll MAXN = 1e6 + 5;
 
-// void solve() {
-//     int n,k; cin>>n>>k;
-//     vector<vector<int>> gra(n);
-//     vector<bool> visi(n,false);
-//     vector<int> parent(n,-1);
-//     while(k--){
-//         vector<int> temp(n);
-//         for(int i=0;i<n;i++){
-//             int a; cin>>a;
-//             a--;temp[i]=a;
-//         }
-//         for(int i=1;i<n-1;i++){
-//             // if(visi[temp[i+1]]) continue;
-//             gra[temp[i]].pb(temp[i+1]);
-//             visi[temp[i+1]]=true;
-//             parent[temp[i+1]]=temp[i];
-//         }
-//     }
-//     for(int i=0;i<n;i++){
-//         if(visi[i]) continue;
-//         queue<int> q;
-//         q.push(i);
-//         visi[i]=true;
-//         while(!q.empty()){
-//             int cur=q.front();q.pop();
-//             for(int j=0;j<gra[cur].size();j++){
-//                 if(gra[cur][j]==parent[cur] || visi[gra[cur][j]]){cout<<"NO"<<endl;return;}
-//                 if(!visi[gra[cur][j]]){
-//                     visi[gra[cur][j]]=true;
-//                     q.push(gra[cur][j]);
-//                 }
-//             }
-//         }
-//     }
-//     cout<<"YES"<<endl;
-// }
-void solve(){
-    int n,k; cin>>n>>k;
-    vector<vector<int>> adj(n);
-    vector<int> inde(n);
-    while(k--){
-        vector<int> temp(n);
-        for(int i=0;i<n;i++){
-            int a; cin>>a;
-            a--; temp[i]=a;
+void solve() {
+    ll n,k; cin>>n>>k;
+    if(k==0){cout<<1<<endl;return;}
+    if(n%2!=0){
+        ll ans=1;
+        for(ll i=0;i<k;i++){
+            ans=(ans*(binpow(2,n-1)+1))%MOD;
         }
-        for(int i=1;i<n-1;i++){
-            adj[temp[i]].pb(temp[i+1]);
-            inde[temp[i+1]]++;
-        }
+        cout<<ans<<endl;return;
     }
-    queue<int> q;
-    for(int i=0;i<n;i++){
-        if(inde[i]==0) q.push(i);
+    // ll ans=0;
+    vector<ll> dp(k,0);
+    dp[0]=(binpow(2,n-1))%MOD;
+    for(ll i=1;i<k;i++){
+        dp[i]=((dp[i-1]*(binpow(2,n-1)-1))%MOD+binpow(2,n*i))%MOD;
     }
-    int ans=0;
-    while(!q.empty()){
-        int cur=q.front();ans++;q.pop();
-        for(int i=0;i<adj[cur].size();i++){
-            inde[adj[cur][i]]--;
-            if(inde[adj[cur][i]]==0) q.push(adj[cur][i]);
-        }
-    }
-    if(ans<n) cout<<"NO"<<endl;
-    else cout<<"YES"<<endl;
+    cout<<dp[k-1]<<endl;
 }
 
 int32_t main() {

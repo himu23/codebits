@@ -80,74 +80,42 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 }
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
+ll modinverse(ll n){
+    return binpow(n,MOD-2);
+}
 
 const ll MAXN = 1e6 + 5;
 
-// void solve() {
-//     int n,k; cin>>n>>k;
-//     vector<vector<int>> gra(n);
-//     vector<bool> visi(n,false);
-//     vector<int> parent(n,-1);
-//     while(k--){
-//         vector<int> temp(n);
-//         for(int i=0;i<n;i++){
-//             int a; cin>>a;
-//             a--;temp[i]=a;
-//         }
-//         for(int i=1;i<n-1;i++){
-//             // if(visi[temp[i+1]]) continue;
-//             gra[temp[i]].pb(temp[i+1]);
-//             visi[temp[i+1]]=true;
-//             parent[temp[i+1]]=temp[i];
-//         }
-//     }
-//     for(int i=0;i<n;i++){
-//         if(visi[i]) continue;
-//         queue<int> q;
-//         q.push(i);
-//         visi[i]=true;
-//         while(!q.empty()){
-//             int cur=q.front();q.pop();
-//             for(int j=0;j<gra[cur].size();j++){
-//                 if(gra[cur][j]==parent[cur] || visi[gra[cur][j]]){cout<<"NO"<<endl;return;}
-//                 if(!visi[gra[cur][j]]){
-//                     visi[gra[cur][j]]=true;
-//                     q.push(gra[cur][j]);
-//                 }
-//             }
-//         }
-//     }
-//     cout<<"YES"<<endl;
-// }
-void solve(){
-    int n,k; cin>>n>>k;
-    vector<vector<int>> adj(n);
-    vector<int> inde(n);
-    while(k--){
-        vector<int> temp(n);
-        for(int i=0;i<n;i++){
-            int a; cin>>a;
-            a--; temp[i]=a;
-        }
-        for(int i=1;i<n-1;i++){
-            adj[temp[i]].pb(temp[i+1]);
-            inde[temp[i+1]]++;
-        }
+void solve() {
+    ll n; cin>>n;
+    vector<ll> a(n);
+    for(ll i=0;i<n;i++){
+        cin>>a[i];
     }
-    queue<int> q;
-    for(int i=0;i<n;i++){
-        if(inde[i]==0) q.push(i);
-    }
-    int ans=0;
-    while(!q.empty()){
-        int cur=q.front();ans++;q.pop();
-        for(int i=0;i<adj[cur].size();i++){
-            inde[adj[cur][i]]--;
-            if(inde[adj[cur][i]]==0) q.push(adj[cur][i]);
+    //xor is not a perfect square
+    //total cnt of subarrays - cnt of subarrays whose xor is square
+    // vector<ll> pref(n+1);
+    // pref[0]=0;
+    vector<ll> freq(2*n+1,0);
+    // for(ll i=1;i<=n;i++){
+    //     pref[i]=pref[i-1]^a[i];
+    //     // freq[pref[i]]++;
+    // }
+    ll cnt=0;
+    ll curxor=0;
+    freq[0]=1;
+    for(ll i=0;i<n;i++){
+        curxor^=a[i];
+        for(ll j=0;j*j<=2*n;j++){
+            if((curxor^(j*j))<=2*n) cnt+=freq[curxor^(j*j)];
         }
+        freq[curxor]++;
     }
-    if(ans<n) cout<<"NO"<<endl;
-    else cout<<"YES"<<endl;
+    // for(ll i=1;i*i<=2*n;i++){
+
+    // }
+    ll ans=n*(n+1)/2;
+    cout<<ans-cnt<<endl;
 }
 
 int32_t main() {

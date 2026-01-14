@@ -80,74 +80,93 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 }
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
+ll modinverse(ll n){
+    return binpow(n,MOD-2);
+}
 
 const ll MAXN = 1e6 + 5;
 
-// void solve() {
-//     int n,k; cin>>n>>k;
-//     vector<vector<int>> gra(n);
-//     vector<bool> visi(n,false);
-//     vector<int> parent(n,-1);
-//     while(k--){
-//         vector<int> temp(n);
-//         for(int i=0;i<n;i++){
-//             int a; cin>>a;
-//             a--;temp[i]=a;
-//         }
-//         for(int i=1;i<n-1;i++){
-//             // if(visi[temp[i+1]]) continue;
-//             gra[temp[i]].pb(temp[i+1]);
-//             visi[temp[i+1]]=true;
-//             parent[temp[i+1]]=temp[i];
-//         }
-//     }
-//     for(int i=0;i<n;i++){
-//         if(visi[i]) continue;
-//         queue<int> q;
-//         q.push(i);
-//         visi[i]=true;
-//         while(!q.empty()){
-//             int cur=q.front();q.pop();
-//             for(int j=0;j<gra[cur].size();j++){
-//                 if(gra[cur][j]==parent[cur] || visi[gra[cur][j]]){cout<<"NO"<<endl;return;}
-//                 if(!visi[gra[cur][j]]){
-//                     visi[gra[cur][j]]=true;
-//                     q.push(gra[cur][j]);
-//                 }
-//             }
-//         }
-//     }
-//     cout<<"YES"<<endl;
-// }
-void solve(){
-    int n,k; cin>>n>>k;
-    vector<vector<int>> adj(n);
-    vector<int> inde(n);
-    while(k--){
-        vector<int> temp(n);
-        for(int i=0;i<n;i++){
-            int a; cin>>a;
-            a--; temp[i]=a;
-        }
-        for(int i=1;i<n-1;i++){
-            adj[temp[i]].pb(temp[i+1]);
-            inde[temp[i+1]]++;
-        }
+void solve() {
+    ll n; cin>>n;
+    string s; cin>>s;
+    vector<ll> p(n);
+    for(ll i=0;i<n;i++){
+        cin>>p[i];
     }
-    queue<int> q;
-    for(int i=0;i<n;i++){
-        if(inde[i]==0) q.push(i);
+    
+    //if all the chars were distinct its just lcm of sizes of connnected compos
+    //sample is so weak
+    //no two connected compo shares a char
+    
+    vector<vector<ll>> adj(n);
+    for(ll i=0;i<n;i++){
+        adj[p[i]-1].pb(i);
+        adj[i].pb(p[i]-1);
     }
-    int ans=0;
-    while(!q.empty()){
-        int cur=q.front();ans++;q.pop();
-        for(int i=0;i<adj[cur].size();i++){
-            inde[adj[cur][i]]--;
-            if(inde[adj[cur][i]]==0) q.push(adj[cur][i]);
+    // vector<ll> compos;
+    vector<vector<ll>> compos;
+    vector<bool> visi(n,false);
+    for(ll i=0;i<n;i++){
+        if(visi[i]) continue;
+        // ll cursum=1;
+        vector<ll> temp;
+        temp.pb(i);
+        visi[i]=true;
+        queue<ll> q;
+        q.push(i);
+        while(!q.empty()){
+            ll cur=q.front();q.pop();
+            for(ll j=0;j<adj[cur].size();j++){
+                if(!visi[adj[cur][j]]){
+                    visi[adj[cur][j]]=true;
+                    q.push(adj[cur][j]);
+                    // cursum++;
+                    temp.pb(adj[cur][j]);
+                }
+            }
         }
+        // compos.pb(cursum);
+        compos.pb(temp);
     }
-    if(ans<n) cout<<"NO"<<endl;
-    else cout<<"YES"<<endl;
+    // ll ans=compos[0];
+    // for(ll i=1;i<compos.size();i++){
+    //     ll temp=gcd(ans,compos[i]);
+    //     ans=(ans*compos[i])/temp;
+    // }
+    // cout<<ans<<endl;
+
+    // cout<<compos<<endl;
+    vector<ll> temp1;
+    for(ll i=0;i<compos.size();i++){
+        string str="";
+        vector<ll> cur=compos[i];
+        for(ll j=0;j<cur.size();j++){
+            str+=s[cur[j]];
+            // cur[j]=p[cur[j]]-1;
+        }
+        string s1=s;
+        ll curans=0;
+        for(ll j=1;j<=cur.size();j++){
+            curans++;
+            //
+            string s2="";
+            for(ll k:cur){
+                s2+=s1[p[k]-1];
+            }
+            for(ll k=0;k<s2.size();k++){
+                s1[cur[k]]=s2[k];
+            }
+            //
+            if(s2==str) break;
+        }
+        temp1.pb(curans);
+    }
+    ll ans=temp1[0];
+    for(ll i=1;i<temp1.size();i++){
+        ll temp=gcd(ans,temp1[i]);
+        ans=(ans*temp1[i])/temp;
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {

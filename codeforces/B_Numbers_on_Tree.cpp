@@ -80,81 +80,104 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 }
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
+ll modinverse(ll n){
+    return binpow(n,MOD-2);
+}
 
-const ll MAXN = 1e6 + 5;
-
-// void solve() {
-//     int n,k; cin>>n>>k;
-//     vector<vector<int>> gra(n);
-//     vector<bool> visi(n,false);
-//     vector<int> parent(n,-1);
-//     while(k--){
-//         vector<int> temp(n);
-//         for(int i=0;i<n;i++){
-//             int a; cin>>a;
-//             a--;temp[i]=a;
-//         }
-//         for(int i=1;i<n-1;i++){
-//             // if(visi[temp[i+1]]) continue;
-//             gra[temp[i]].pb(temp[i+1]);
-//             visi[temp[i+1]]=true;
-//             parent[temp[i+1]]=temp[i];
+const ll MAXN = 2004;
+//i hate dfs
+vector<vector<int>> adj(MAXN);
+vector<int> c(MAXN),p(MAXN);
+bool flag=true;
+vector<int> ans(MAXN);
+// vector<pair<int,int>> dfs(int i,int par){
+//     vector<pair<int,int>> nodes;
+//     for(int j:adj[i]){
+//         if(j!=par){
+//             vector<pair<int,int>> chi=dfs(j,i);
+//             nodes.insert(nodes.end(),chi.begin(),chi.end());
 //         }
 //     }
-//     for(int i=0;i<n;i++){
-//         if(visi[i]) continue;
-//         queue<int> q;
-//         q.push(i);
-//         visi[i]=true;
-//         while(!q.empty()){
-//             int cur=q.front();q.pop();
-//             for(int j=0;j<gra[cur].size();j++){
-//                 if(gra[cur][j]==parent[cur] || visi[gra[cur][j]]){cout<<"NO"<<endl;return;}
-//                 if(!visi[gra[cur][j]]){
-//                     visi[gra[cur][j]]=true;
-//                     q.push(gra[cur][j]);
-//                 }
-//             }
+//     sort(nodes.begin(),nodes.end());
+//     if(c[i]>nodes.size()){
+//         flag=false;
+//         nodes.emplace_back(i,i);
+//         return nodes;
+//     }
+//     if(c[i]==0){
+//         if(nodes.empty()){
+//             nodes.emplace_back(i,i);
+//         }
+//         else{
+//             nodes.emplace_back(nodes.front().fi-1,i);
 //         }
 //     }
-//     cout<<"YES"<<endl;
+//     else{
+//         int newval=nodes[c[i]-1].fi+1;
+//         for(int i=c[i];i<nodes.size();i++){
+//             nodes[i].fi+=2;
+//         }
+//         nodes.emplace_back(newval,i);
+//     }
+//     sort(nodes.begin(),nodes.end());
+//     return nodes;
 // }
-void solve(){
-    int n,k; cin>>n>>k;
-    vector<vector<int>> adj(n);
-    vector<int> inde(n);
-    while(k--){
-        vector<int> temp(n);
-        for(int i=0;i<n;i++){
-            int a; cin>>a;
-            a--; temp[i]=a;
-        }
-        for(int i=1;i<n-1;i++){
-            adj[temp[i]].pb(temp[i+1]);
-            inde[temp[i+1]]++;
-        }
+vector<int> dfs(int i){
+    vector<int> nodes;
+    for(int j:adj[i]){
+        vector<int> childnodes=dfs(j);
+        nodes.insert(nodes.end(),childnodes.begin(),childnodes.end());
     }
-    queue<int> q;
+    if(c[i]>nodes.size()){
+        flag=false;
+        return {};
+    }
+    nodes.insert(nodes.begin()+c[i],i);
+    return nodes;
+}
+void solve() {
+    int n; cin>>n;
+    for(int i=0;i<=n;i++) adj[i].clear();
+    flag=true;
+    // vector<int> p(n),c(n);
+    // vector<vector<int>> tree(n);
+    int root=-1;
+    for(int i=1;i<=n;i++){
+        cin>>p[i]>>c[i];
+        adj[p[i]].pb(i);
+        if(p[i]==0) root=i;
+        // adj[i].pb(p[i]);
+    }
+    vector<int> result=dfs(root);
+    if(!flag){
+        cout<<"NO"<<endl;
+        return;
+    }
+    // vector<int> nodeorder(n+1);
+    // int minval=0;
+    // for(auto [value,node]:result){
+    //     nodeorder[node]=value;
+    //     minval=min(minval,value);
+    // }
+    cout<<"YES"<<endl;
+    // for(int i=1;i<=n;i++){
+    //     cout<<nodeorder[i]-minval+1<<" ";
+    // }
     for(int i=0;i<n;i++){
-        if(inde[i]==0) q.push(i);
+        ans[result[i]]=i+1;
     }
-    int ans=0;
-    while(!q.empty()){
-        int cur=q.front();ans++;q.pop();
-        for(int i=0;i<adj[cur].size();i++){
-            inde[adj[cur][i]]--;
-            if(inde[adj[cur][i]]==0) q.push(adj[cur][i]);
-        }
+    for(int i=1;i<=n;i++){
+        cout<<ans[i]<<" ";
     }
-    if(ans<n) cout<<"NO"<<endl;
-    else cout<<"YES"<<endl;
+    cout<<endl;
+    
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    cin >> tc;
+    // cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

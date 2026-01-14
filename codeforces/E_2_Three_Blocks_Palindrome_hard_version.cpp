@@ -80,74 +80,45 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 }
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
+ll modinverse(ll n){
+    return binpow(n,MOD-2);
+}
 
 const ll MAXN = 1e6 + 5;
 
-// void solve() {
-//     int n,k; cin>>n>>k;
-//     vector<vector<int>> gra(n);
-//     vector<bool> visi(n,false);
-//     vector<int> parent(n,-1);
-//     while(k--){
-//         vector<int> temp(n);
-//         for(int i=0;i<n;i++){
-//             int a; cin>>a;
-//             a--;temp[i]=a;
-//         }
-//         for(int i=1;i<n-1;i++){
-//             // if(visi[temp[i+1]]) continue;
-//             gra[temp[i]].pb(temp[i+1]);
-//             visi[temp[i+1]]=true;
-//             parent[temp[i+1]]=temp[i];
-//         }
-//     }
-//     for(int i=0;i<n;i++){
-//         if(visi[i]) continue;
-//         queue<int> q;
-//         q.push(i);
-//         visi[i]=true;
-//         while(!q.empty()){
-//             int cur=q.front();q.pop();
-//             for(int j=0;j<gra[cur].size();j++){
-//                 if(gra[cur][j]==parent[cur] || visi[gra[cur][j]]){cout<<"NO"<<endl;return;}
-//                 if(!visi[gra[cur][j]]){
-//                     visi[gra[cur][j]]=true;
-//                     q.push(gra[cur][j]);
-//                 }
-//             }
-//         }
-//     }
-//     cout<<"YES"<<endl;
-// }
-void solve(){
-    int n,k; cin>>n>>k;
-    vector<vector<int>> adj(n);
-    vector<int> inde(n);
-    while(k--){
-        vector<int> temp(n);
-        for(int i=0;i<n;i++){
-            int a; cin>>a;
-            a--; temp[i]=a;
-        }
-        for(int i=1;i<n-1;i++){
-            adj[temp[i]].pb(temp[i+1]);
-            inde[temp[i+1]]++;
-        }
+void solve() {
+    int n; cin>>n;
+    vector<int> a(n+1);a[0]=0;
+    vector<vector<int>> idxs(201);
+    for(int i=1;i<=n;i++){
+        cin>>a[i];
+        idxs[a[i]].pb(i);
     }
-    queue<int> q;
-    for(int i=0;i<n;i++){
-        if(inde[i]==0) q.push(i);
+    vector<vector<int>> dp(201,vector<int>(n+1,0));
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<201;j++){
+            int cur=0;
+            if(a[i]==j) cur++;
+            dp[j][i]=dp[j][i-1]+cur;
+        }
     }
     int ans=0;
-    while(!q.empty()){
-        int cur=q.front();ans++;q.pop();
-        for(int i=0;i<adj[cur].size();i++){
-            inde[adj[cur][i]]--;
-            if(inde[adj[cur][i]]==0) q.push(adj[cur][i]);
+    for(int i=0;i<201;i++){
+        ans=max(ans,(int)(idxs[i].size()));
+    }
+    for(int i=1;i<201;i++){
+        for(int x=1;x<=(idxs[i].size())/2;x++){
+            int l,r;
+            //
+            l=idxs[i][x-1]+1,r=idxs[i][idxs[i].size()-x]-1;
+            int cur=2*x;
+            for(int j=1;j<201;j++){
+                if(j==i) continue;
+                ans=max(ans,cur+dp[j][r]-dp[j][l-1]);
+            }
         }
     }
-    if(ans<n) cout<<"NO"<<endl;
-    else cout<<"YES"<<endl;
+    cout<<ans<<endl;
 }
 
 int32_t main() {

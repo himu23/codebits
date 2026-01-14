@@ -80,74 +80,84 @@ bool isinbounds(ll x,ll y,ll rows,ll cols){
 }
 const ll dx[4]={0,1,0,-1};
 const ll dy[4]={1,0,-1,0};
+ll modinverse(ll n){
+    return binpow(n,MOD-2);
+}
 
 const ll MAXN = 1e6 + 5;
 
-// void solve() {
-//     int n,k; cin>>n>>k;
-//     vector<vector<int>> gra(n);
-//     vector<bool> visi(n,false);
-//     vector<int> parent(n,-1);
-//     while(k--){
-//         vector<int> temp(n);
-//         for(int i=0;i<n;i++){
-//             int a; cin>>a;
-//             a--;temp[i]=a;
-//         }
-//         for(int i=1;i<n-1;i++){
-//             // if(visi[temp[i+1]]) continue;
-//             gra[temp[i]].pb(temp[i+1]);
-//             visi[temp[i+1]]=true;
-//             parent[temp[i+1]]=temp[i];
-//         }
-//     }
-//     for(int i=0;i<n;i++){
-//         if(visi[i]) continue;
-//         queue<int> q;
-//         q.push(i);
-//         visi[i]=true;
-//         while(!q.empty()){
-//             int cur=q.front();q.pop();
-//             for(int j=0;j<gra[cur].size();j++){
-//                 if(gra[cur][j]==parent[cur] || visi[gra[cur][j]]){cout<<"NO"<<endl;return;}
-//                 if(!visi[gra[cur][j]]){
-//                     visi[gra[cur][j]]=true;
-//                     q.push(gra[cur][j]);
-//                 }
-//             }
-//         }
-//     }
-//     cout<<"YES"<<endl;
-// }
-void solve(){
-    int n,k; cin>>n>>k;
-    vector<vector<int>> adj(n);
-    vector<int> inde(n);
-    while(k--){
-        vector<int> temp(n);
-        for(int i=0;i<n;i++){
-            int a; cin>>a;
-            a--; temp[i]=a;
-        }
-        for(int i=1;i<n-1;i++){
-            adj[temp[i]].pb(temp[i+1]);
-            inde[temp[i+1]]++;
-        }
+void solve() {
+    int n,a,b; cin>>n>>a>>b;
+    a--,b--;
+    vector<vector<pair<int,int>>> tree(n);
+    for(int i=1;i<n;i++){
+        int a1,b1,c; cin>>a1>>b1>>c;
+        a1--,b1--;
+        tree[a1].pb({b1,c});
+        tree[b1].pb({a1,c});
     }
-    queue<int> q;
-    for(int i=0;i<n;i++){
-        if(inde[i]==0) q.push(i);
-    }
-    int ans=0;
-    while(!q.empty()){
-        int cur=q.front();ans++;q.pop();
-        for(int i=0;i<adj[cur].size();i++){
-            inde[adj[cur][i]]--;
-            if(inde[adj[cur][i]]==0) q.push(adj[cur][i]);
+    // set<int> temp;
+    // for(int i=0;i<tree[b].size();i++){
+    //     temp.insert(tree[b][i].se);
+    // }
+    // vector<int> val(n,-1);
+    // val[a]=0;
+    // queue<int> q;
+    // q.push(a);
+    // while(!q.empty()){
+    //     int cur=q.front();q.pop();
+    //     for(int i=0;i<tree[cur].size();i++){
+    //         if(val[tree[cur][i].fi]==-1){
+    //             val[tree[cur][i].fi]=val[cur]^tree[cur][i].se;
+    //             q.push(tree[cur][i].fi);
+    //             if(temp.find(val[tree[cur][i].fi])!=temp.end()){
+    //                 cout<<"YES"<<endl;
+    //                 return;
+    //             }
+    //         }
+    //     }
+    // }
+    // if(val[b]==0){cout<<"YES"<<endl;return;}
+    // cout<<"NO"<<endl;
+    vector<int> vala(n,-1);
+    vector<int> valb(n,-1);
+    vala[a]=0,valb[b]=0;
+    queue<int> qa,qb;
+    qa.push(a),qb.push(b);
+    // safe_umap<int,int> um;
+    set<int> sa,sb;
+    sa.insert(0);
+    while(!qa.empty()){
+        int cur=qa.front();qa.pop();
+        for(int i=0;i<tree[cur].size();i++){
+            if(vala[tree[cur][i].fi]==-1){
+                vala[tree[cur][i].fi]=vala[cur]^tree[cur][i].se;
+                if(tree[cur][i].fi==b) continue; //imp
+                qa.push(tree[cur][i].fi);
+                // um[vala[tree[cur][i].fi]]++;
+                sa.insert(vala[tree[cur][i].fi]);
+            }
         }
     }
-    if(ans<n) cout<<"NO"<<endl;
-    else cout<<"YES"<<endl;
+    while(!qb.empty()){
+        int cur=qb.front();qb.pop();
+        for(int i=0;i<tree[cur].size();i++){
+            if(valb[tree[cur][i].fi]==-1){
+                valb[tree[cur][i].fi]=valb[cur]^tree[cur][i].se;
+                qb.push(tree[cur][i].fi);
+                // um[valb[tree[cur][i].fi]]--;
+                sb.insert(valb[tree[cur][i].fi]);
+            }
+        }
+    }
+    if(vala[b]==0){cout<<"YES"<<endl;return;}
+    // for(auto &x:um){
+    //     if(x.se==0){cout<<"YES"<<endl;return;}
+    // }
+    for(int x:sa){
+        if(sb.find(x)!=sb.end()){cout<<"YES"<<endl;return;}
+    }
+    cout<<"NO"<<endl;
 }
 
 int32_t main() {
