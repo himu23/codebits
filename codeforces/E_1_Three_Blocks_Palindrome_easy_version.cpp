@@ -88,8 +88,37 @@ const ll MAXN = 1e6 + 5;
 
 void solve() {
     int n; cin>>n;
-    //dijkstra
-
+    vector<int> a(n+1);a[0]=0;
+    vector<vector<int>> idxs(201);
+    for(int i=1;i<=n;i++){
+        cin>>a[i];
+        idxs[a[i]].pb(i);
+    }
+    vector<vector<int>> dp(201,vector<int>(n+1,0));
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<201;j++){
+            int cur=0;
+            if(a[i]==j) cur++;
+            dp[j][i]=dp[j][i-1]+cur;
+        }
+    }
+    int ans=0;
+    for(int i=0;i<201;i++){
+        ans=max(ans,(int)(idxs[i].size()));
+    }
+    for(int i=1;i<201;i++){
+        for(int x=1;x<=(idxs[i].size())/2;x++){
+            int l,r;
+            //
+            l=idxs[i][x-1]+1,r=idxs[i][idxs[i].size()-x]-1;
+            int cur=2*x;
+            for(int j=1;j<201;j++){
+                if(j==i) continue;
+                ans=max(ans,cur+dp[j][r]-dp[j][l-1]);
+            }
+        }
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {
