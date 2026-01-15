@@ -32,7 +32,7 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 
 const ll MOD = 1e9 + 7;
 // const ll MOD = 998244353;
-const ll INF = 1e18;
+const ll INF = 1e9;
 const ld EPS = 1e-9;
 
 struct custom_hash {
@@ -86,65 +86,25 @@ ll modinverse(ll n){
 
 const ll MAXN = 1e6 + 5;
 
-vector<vector<ll>> dij(ll start,ll n, vector<vector<pair<ll,ll>>>& adj, vector<bool>& horse){
-    vector<vector<ll>> dist(n+1,vector<ll>(2,INF));
-    priority_queue<tuple<ll,ll,ll>,vector<tuple<ll,ll,ll>>,greater<>> pq;
-    dist[start][0]=0;
-    pq.push({0,start,0});
-    while(!pq.empty()){
-        auto [d,u,state]=pq.top();pq.pop();
-        if(d>dist[u][state]) continue;
-        if(state==0 && horse[u]){
-            if(d<dist[u][1]){
-                dist[u][1]=d;
-                pq.push({d,u,1});
-            }
-        }
-        for(auto& edge:adj[u]){
-            ll v=edge.fi;
-            ll w=edge.se;
-            if(state==0){
-                if(d+w<dist[v][0]){
-                    dist[v][0]=d+w;
-                    pq.push({dist[v][0],v,0});
-                }
-            }
-            else{
-                if(d+(w/2)<dist[v][1]){
-                    dist[v][1]=d+w/2;
-                    pq.push({dist[v][1],v,1});
-                }
-            }
-        }
-    }
-    return dist;
-}
-
 void solve() {
-    ll n,m,h; cin>>n>>m>>h;
-    //dijkstra
-    // vector<ll> a(h);
-    vector<bool> horse(n+1,false);
-    for(ll i=0;i<h;i++){
-        // cin>>a[i];
-        ll temp; cin>>temp;
-        horse[temp]=true;
+    ll n,c; cin>>n>>c;
+    vector<ll> s(n);
+    ll od=0,ev=0;
+    for(ll i=0;i<n;i++){
+        cin>>s[i];
+        if(s[i]%2==0) ev++;
+        else od++;
     }
-    vector<vector<pair<ll,ll>>> adj(n+1);
-    for(ll i=0;i<m;i++){
-        ll u,v,w; cin>>u>>v>>w;
-        // u--,v--;
-        adj[u].pb({v,w});
-        adj[v].pb({u,w});
+    ll ans=((c+1)*(c+2))/2;
+    for(ll i=0;i<n;i++){
+        ans-=((s[i])/2+1);
     }
-    auto distA=dij(1,n,adj,horse);
-    auto distB=dij(n,n,adj,horse);
-    ll ans=INF;
-    for(ll i=1;i<=n;i++){
-        ans=min(ans,max(min(distA[i][0],distA[i][1]),min(distB[i][0],distB[i][1])));
+    for(ll i=0;i<n;i++){
+        ans-=(c-s[i]+1);
     }
-    if(ans==INF) cout<<-1<<endl;
-    else cout<<ans<<endl;
+    ans+=(ev*(ev+1))/2;
+    ans+=(od*(od+1))/2;
+    cout<<ans<<endl;
 }
 
 int32_t main() {

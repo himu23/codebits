@@ -30,9 +30,9 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define pai pair<ll,ll>
 #define cntbit(x) __builtin_popcount(x)
 
-const ll MOD = 1e9 + 7;
-// const ll MOD = 998244353;
-const ll INF = 1e18;
+// const ll MOD = 1e9 + 7;
+const ll MOD = 998244353;
+const ll INF = 1e9;
 const ld EPS = 1e-9;
 
 struct custom_hash {
@@ -86,65 +86,18 @@ ll modinverse(ll n){
 
 const ll MAXN = 1e6 + 5;
 
-vector<vector<ll>> dij(ll start,ll n, vector<vector<pair<ll,ll>>>& adj, vector<bool>& horse){
-    vector<vector<ll>> dist(n+1,vector<ll>(2,INF));
-    priority_queue<tuple<ll,ll,ll>,vector<tuple<ll,ll,ll>>,greater<>> pq;
-    dist[start][0]=0;
-    pq.push({0,start,0});
-    while(!pq.empty()){
-        auto [d,u,state]=pq.top();pq.pop();
-        if(d>dist[u][state]) continue;
-        if(state==0 && horse[u]){
-            if(d<dist[u][1]){
-                dist[u][1]=d;
-                pq.push({d,u,1});
-            }
-        }
-        for(auto& edge:adj[u]){
-            ll v=edge.fi;
-            ll w=edge.se;
-            if(state==0){
-                if(d+w<dist[v][0]){
-                    dist[v][0]=d+w;
-                    pq.push({dist[v][0],v,0});
-                }
-            }
-            else{
-                if(d+(w/2)<dist[v][1]){
-                    dist[v][1]=d+w/2;
-                    pq.push({dist[v][1],v,1});
-                }
-            }
-        }
-    }
-    return dist;
-}
-
 void solve() {
-    ll n,m,h; cin>>n>>m>>h;
-    //dijkstra
-    // vector<ll> a(h);
-    vector<bool> horse(n+1,false);
-    for(ll i=0;i<h;i++){
-        // cin>>a[i];
-        ll temp; cin>>temp;
-        horse[temp]=true;
+    int n; cin>>n;
+    vector<int> a(n);
+    for(int i=0;i<n;i++){
+        int temp; cin>>temp;
+        a[i]=temp%2;
     }
-    vector<vector<pair<ll,ll>>> adj(n+1);
-    for(ll i=0;i<m;i++){
-        ll u,v,w; cin>>u>>v>>w;
-        // u--,v--;
-        adj[u].pb({v,w});
-        adj[v].pb({u,w});
+    vector<vector<int>> dp(2,vector<int>(2,0));
+    vector<int> cnt(2,0);
+    for(int x:a){
+        
     }
-    auto distA=dij(1,n,adj,horse);
-    auto distB=dij(n,n,adj,horse);
-    ll ans=INF;
-    for(ll i=1;i<=n;i++){
-        ans=min(ans,max(min(distA[i][0],distA[i][1]),min(distB[i][0],distB[i][1])));
-    }
-    if(ans==INF) cout<<-1<<endl;
-    else cout<<ans<<endl;
 }
 
 int32_t main() {

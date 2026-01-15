@@ -86,65 +86,43 @@ ll modinverse(ll n){
 
 const ll MAXN = 1e6 + 5;
 
-vector<vector<ll>> dij(ll start,ll n, vector<vector<pair<ll,ll>>>& adj, vector<bool>& horse){
-    vector<vector<ll>> dist(n+1,vector<ll>(2,INF));
-    priority_queue<tuple<ll,ll,ll>,vector<tuple<ll,ll,ll>>,greater<>> pq;
-    dist[start][0]=0;
-    pq.push({0,start,0});
-    while(!pq.empty()){
-        auto [d,u,state]=pq.top();pq.pop();
-        if(d>dist[u][state]) continue;
-        if(state==0 && horse[u]){
-            if(d<dist[u][1]){
-                dist[u][1]=d;
-                pq.push({d,u,1});
-            }
-        }
-        for(auto& edge:adj[u]){
-            ll v=edge.fi;
-            ll w=edge.se;
-            if(state==0){
-                if(d+w<dist[v][0]){
-                    dist[v][0]=d+w;
-                    pq.push({dist[v][0],v,0});
-                }
-            }
-            else{
-                if(d+(w/2)<dist[v][1]){
-                    dist[v][1]=d+w/2;
-                    pq.push({dist[v][1],v,1});
-                }
-            }
-        }
-    }
-    return dist;
-}
-
 void solve() {
-    ll n,m,h; cin>>n>>m>>h;
-    //dijkstra
-    // vector<ll> a(h);
-    vector<bool> horse(n+1,false);
-    for(ll i=0;i<h;i++){
-        // cin>>a[i];
-        ll temp; cin>>temp;
-        horse[temp]=true;
-    }
-    vector<vector<pair<ll,ll>>> adj(n+1);
+    ll n,m; cin>>n>>m;
+    vector<vector<pair<ll,ll>>> adj(n);
     for(ll i=0;i<m;i++){
         ll u,v,w; cin>>u>>v>>w;
-        // u--,v--;
+        u--,v--;
         adj[u].pb({v,w});
         adj[v].pb({u,w});
     }
-    auto distA=dij(1,n,adj,horse);
-    auto distB=dij(n,n,adj,horse);
-    ll ans=INF;
-    for(ll i=1;i<=n;i++){
-        ans=min(ans,max(min(distA[i][0],distA[i][1]),min(distB[i][0],distB[i][1])));
+    vector<ll> s(n);
+    for(ll i=0;i<n;i++){
+        cin>>s[i];
     }
-    if(ans==INF) cout<<-1<<endl;
-    else cout<<ans<<endl;
+    vector<vector<ll>> dist(n,vector<ll>(1005,INF));
+    dist[0][s[0]]=0;
+    priority_queue<tuple<ll,ll,ll>,vector<tuple<ll,ll,ll>>,greater<>> pq;
+    pq.push({0,0,s[0]});
+    while(!pq.empty()){
+        auto [d,u,sl]=pq.top();pq.pop();
+        if(d>dist[u][sl]) continue;
+        for(auto x:adj[u]){
+            ll v=x.fi;
+            ll w=x.se;
+            ll nsl=s[v];
+            nsl=min(nsl,sl);
+            ll ntime=d+(w*sl);
+            if(ntime<dist[v][nsl]){
+                dist[v][nsl]=ntime;
+                pq.push({ntime,v,nsl});
+            }
+        }
+    }
+    ll ans=INF;
+    for(int i=1;i<1005;i++){
+        ans=min(ans,dist[n-1][i]);
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {
