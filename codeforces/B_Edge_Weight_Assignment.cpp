@@ -30,9 +30,9 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define pai pair<ll,ll>
 #define cntbit(x) __builtin_popcount(x)
 
-// const ll MOD = 1e9 + 7;
-const ll MOD = 998244353;
-const ll INF = 1e9;
+const ll MOD = 1e9 + 7;
+// const ll MOD = 998244353;
+const ll INF = 1e18;
 const ld EPS = 1e-9;
 
 struct custom_hash {
@@ -84,47 +84,54 @@ ll modinverse(ll n){
     return binpow(n,MOD-2);
 }
 
-const ll MAXN = 1e6 + 5;
+const ll MAXN = 1e6+5;
 
 void solve() {
     int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        int temp; cin>>temp;
-        a[i]=temp%2;
+    vector<vector<int>> adj(n);
+    vector<bool> isleaf(n,false);
+    int root=-1;
+    for(int i=1;i<n;i++){
+        int u,v; cin>>u>>v;
+        u--,v--;
+        adj[u].pb(v);
+        adj[v].pb(u);
     }
-    vector<vector<int>> dp(2,vector<int>(2,0));
-    vector<int> cnt(2,0);
-    int ans=0;
+    int cnt=0;
     for(int i=0;i<n;i++){
-        if(a[i]==0){
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
+        if(adj[i].size()==1) {isleaf[i]=true;cnt++;}
+        else root=i;
+    }
+    vector<int> dist(n,-1);
+    dist[root]=0;
+    queue<int> q;
+    q.push(root);
+    vector<bool> isparentofleaf(n,false); 
+    while(!q.empty()){
+        int cur=q.front();q.pop();
+        for(int x:adj[cur]){
+            if(dist[x]==-1){
+                dist[x]=dist[cur]+1;
+                q.push(x);
+                if(isleaf[x]) isparentofleaf[cur]=true;
             }
-            dp[0][0]=(dp[0][0]+cnt[0])%MOD;
-            dp[1][0]=(dp[1][0]+cnt[1])%MOD;
-            cnt[0]++;
-        }
-        else{
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
-            }
-            dp[0][1]=(dp[0][1]+cnt[0])%MOD;
-            dp[1][1]=(dp[1][1]+cnt[1])%MOD;
-            cnt[1]++;
         }
     }
-    cout<<ans<<endl;
+    int minn=3;
+    int cnt2=0,cnt3=0;
+    for(int i=0;i<n;i++){
+        if(isleaf[i]){
+            cnt3++;
+            if(dist[i]%2==0) cnt2++;
+        }
+    }
+    if(cnt2==0 || cnt2==cnt3) minn=1;
+    int cnt1=0;
+    for(int i=0;i<n;i++){
+        if(isparentofleaf[i]) cnt1++;
+    }
+    int maxx=n-1-cnt+cnt1;
+    cout<<minn<<" "<<maxx<<endl;
 }
 
 int32_t main() {

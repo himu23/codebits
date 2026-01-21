@@ -30,9 +30,9 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define pai pair<ll,ll>
 #define cntbit(x) __builtin_popcount(x)
 
-// const ll MOD = 1e9 + 7;
-const ll MOD = 998244353;
-const ll INF = 1e9;
+const ll MOD = 1e9 + 7;
+// const ll MOD = 998244353;
+const ll INF = 1e18;
 const ld EPS = 1e-9;
 
 struct custom_hash {
@@ -71,10 +71,6 @@ ll binpow(ll a, ll b) {
     }
     return res;
 }
-void add_self(ll& a,ll b){
-    a+=b;
-    if(a>=MOD) a-=MOD;
-}
 bool isinbounds(ll x,ll y,ll rows,ll cols){
     return x>=0 && y>=0 && x<rows && y<cols;
 }
@@ -84,45 +80,60 @@ ll modinverse(ll n){
     return binpow(n,MOD-2);
 }
 
-const ll MAXN = 1e6 + 5;
+const ll MAXN = 1e6+5;
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        int temp; cin>>temp;
-        a[i]=temp%2;
+    ll n; cin>>n;
+    vector<vector<pair<ll,ll>>> tree(n);
+    vector<ll> edges(n-1);
+    vector<ll> sizee(n,0);
+    for(ll i=0;i<n-1;i++){
+        ll u,v; cin>>u>>v;
+        u--,v--;
+        tree[u].pb({v,i});
+        tree[v].pb({u,i});
     }
-    vector<vector<int>> dp(2,vector<int>(2,0));
-    vector<int> cnt(2,0);
-    int ans=0;
-    for(int i=0;i<n;i++){
-        if(a[i]==0){
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
-            }
-            dp[0][0]=(dp[0][0]+cnt[0])%MOD;
-            dp[1][0]=(dp[1][0]+cnt[1])%MOD;
-            cnt[0]++;
+    ll m; cin>>m;
+    vector<ll> p(m);
+    for(ll i=0;i<m;i++){
+        cin>>p[i];
+    }
+    sort(p.begin(),p.end(),greater<ll>());
+    auto dfs=[&](auto&& self,ll u,ll p)->void{
+        sizee[u]=1;
+        for(auto [v,w]:tree[u]){
+            if(v==p) continue;
+            self(self,v,u);
+            sizee[u]+=sizee[v];
+            ll ans=sizee[v];
+            edges[w]=ans*(n-ans);
         }
-        else{
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
-            }
-            dp[0][1]=(dp[0][1]+cnt[0])%MOD;
-            dp[1][1]=(dp[1][1]+cnt[1])%MOD;
-            cnt[1]++;
+    };
+    dfs(dfs,0,-1);
+    sort(edges.begin(),edges.end(),greater<ll>());
+    if(n-1>=m){
+        ll ans=0;
+        for(ll i=0;i<m;i++){
+            ans=(ans+(edges[i]*p[i])%MOD)%MOD;
         }
+        for(ll i=m;i<n-1;i++){
+            ans=(ans+edges[i])%MOD;
+        }
+        cout<<ans<<endl;
+        return;
+    }
+    sort(p.begin(),p.end());
+    sort(edges.begin(),edges.end());
+    // cout<<"HAHA"<<endl;
+    ll ans=0;
+    for(ll i=0;i<n-1;i++){
+        edges[i]=(edges[i]*p[i])%MOD;
+    }
+    for(ll i=n-1;i<m;i++){
+        edges[n-2]=(edges[n-2]*p[i])%MOD;
+    }
+    for(ll i=0;i<n-1;i++){
+        ans=(ans+edges[i])%MOD;
     }
     cout<<ans<<endl;
 }
@@ -131,7 +142,7 @@ int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

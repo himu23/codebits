@@ -30,9 +30,9 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define pai pair<ll,ll>
 #define cntbit(x) __builtin_popcount(x)
 
-// const ll MOD = 1e9 + 7;
-const ll MOD = 998244353;
-const ll INF = 1e9;
+const ll MOD = 1e9 + 7;
+// const ll MOD = 998244353;
+const ll INF = 1e18;
 const ld EPS = 1e-9;
 
 struct custom_hash {
@@ -84,47 +84,38 @@ ll modinverse(ll n){
     return binpow(n,MOD-2);
 }
 
-const ll MAXN = 1e6 + 5;
+const ll MAXN = 1e6+5;
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        int temp; cin>>temp;
-        a[i]=temp%2;
-    }
-    vector<vector<int>> dp(2,vector<int>(2,0));
-    vector<int> cnt(2,0);
-    int ans=0;
-    for(int i=0;i<n;i++){
-        if(a[i]==0){
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
-            }
-            dp[0][0]=(dp[0][0]+cnt[0])%MOD;
-            dp[1][0]=(dp[1][0]+cnt[1])%MOD;
-            cnt[0]++;
-        }
-        else{
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
-            }
-            dp[0][1]=(dp[0][1]+cnt[0])%MOD;
-            dp[1][1]=(dp[1][1]+cnt[1])%MOD;
-            cnt[1]++;
+    string s; cin>>s;
+    int q; cin>>q;
+    int n=s.length();
+    vector<vector<int>>pref(n+1,vector<int>(26,0));
+    for(int i=1;i<=n;i++){
+        for(int j=0;j<26;j++){
+            int temp=0;
+            if(s[i-1]-'a'==j) temp++;
+            pref[i][j]=pref[i-1][j]+temp;
         }
     }
-    cout<<ans<<endl;
+    while(q--){
+        int l,r; cin>>l>>r;
+        // l--,r--;
+        if(l==r){cout<<"Yes"<<endl;continue;}
+        if(s[l-1]!=s[r-1]){cout<<"Yes"<<endl;continue;}
+        vector<int> freq(26,0);
+        for(int i=0;i<26;i++){
+            freq[i]=pref[r][i]-pref[l-1][i];
+        }
+        // cout<<pref[r]<<endl<<pref[l-1]<<endl;
+        int cnt=0;
+        for(int i=0;i<26;i++){
+            if(freq[i]!=0) cnt++;
+        }
+        // cout<<freq<<endl;
+        if(cnt<=2) cout<<"No"<<endl;
+        else cout<<"Yes"<<endl;
+    }    
 }
 
 int32_t main() {

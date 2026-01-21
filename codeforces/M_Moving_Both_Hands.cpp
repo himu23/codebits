@@ -30,9 +30,9 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define pai pair<ll,ll>
 #define cntbit(x) __builtin_popcount(x)
 
-// const ll MOD = 1e9 + 7;
-const ll MOD = 998244353;
-const ll INF = 1e9;
+const ll MOD = 1e9 + 7;
+// const ll MOD = 998244353;
+const ll INF = 1e18;
 const ld EPS = 1e-9;
 
 struct custom_hash {
@@ -84,47 +84,40 @@ ll modinverse(ll n){
     return binpow(n,MOD-2);
 }
 
-const ll MAXN = 1e6 + 5;
+const ll MAXN = 1e6+5;
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        int temp; cin>>temp;
-        a[i]=temp%2;
+    ll n,m; cin>>n>>m;
+    int k=2*n;
+    vector<vector<pair<ll,ll>>> adj(k+1);
+    for(ll i=0;i<m;i++){
+        ll u,v,w; cin>>u>>v>>w;
+        u--,v--;
+        adj[u].pb({v,w});
+        adj[v+n].pb({u+n,w});
     }
-    vector<vector<int>> dp(2,vector<int>(2,0));
-    vector<int> cnt(2,0);
-    int ans=0;
-    for(int i=0;i<n;i++){
-        if(a[i]==0){
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
+    for(ll i=0;i<n;i++){
+        adj[i].pb({i+n,0});
+    }
+    vector<ll> dist(k+1,INF);
+    dist[0]=0;
+    priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,greater<pair<ll,ll>>> pq;
+    pq.push({0,0});
+    while(!pq.empty()){
+        auto [d,u]=pq.top();pq.pop();
+        if(dist[u]<d) continue;
+        for(auto [v,w]:adj[u]){
+            if(dist[u]+w<dist[v]){
+                dist[v]=dist[u]+w;
+                pq.push({dist[v],v});
             }
-            dp[0][0]=(dp[0][0]+cnt[0])%MOD;
-            dp[1][0]=(dp[1][0]+cnt[1])%MOD;
-            cnt[0]++;
-        }
-        else{
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
-            }
-            dp[0][1]=(dp[0][1]+cnt[0])%MOD;
-            dp[1][1]=(dp[1][1]+cnt[1])%MOD;
-            cnt[1]++;
         }
     }
-    cout<<ans<<endl;
+    for(ll i=1;i<n;i++){
+        if(dist[i+n]==INF) cout<<-1<<" ";
+        else cout<<dist[i+n]<<" ";
+    }
+    cout<<endl;
 }
 
 int32_t main() {

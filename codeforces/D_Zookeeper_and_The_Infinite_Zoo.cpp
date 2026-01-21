@@ -30,9 +30,9 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define pai pair<ll,ll>
 #define cntbit(x) __builtin_popcount(x)
 
-// const ll MOD = 1e9 + 7;
-const ll MOD = 998244353;
-const ll INF = 1e9;
+const ll MOD = 1e9 + 7;
+// const ll MOD = 998244353;
+const ll INF = 1e18;
 const ld EPS = 1e-9;
 
 struct custom_hash {
@@ -84,47 +84,33 @@ ll modinverse(ll n){
     return binpow(n,MOD-2);
 }
 
-const ll MAXN = 1e6 + 5;
+const ll MAXN = 1e6+5;
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        int temp; cin>>temp;
-        a[i]=temp%2;
-    }
-    vector<vector<int>> dp(2,vector<int>(2,0));
-    vector<int> cnt(2,0);
-    int ans=0;
-    for(int i=0;i<n;i++){
-        if(a[i]==0){
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
-            }
-            dp[0][0]=(dp[0][0]+cnt[0])%MOD;
-            dp[1][0]=(dp[1][0]+cnt[1])%MOD;
-            cnt[0]++;
+    ll q; cin>>q;
+    while(q--){
+        ll u,v; cin>>u>>v;
+        if(u==v){cout<<"YES"<<endl;continue;}
+        if(u>v){cout<<"NO"<<endl;continue;}
+        // if(__builtin_ctz(u)<__builtin_ctz(v)){cout<<"YES"<<endl;continue;}
+        // else {cout<<"NO"<<endl;continue;}
+        // if(__builtin_popcount(u)<__builtin_popcount(v)){cout<<"NO"<<endl;continue;}
+        // else {cout<<"YES"<<endl;continue;}
+        vector<ll> prefu(32,0);
+        vector<ll> prefv(32,0);
+        prefu[0]=(u&1),prefv[0]=(v&1);
+        if(prefu[0]<prefv[0]){cout<<"NO"<<endl;continue;}
+        bool flag=true;
+        for(ll i=1;i<32;i++){
+            ll temp1=0,temp2=0;
+            if(u&(1LL<<i)) temp1++;
+            if(v&(1LL<<i)) temp2++;
+            prefu[i]=prefu[i-1]+temp1;
+            prefv[i]=prefv[i-1]+temp2;
+            if(prefu[i]<prefv[i]){flag=false;cout<<"NO"<<endl;break;}
         }
-        else{
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
-            }
-            dp[0][1]=(dp[0][1]+cnt[0])%MOD;
-            dp[1][1]=(dp[1][1]+cnt[1])%MOD;
-            cnt[1]++;
-        }
+        if(flag) {cout<<"YES"<<endl;}
     }
-    cout<<ans<<endl;
 }
 
 int32_t main() {

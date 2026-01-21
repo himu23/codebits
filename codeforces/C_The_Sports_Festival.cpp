@@ -30,9 +30,9 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define pai pair<ll,ll>
 #define cntbit(x) __builtin_popcount(x)
 
-// const ll MOD = 1e9 + 7;
-const ll MOD = 998244353;
-const ll INF = 1e9;
+const ll MOD = 1e9 + 7;
+// const ll MOD = 998244353;
+const ll INF = 1e18;
 const ld EPS = 1e-9;
 
 struct custom_hash {
@@ -84,48 +84,43 @@ ll modinverse(ll n){
     return binpow(n,MOD-2);
 }
 
-const ll MAXN = 1e6 + 5;
+const ll MAXN = 1e6+5;
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        int temp; cin>>temp;
-        a[i]=temp%2;
+    ll n; cin>>n;
+    vector<ll> s(n);
+    for(ll i=0;i<n;i++){
+        cin>>s[i];
     }
-    vector<vector<int>> dp(2,vector<int>(2,0));
-    vector<int> cnt(2,0);
-    int ans=0;
-    for(int i=0;i<n;i++){
-        if(a[i]==0){
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
-            }
-            dp[0][0]=(dp[0][0]+cnt[0])%MOD;
-            dp[1][0]=(dp[1][0]+cnt[1])%MOD;
-            cnt[0]++;
-        }
-        else{
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
-            }
-            dp[0][1]=(dp[0][1]+cnt[0])%MOD;
-            dp[1][1]=(dp[1][1]+cnt[1])%MOD;
-            cnt[1]++;
-        }
-    }
-    cout<<ans<<endl;
-}
+    sort(s.begin(),s.end());
+    // vector<ll> dp(n,INF);
+    // for(ll i=0;i<n;i++){
+    //     for(ll j=i;j<n;j++){
+    //         dp[j-i]=min(dp[j-i],s[j]-s[i]);
+    //     }
+    // }
+    // ll ans=0;
+    // for(ll i=0;i<n;i++){
+    //     ans+=dp[i];
+    // }
+    // cout<<ans<<endl;
+    vector<vector<ll>> dp(n,vector<ll>(n,INF));
+    // for(ll i=0;i<n;i++){
+    //     dp[i][i]=0;
+    // }
+    auto dodp=[&](auto &&self,ll l,ll r)->ll{
+        if(dp[l][r]!=INF) return dp[l][r];
+        if(l==r){dp[l][r]=0;return 0;}
+        dp[l][r]=s[r]-s[l]+min(self(self,l+1,r),self(self,l,r-1));
+        return dp[l][r];
+    };
+    // for(ll i=0;i<n;i++){
+    //     for(ll j=i;j<n;j++){
+    //         dp[i][j]=dodp(dodp,i,j);
+    //     }
+    // }
+    cout<<dodp(dodp,0,n-1)<<endl;
+} 
 
 int32_t main() {
     ios_base::sync_with_stdio(0);

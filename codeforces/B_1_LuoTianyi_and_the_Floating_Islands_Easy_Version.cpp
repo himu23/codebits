@@ -30,8 +30,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define pai pair<ll,ll>
 #define cntbit(x) __builtin_popcount(x)
 
-// const ll MOD = 1e9 + 7;
-const ll MOD = 998244353;
+const ll MOD = 1e9 + 7;
+// const ll MOD = 998244353;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
@@ -83,48 +83,41 @@ const ll dy[4]={1,0,-1,0};
 ll modinverse(ll n){
     return binpow(n,MOD-2);
 }
-
+ll nc3(int n){
+    ll ans=(n*(n-1))%MOD;
+    ans=(ans*(n-2))%MOD;
+    ans=(ans*modinverse(6))%MOD;
+    return ans;
+}
 const ll MAXN = 1e6 + 5;
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        int temp; cin>>temp;
-        a[i]=temp%2;
+    ll n,k; cin>>n>>k;
+    vector<vector<ll>> adj(n);
+    for(ll i=1;i<n;i++){
+        ll u,v; cin>>u>>v;
+        u--,v--;
+        adj[u].pb(v);
+        adj[v].pb(u);
     }
-    vector<vector<int>> dp(2,vector<int>(2,0));
-    vector<int> cnt(2,0);
-    int ans=0;
-    for(int i=0;i<n;i++){
-        if(a[i]==0){
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
+    if(k==1){cout<<((1%MOD)*(modinverse(1)))%MOD<<endl;return;}
+    if(k==3){cout<<(nc3(n)*modinverse(nc3(n)))%MOD<<endl;return;}
+    //k==2;
+    ll ans=0;
+    vector<ll> sz(n+1);
+    auto dfs=[&](auto&& self,ll u,ll p)->void{
+        sz[u]=1; //current element in the subtree size
+        for(auto v:adj[u]){
+            if(v!=p){
+                self(self,v,u);
+                sz[u]=(sz[u]+sz[v]); //to get the subtree size
+                ans=(ans+(sz[v]*(n-sz[v]))%MOD)%MOD; //no. of pairs that include this edge of u to v
             }
-            dp[0][0]=(dp[0][0]+cnt[0])%MOD;
-            dp[1][0]=(dp[1][0]+cnt[1])%MOD;
-            cnt[0]++;
         }
-        else{
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
-            }
-            dp[0][1]=(dp[0][1]+cnt[0])%MOD;
-            dp[1][1]=(dp[1][1]+cnt[1])%MOD;
-            cnt[1]++;
-        }
-    }
-    cout<<ans<<endl;
+    };
+    dfs(dfs,0,-1);
+    ans=(ans+((n*(n-1))/2)%MOD)%MOD;
+    cout<<(ans*modinverse(((n*(n-1))/2)%MOD))%MOD<<endl;
 }
 
 int32_t main() {

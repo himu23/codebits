@@ -30,8 +30,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define pai pair<ll,ll>
 #define cntbit(x) __builtin_popcount(x)
 
-// const ll MOD = 1e9 + 7;
-const ll MOD = 998244353;
+const ll MOD = 1e9 + 7;
+// const ll MOD = 998244353;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
@@ -84,54 +84,52 @@ ll modinverse(ll n){
     return binpow(n,MOD-2);
 }
 
-const ll MAXN = 1e6 + 5;
+const ll MAXN = 1e6+5;
 
 void solve() {
-    int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        int temp; cin>>temp;
-        a[i]=temp%2;
+    ll n,q; cin>>n>>q;
+    vector<ll> a(n+1);
+    for(ll i=1;i<=n;i++){
+        cin>>a[i];
     }
-    vector<vector<int>> dp(2,vector<int>(2,0));
-    vector<int> cnt(2,0);
-    int ans=0;
-    for(int i=0;i<n;i++){
-        if(a[i]==0){
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
+    a[0]=0;
+    ll hahal,hahar; cin>>hahal>>hahar; hahal--,hahar--;
+    vector<ll> prefsum(n+1); prefsum[0]=a[0];
+    vector<ll> prefxor(n+1); prefxor[0]=a[0];
+    for(ll i=1;i<=n;i++){
+        prefsum[i]=prefsum[i-1]+a[i];
+        prefxor[i]=prefxor[i-1]^a[i];
+    }
+    ll maxx=0;
+    ll ansl=1,ansr=n;
+    for(ll i=0;i<n;i++){
+        ll cur=prefsum[n]-prefsum[i]-(prefxor[n]^prefxor[i]);
+        if(cur<maxx) continue;
+        maxx=cur;
+        ll l=i+1,r=n;
+        ll ans=n;
+        while(l<=r){
+            ll m=l+(r-l)/2;
+            if(((prefsum[m]-prefsum[i])-(prefxor[m]^prefxor[i]))<cur){
+                l=m+1;
             }
-            dp[0][0]=(dp[0][0]+cnt[0])%MOD;
-            dp[1][0]=(dp[1][0]+cnt[1])%MOD;
-            cnt[0]++;
+            else{
+                ans=min(ans,m);
+                r=m-1;
+            }
         }
-        else{
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
-            }
-            dp[0][1]=(dp[0][1]+cnt[0])%MOD;
-            dp[1][1]=(dp[1][1]+cnt[1])%MOD;
-            cnt[1]++;
+        if(ans-(i+1)+1<ansr-ansl+1){
+            ansr=ans,ansl=i+1;
         }
     }
-    cout<<ans<<endl;
+    cout<<ansl<<" "<<ansr<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();

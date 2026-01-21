@@ -30,8 +30,8 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define pai pair<ll,ll>
 #define cntbit(x) __builtin_popcount(x)
 
-// const ll MOD = 1e9 + 7;
-const ll MOD = 998244353;
+const ll MOD = 1e9 + 7;
+// const ll MOD = 998244353;
 const ll INF = 1e9;
 const ld EPS = 1e-9;
 
@@ -88,43 +88,85 @@ const ll MAXN = 1e6 + 5;
 
 void solve() {
     int n; cin>>n;
-    vector<int> a(n);
-    for(int i=0;i<n;i++){
-        int temp; cin>>temp;
-        a[i]=temp%2;
+    vector<vector<int>> tree(n);
+    for(int i=0;i<n-1;i++){
+        int u,v; cin>>u>>v;
+        u--,v--;
+        tree[u].pb(v);
+        tree[v].pb(u);
     }
-    vector<vector<int>> dp(2,vector<int>(2,0));
-    vector<int> cnt(2,0);
-    int ans=0;
-    for(int i=0;i<n;i++){
-        if(a[i]==0){
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
+    //iterating back from the max dist that is the diameter if a vertix gets disconnected
+    //it never connects back
+    vector<int> temp(n,0);
+    vector<int> dist0(n,-1);
+    dist0[0]=0;
+    queue<int> q;
+    q.push(0);
+    int maxx=0,v1=0;
+    while(!q.empty()){
+        int cur=q.front();q.pop();
+        for(int i=0;i<tree[cur].size();i++){
+            if(dist0[tree[cur][i]]==-1){
+                dist0[tree[cur][i]]=dist0[cur]+1;
+                q.push(tree[cur][i]);
+                if(dist0[tree[cur][i]]>maxx){
+                    maxx=dist0[tree[cur][i]];
+                    v1=tree[cur][i];
                 }
             }
-            dp[0][0]=(dp[0][0]+cnt[0])%MOD;
-            dp[1][0]=(dp[1][0]+cnt[1])%MOD;
-            cnt[0]++;
-        }
-        else{
-            for(int j=0;j<2;j++){
-                for(int k=0;k<2;k++){
-                    if((j+k)%2==a[i]){
-                        ans=(ans+dp[j][k])%MOD;
-                        dp[k][a[i]]=(dp[k][a[i]]+dp[j][k])%MOD;
-                    }
-                }
-            }
-            dp[0][1]=(dp[0][1]+cnt[0])%MOD;
-            dp[1][1]=(dp[1][1]+cnt[1])%MOD;
-            cnt[1]++;
         }
     }
-    cout<<ans<<endl;
+    vector<int> dist1(n,-1);
+    dist1[v1]=0;
+    queue<int> q1;
+    q1.push(v1);
+    int maxx1=0,v2=0;
+    while(!q1.empty()){
+        int cur=q1.front();q1.pop();
+        for(int i=0;i<tree[cur].size();i++){
+            if(dist1[tree[cur][i]]==-1){
+                dist1[tree[cur][i]]=dist1[cur]+1;
+                q1.push(tree[cur][i]);
+                if(dist1[tree[cur][i]]>maxx1){
+                    maxx1=dist1[tree[cur][i]];
+                    v2=tree[cur][i];
+                }
+            }
+        }
+    }
+    vector<int> dist2(n,-1);
+    dist2[v2]=0;
+    queue<int> q2;
+    q2.push(v2);
+    // int maxx2=0,v1=0;
+    while(!q2.empty()){
+        int cur=q2.front();q2.pop();
+        for(int i=0;i<tree[cur].size();i++){
+            if(dist2[tree[cur][i]]==-1){
+                dist2[tree[cur][i]]=dist2[cur]+1;
+                q2.push(tree[cur][i]);
+                // if(dist0[tree[cur][i]]>maxx){
+                //     maxx=dist2[tree[cur][i]];
+                //     v1=tree[cur][i];
+                // }
+            }
+        }
+    }
+    vector<int> dist(n);
+    vector<int> freq(n,0);
+    for(int i=0;i<n;i++){
+        dist[i]=max(dist1[i],dist2[i]);
+        freq[dist[i]]++;
+    }
+    // cout<<dist<<endl;
+    vector<int> ans(n+1);
+    ans[1]=1;
+    for(int i=2;i<=n;i++){
+        ans[i]=ans[i-1]+freq[i-1];
+        ans[i]=min(ans[i],n);
+    }
+    for(int i=1;i<=n;i++) cout<<ans[i]<<" ";
+    cout<<endl;
 }
 
 int32_t main() {
