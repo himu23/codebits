@@ -1,3 +1,4 @@
+//author: himu23
 #include <bits/stdc++.h>
 // #include<ext/pb_ds/assoc_container.hpp>
 // #include<ext/pb_ds/tree_policy.hpp>
@@ -20,20 +21,20 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #define ar array
 #define ll long long
 #define ld long double
-#define sza(x) ((int)x.size())
+#define sza(x) ((ll)x.size())
 #define all(a) (a).begin(), (a).end()
 #define pb push_back
 #define umap unordered_map
-#define f first
-#define s second
-#define pai pair<int,int>
+#define fi first
+#define se second
+#define pai pair<ll,ll>
+#define cntbit(x) __builtin_popcount(x)
 
-const int MAX_N = 1e6 + 5;
 const ll MOD = 1e9 + 7;
-const ll INF = 1e9;
+// const ll MOD = 998244353;
+const ll INF = 1e18;
 const ld EPS = 1e-9;
 
-// Custom hash for unordered_map/set
 struct custom_hash {
     static uint64_t splitmix64(uint64_t x) {
         x += 0x9e3779b97f4a7c15;
@@ -53,47 +54,57 @@ struct custom_hash {
     }
 };
 struct hash_pair{
-    size_t operator()(const std::pair<int, int>& p) const {
-        return std::hash<int>()(p.first) ^ (std::hash<int>()(p.second) << 1);
+    size_t operator()(const std::pair<ll, ll>& p) const {
+        return std::hash<ll>()(p.first) ^ (std::hash<ll>()(p.second) << 1);
     }
 };
 template<typename K, typename V>
 using safe_umap = unordered_map<K, V, custom_hash>;
 template<typename T>
 using safe_uset = unordered_set<T, custom_hash>;
-void add_self(int& a,int b){
-    a+=b;
-    if(a>=MOD) a-=MOD;
+ll binpow(ll a, ll b) {
+    ll res = 1;
+    while (b > 0) {
+        if (b & 1) res=(res*a)%MOD;
+        a =(a*a)%MOD;
+        b >>= 1;
+    }
+    return res;
 }
-bool isinbounds(int x,int y,int rows,int cols){
+bool isinbounds(ll x,ll y,ll rows,ll cols){
     return x>=0 && y>=0 && x<rows && y<cols;
 }
-const int dx[4]={0,1,0,-1};
-const int dy[4]={1,0,-1,0};
+const ll dx[4]={0,1,0,-1};
+const ll dy[4]={1,0,-1,0};
+ll modinverse(ll n){
+    return binpow(n,MOD-2);
+}
+
+const ll MAXN = 1e6+5;
 
 void solve() {
     int n; cin>>n;
     vector<int> a(n);
-    int summ=0;
     for(int i=0;i<n;i++){
-       cin>>a[i];
-       summ+=a[i];
+        cin>>a[i];
     }
-    int q; cin>>q;
-    while(q--){
-        int b; cin>>b;
-        // int temp=summ;
-        // temp=(temp+b-1)/b;
-        // if(temp>n) cout<<-1<<endl;
-        // else cout<<temp<<endl;
+    bool flag=true;
+    int temp=1;
+    int l=0,r=n-1;
+    while(temp<=n){
+        if(a[l]==temp) {l++;temp++;}
+        else if(a[r]==temp) {r--;temp++;}
+        else {flag=false;break;}
     }
+    if(flag) cout<<"YES"<<endl;
+    else cout<<"NO"<<endl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
     int tc = 1;
-    //cin >> tc;
+    cin >> tc;
     for (int t = 1; t <= tc; t++) {
         // cout << "Case #" << t << ": ";
         solve();
