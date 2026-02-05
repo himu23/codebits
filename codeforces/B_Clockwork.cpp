@@ -83,45 +83,22 @@ ll modinverse(ll n){
 const ll MAXN = 1e6+5;
 
 void solve() {
-    ll a,b,c,d; cin>>a>>b>>c>>d;
-    vector<ll> diva;
-    vector<ll> divb;
-    for(ll i=1;i*i<=a;i++){
-        if(a%i==0){
-            if(i*i!=a) diva.pb(a/i);
-            diva.pb(i);
+    int n; cin>>n;
+    vector<int> a(n);
+    for(int i=0;i<n;i++){
+        cin>>a[i];
+    }
+    int minn=a[0];
+    for(int i=0;i<n;i++){
+        if(a[i]<minn) minn=a[i];
+    }
+    for(int i=0;i<n;i++){
+        if(a[i]==minn){
+            int cur=max(i,n-1-i);
+            if(minn-cur<=2){cout<<"NO"<<endl;return;}
         }
     }
-    for(ll i=1;i*i<=b;i++){
-        if(b%i==0){
-            if(i*i!=b) divb.pb(b/i);
-            divb.pb(i);
-        }
-    }
-    for(ll i=0;i<diva.size();i++){
-        for(ll j=0;j<divb.size();j++){
-            ll cur=diva[i]*divb[j];
-            // ll req=(a*b)/cur;
-            ll req=(a/diva[i])*(b/divb[j]);
-            // if(true){
-            //     ll temp=(d/cur)+1;
-            //     temp*=cur;
-            //     if(temp>b && temp<=d){
-            //         cout<<cur<<" "<<temp<<endl;
-            //         return;
-            //     }
-            // }
-            ll temp1=(a/cur)+1;
-            temp1*=cur;
-            ll temp2=(b/req)+1;
-            temp2*=req;
-            if(temp1<=c && temp2<=d){
-                cout<<temp1<<" "<<temp2<<endl;
-                return;
-            }
-        }
-    }
-    cout<<-1<<" "<<-1<<endl;
+    cout<<"YES"<<endl;
 }
 
 int32_t main() {

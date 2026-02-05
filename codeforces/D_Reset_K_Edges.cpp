@@ -90,6 +90,17 @@ void solve() {
         int temp; cin>>temp; temp--;
         par[i]=temp;
     }
+    vector<vector<int>> adj;
+    for(int i=1;i<n;i++){
+        adj[i].pb(par[i]);
+        adj[par[i]].pb(i);
+    }
+    vector<bool> visi(n,false);
+    
+    //so many things
+    //bs dfs bfs stacks
+    int l=0,r=maxx;
+
 }
 
 int32_t main() {
