@@ -93,39 +93,26 @@ ll modinverse(ll n){
 const ll MAXN = 1e6+5;
 
 void solve() {
-    string s; cin>>s;
-    vector<int> temp(10,0);
-    vector<int> ans(10,-1);
-    for(int i=0;i<10;i++){
-        temp[s[i]-'0']++;
+    int n; cin>>n;
+    vector<int> a(n);
+    set<int>s;
+    int maxx=0;
+    for(int i=0;i<n;i++){
+        cin>>a[i];
+        maxx=max(maxx,a[i]);
+        s.insert(a[i]);
     }
-    // vector<int> temp1;
-    // for(int i=0;i<10;i++){
-    //     if(temp[i]>0) {ans[9-i]=i;temp[i]--;}
-    //     while(temp[i]>0){
-    //         temp1.push_back(i);
-    //         temp[i]--;
-    //     }
-    // }
-    // sort(temp1.begin(),temp1.end());
-    // int cnt=0;
-    // for(int i=0;i<10;i++){
-    //     if(ans[i]==-1){
-    //         ans[i]=temp1[cnt];
-    //         cnt++;
-    //     }
-    // }
-    for(int i=0;i<10;i++){
-        int cur=9-i;
-        for(int j=0;j<10;j++){
-            if(temp[j]>0 && j>=cur) {temp[j]--;ans[i]=j;break;}
+    if(s.size()==1) {cout<<"No"<<endl;return;}
+    cout<<"YES"<<endl;
+    bool flag=false;
+    for(int i=0;i<n;i++){
+        if(a[i]==maxx && !flag){
+            flag=true;
+            cout<<1<<" ";
         }
+        else cout<<2<<" ";
     }
-    string ans1="";
-    for(int i=0;i<10;i++){
-        ans1+=ans[i]+'0';
-    }
-    cout<<ans1<<endl;
+    cout<<endl;
 }
 
 int32_t main() {
