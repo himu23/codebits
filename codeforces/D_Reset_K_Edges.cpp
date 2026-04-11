@@ -210,12 +210,32 @@ const ll MAXN = 1e6+5;
 
 void solve() {
     int n,k; cin>>n>>k;
-    
-
-    
-
-
-
+    vector<int> p(n+1);
+    for(int i=2;i<=n;i++){
+        cin>>p[i];
+    }
+    int l=1,r=n-1;
+    vector<int> height(n+1,0);
+    int ans=n-1;
+    while(l<=r){
+        int h=l+(r-l)/2;
+        int cnt=0;
+        for(int i=0;i<=n;i++) height[i]=0;
+        for(int i=n;i>=2;i--){
+            if(height[i]==h-1 && p[i]!=1){
+                cnt++;
+            }
+            else{
+                height[p[i]]=max(height[p[i]],height[i]+1);
+            }
+        }
+        if(cnt<=k){
+            ans=min(ans,h);
+            r=h-1;
+        }
+        else l=h+1;
+    }
+    cout<<ans<<endl;
 }
 
 int32_t main() {
