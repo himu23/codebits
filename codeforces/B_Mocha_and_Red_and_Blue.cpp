@@ -83,7 +83,20 @@ const int dy[4]={1,0,-1,0};
 void solve() {
     int n; cin>>n;
     string s; cin>>s;
-    
+    for(int i=1;i<n;i++){
+        if(s[i]=='?' && s[i-1]=='B') s[i]='R';
+        if(s[i]=='?' && s[i-1]=='R') s[i]='B';
+    }
+    for(int i=n-2;i>=0;i--){
+        if(s[i]=='?' && s[i+1]=='B') s[i]='R';
+        if(s[i]=='?' && s[i+1]=='R') s[i]='B';
+    }
+    if(s[0]=='?') s[0]='B';
+    for(int i=1;i<n;i++){
+        if(s[i]=='?' && s[i-1]=='B') s[i]='R';
+        if(s[i]=='?' && s[i-1]=='R') s[i]='B';
+    }
+    cout<<s<<endl;
 }
 
 int32_t main() {

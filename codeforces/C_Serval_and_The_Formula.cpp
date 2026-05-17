@@ -86,7 +86,7 @@ void solve() {
     ll x,y; cin>>x>>y;
     //a+b=(a^b)+2*(a&b)
     //a&b finds the carry. 2* shifts the carry to left
-    // because carry adds to the next higher palce value
+    //because carry adds to the next higher palce value
     //after rearranging (a+k)^(b+k)=(a+b+2k)-2((a+k)&(b+k))==(a+b+2k)
     //which gives:
     //we have to find k such that (a+k)&&(b+k)==0
@@ -126,9 +126,9 @@ void solve() {
     // if(carry1>0 || carry2>0) cout<<-1<<endl;
     // else cout<<ans<<endl;
     if(x==y){cout<<-1<<endl;return;}
-    ll p=1;
-    while(p<=max(x,y)) p*=2;
-    cout<<p-max(x,y)<<endl;
+    ll ans=1;
+    while(ans<=max(x,y)) ans*=2;
+    cout<<ans-max(x,y)<<endl;
 }
 
 int32_t main() {

@@ -96,7 +96,8 @@ void solve() {
         cout<<endl; return;
     }
     // gcd property you have to know
-    //$$\gcd(a, b, c, \dots) = \gcd(a, b-a, c-b, \dots)$$
+    //gcd(x,y)=gcd(x,y-x)=gcd(x-y,y);
+    //$$\gcd(a, b, c,....) = \gcd(a, b-a, c-b,....)$$
     //$$\gcd(a+e, b+e, c+e, d+e)$$=$$= \gcd(a+e, \mathbf{b-a}, \mathbf{c-b}, \mathbf{d-c})$$
     ll gcdd=abs(a[1]-a[0]);
     for(ll i=1;i<n;i++){
@@ -106,6 +107,14 @@ void solve() {
         cout<<gcd(gcdd,a[0]+b[i])<<" ";
     }
     cout<<endl;
+    // ll gcdd=0;
+    // for(int i=0;i<n;i++){
+    //     gcdd=gcd(gcdd,a[i]);
+    // }
+    // for(int i=0;i<m;i++){
+    //     cout<<gcd(gcdd,b[i])<<" ";
+    // }
+    // cout<<endl;
 }
 
 int32_t main() {
